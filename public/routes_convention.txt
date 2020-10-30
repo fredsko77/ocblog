@@ -1,0 +1,12 @@
+GET 	     /posts				index()
+GET 	     /posts/create			create()
+POST 	/posts				store()
+GET 	     /posts/:id/edit		edit()
+PUT	     /posts/:id			update()
+DELETE	/posts/:id			destroy()
+
+créer la branche : git branch "nom de la branche"
+changer de branche : git checkout "nom de la branche"
+verifier la branche actuelle : git branch
+changer de branche et revenir à la master : git checkout master
+fusionner deux branches : git merge "nom de la branche"

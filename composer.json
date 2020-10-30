@@ -1,0 +1,17 @@
+{
+    "name": "fagat/ocblog",
+    "authors": [
+        {
+            "name": "fagat",
+            "email": "agathefrederick@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
