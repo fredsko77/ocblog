@@ -4,6 +4,7 @@ namespace App\Router;
 
 use App\Helpers\Helpers;
 use App\Services\Request;
+use App\Controller\BlogController;
 
 class Router 
 {
@@ -33,7 +34,7 @@ class Router
                }
           }
           // echo "<p>This <b style='color:red;'>'{$this->request->server('REQUEST_URI')}'</b> is not valid.</p><a href='/'> Retourner à la page d'accueil </a>";
-          return redirect('/404');
+          return (new BlogController())->notFound();
      }
 
      public function execute()

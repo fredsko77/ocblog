@@ -14,5 +14,7 @@
      </div>
 </footer><!-- End  Footer -->
 
+<div class="flash"></div>
+
 <div id="preloader"></div>
 <a href="#" class="back-to-top"><i class="bx bx-up-arrow-alt"></i></a>

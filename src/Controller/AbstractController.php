@@ -29,9 +29,9 @@ abstract class AbstractController
           
           $params['request'] = new Request();
 
-          if ( preg_match('#^/admin#i', get_current_url()) ) {
-               $path = "users.not-allowed";
-          }
+          // if ( preg_match('#^/admin#i', get_current_url()) ) {
+          //      $path = "users.not-allowed";
+          // }
 
           $path = str_replace(".", "/", $path);
           

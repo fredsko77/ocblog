@@ -9,26 +9,6 @@
 
 })(jQuery);
 
-const switchTabs = (elt, e) => {
-     e.preventDefault();
-     let active = 'active';
-     let hidden = 'hidden';
-     let current = document.querySelector('li.active');
-     let sections = document.querySelectorAll('[data-target]');
-     let target = elt.dataset.goto;
-     let parentNode = elt.parentNode.tagName === "DIV" ? document.querySelector("li a[data-goto=" + target + "]").parentNode : elt.parentNode;
-     sections.forEach(element => {
-          let section = element.dataset.target;
-          if ( section === target ) {
-               element.classList.contains(hidden) ? element.classList.remove(hidden) : null;
-          } else {
-               element.classList.contains(hidden) ? null : element.classList.add(hidden) ;
-          }
-     });
-     current.classList.remove(active);
-     parentNode.classList.add(active);
-}
-
 const getCookie = cname => {
      var name = cname + "=";
      var decodedCookie = decodeURIComponent(document.cookie);
@@ -45,8 +25,40 @@ const getCookie = cname => {
      return "";
 }
 
-const setHTMLTitle = title => {
-     console.warn(title);
-     document.title = title ;
-     //=== "" || title === null ? title : "Mon super blog";
+const getValues = selector => {
+     let object = {};
+     elements = document.querySelectorAll(selector);
+     elements.forEach(element => {
+          object[element.name] = element.value;
+     });
+     return object;
+}
+
+const setFormMessages = (type, messages) => {
+     element = document.querySelector('#error_msg_form');
+     element.classList.remove("alert-danger", "alert-success", "alert-warning", "alert-primary");
+     element.classList.add(`alert-${type}`);
+     element.innerHTML = messages;
+     return;
+}
+
+const isFilled = data => {
+        
+     for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+               if( data[key] === "" ) return false;             
+          }
+     }
+     return true;
+}
+
+const flash = (message, type = 'success', close = true) => {
+     close = close === true ? `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>` : '';
+     let alert =    `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                         <strong>${message}</strong>
+                         ${close}
+                    </div>`;
+     document.querySelector('.flash').innerHTML = alert;
 }

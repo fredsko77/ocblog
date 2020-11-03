@@ -91,7 +91,7 @@ function get_template(string $path):string
  */
 function get_stylesheet(string $path):string
 {
-    return "<link href='assets/css/{$path}.css' rel='stylesheet'>";
+    return "<link href='assets/css/{$path}.css' rel='stylesheet'>\n";
 }
 
 /**
@@ -121,7 +121,7 @@ function get_image(string $path)
  */
 function get_script(string $path):string
 {
-    return "<script src=\"assets/js/{$path}.js\"></script>";
+    return "<script src=\"assets/js/{$path}.js\"></script>\n";
 }
 
 /**
@@ -244,9 +244,9 @@ function array_to_string(array $data):string
  */
 function is_home():bool
 {
-    return !preg_match('#^/admin/(.*?)#',get_current_url()) 
-    && !preg_match('#^/blog/(.*?)#',get_current_url()) 
-    && !preg_match('#^/auth/(.*?)#',get_current_url()) ? true : false;
+    return !preg_match('#^/admin(.*?)#',get_current_url()) 
+    && !preg_match('#^/blog(.*?)#',get_current_url()) 
+    && !preg_match('#^/auth(.*?)#',get_current_url()) ? true : false;
 }
 
 /**
@@ -273,5 +273,5 @@ function is_blog():bool
  */
 function is_auth():bool
 {
-    return preg_match('#^/auth/(.*?)#',get_current_url() ) ? true : false;
+    return preg_match('#^/auth(.*?)#',get_current_url() ) ? true : false;
 }

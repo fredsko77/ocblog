@@ -161,6 +161,10 @@ class Helpers
           return $sanitize;
      }
 
-
+     public static function checkCsrfToken(string $token) 
+     {
+          $session_csrf = (new Session)->get('csrf_token');
+          return $session_csrf && $session_csrf === $token ? true : false;
+     }
 
 }

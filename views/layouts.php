@@ -9,10 +9,12 @@
      <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
      <script src="assets/vendor/venobox/venobox.min.js"></script>
      <script src="assets/vendor/aos/aos.js"></script>
-     <script src="assets/vendor/php-email-form/validate.js"></script>
      <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
      <script src="assets/vendor/counterup/counterup.min.js"></script>
      <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+     <!-- Axios Ajax library Js File --> 
+     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
      <!-- Template App JS File -->     
      <?php echo get_script('app'); ?>
@@ -32,5 +34,5 @@
      <!-- Template Admin JS File -->
      <?php echo get_script('admin'); ?>
 
-</body> 
+     </body> 
 </html>
