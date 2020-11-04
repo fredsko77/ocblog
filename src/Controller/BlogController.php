@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Posts;
-use App\Entity\Users;
 use App\Controller\AbstractController;
 use App\Model\PostsModel;
 use App\Services\Session;
@@ -25,10 +23,18 @@ class BlogController extends AbstractController
           return $this->view("404");
      }
      
-     public function index() 
+     public function index(array $params = []) 
+     { 
+          $posts = $this->pm->pagePosts();
+          $page = array_key_exists('id', $params) ? (int) $params['id'] : 0;
+          dd($page);
+          return $this->view('blog.index', compact('posts', 'page'));
+     }
+     
+     public function show(array $params = []) 
      {
-          $posts = $this->pm->pagePosts(0);
-          return $this->view('blog.index');
+          $posts = $this->pm->pagePosts();
+          return $this->view('blog.index', compact('posts'));
      }
 
 }

@@ -18,13 +18,13 @@ return $routes = [
                'action' => "App\Controller\BlogController@index",
                'path' => "/blog"
           ],
-          'blog.show' => [
-               'action' => "App\Controller\BlogController@show",
-               'path' => "/blog/posts/:slug/:id"
-          ],
           'blog.paginate' => [
                'action' => "App\Controller\BlogController@index",
-               'path' => "/blog/post/page/:id"
+               'path' => "/blog/posts/page/:id"
+          ],
+          'blog.show' => [
+               'action' => "App\Controller\BlogController@show",
+               'path' => "/blog/posts/:id/:slug/"
           ],
           '404' => [
                'action' => "App\Controller\BlogController@notFound",

@@ -14,6 +14,7 @@ class Posts
      private $title;
      private $chapo;
      private $slug;
+     private $image;
      private $content;
      private $updated_at;
      private $created_at;
@@ -217,6 +218,26 @@ class Posts
      public function setCategoriesId($categories_id)
      {
           $this->categories_id = $categories_id;
+          return $this;
+     }
+
+     /**
+      * Get the value of image
+      */ 
+     public function getImage()
+     {
+          return $this->image;
+     }
+
+     /**
+      * Set the value of image
+      *
+      * @return  self
+      */ 
+     public function setImage($image)
+     {
+          $this->image = $image;
+
           return $this;
      }
 }
