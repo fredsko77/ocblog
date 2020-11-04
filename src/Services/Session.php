@@ -39,10 +39,22 @@ class Session
           return $_SESSION;
      }
 
-     public function getUser()
+     public function isLoggedUser():bool
      { 
-          return array_key_exists('user', $_SESSION) ? $_SESSION['user'] : null ;
+          return array_key_exists('auth', $_SESSION) ? true : false ;
      }     
+
+     public function setAuth(Users $users) 
+     {
+          $_SESSION['auth']['email'] = $users->getEmail();
+          $_SESSION['auth']['token'] = $users->getToken();
+          $_SESSION['auth']['firstname'] = $users->getFirstname();
+          $_SESSION['auth']['lastname'] = $users->getLastname();
+          $_SESSION['auth']['chapo'] = $users->getChapo();
+          $_SESSION['auth']['users_id'] = $users->getId();
+          $_SESSION['auth']['role'] = $users->getRoles();
+          $_SESSION['auth']['last_connection'] = $users->getLastConnection();
+     }
 
      /**
       * Get logged user
@@ -50,7 +62,7 @@ class Session
       */
      public function getLoggedUser():Users 
      {
-          return new Users([]);
+          return new Users($this->get('auth'));
      }
 
 }

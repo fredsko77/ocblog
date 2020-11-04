@@ -35,3 +35,28 @@ const handleRegister = (elt, e) => {
      
      // delete axios.defaults.headers["Authorization"];
 }
+
+const authenticateUsers = (form,event) => {
+     event.preventDefault();
+     let url = form.action;
+     let data = getValues('input');
+     try {
+          axios
+               .post(url, data)
+               .then( ({data}) => {
+                    // console.log(data.message.type);
+                    let type = data.message.type; 
+                    let message = data.message.content;
+                    flash(message, type, true);
+               })
+               .catch( ({response}) => {
+                    // console.error(response.data.message.content);
+                    let type = response.data.message.type; 
+                    let message = response.data.message.content;    
+                    if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+                    if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+               }) 
+     } catch({response}) {
+          console.warn(response);   
+     }
+}

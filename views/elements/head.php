@@ -24,10 +24,16 @@
      <link href="<?php echo get_vendor("aos/aos.css") ?>" rel="stylesheet">
      
      <!-- Template Main CSS File -->
-     <?php echo get_stylesheet("app"); ?>
-     <?php echo get_stylesheet("style"); ?>
-     <?php // echo get_stylesheet("admin"); ?>
-     <?php // echo get_stylesheet("auth"); ?>
+     
+     <?php 
+          echo get_stylesheet("style");
+          if ( is_admin() ) { 
+               echo get_stylesheet("admin"); 
+          } else { 
+               echo get_stylesheet("auth");
+               echo get_stylesheet("app");                 
+          }
+     ?>
       
      <!-- =======================================================
      * Template Name: Kelly - v2.0.0

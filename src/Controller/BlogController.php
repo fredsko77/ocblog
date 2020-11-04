@@ -16,7 +16,7 @@ class BlogController extends AbstractController
 
      public function __construct()
      {
-          // $this->pm = new PostsModel();
+          $this->pm = new PostsModel();
           $this->session = new Session();
      }
 
@@ -27,6 +27,7 @@ class BlogController extends AbstractController
      
      public function index() 
      {
+          $posts = $this->pm->pagePosts(0);
           return $this->view('blog.index');
      }
 

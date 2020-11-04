@@ -40,7 +40,6 @@ const contact = (form,e) => {
                     flash(message, type, true);
                })
                .catch( ({response}) => {
-                    console.error(response.status);
                     let type = response.data.message.type; 
                     let message = response.data.message.content;    
                     if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);

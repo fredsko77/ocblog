@@ -72,4 +72,18 @@ class HomeController extends AbstractController
                ], 500); 
      }
 
+     public function resume()
+     {
+          $file = 'assets/CV_AGATHE_Frederick.pdf';
+          $filename = 'moncv'; /* Note: Always use .pdf at the end. */
+
+          header('Content-type: application/pdf');
+          header('Content-Disposition: inline; filename="' . $filename . '"');
+          header('Content-Transfer-Encoding: binary');
+          header('Content-Length: ' . filesize($file));
+          header('Accept-Ranges: bytes');
+          
+          @readfile($file);
+     }
+
 }

@@ -32,51 +32,13 @@ img.post-item-thumbnail:hover { transform: scale(1.05); cursor: pointer; }
 .alert-dark { border-right-color: #1b1e21; }
 .alert-light { border-right-color: #818182; }
 
+/* Footer */
+.web-map-list { padding-left: unset; margin-bottom: 0 ; }
+.web-map-item { list-style: none; text-align: left; }
+
 @keyframes mymove {
      0% {left: 0px;}
      50% {left: 200px;}
      90% {left: 190px;}
      100% {left: 200px;}
 }
-
-/* Toast
-.toastify { 
-     position: fixed; 
-     top: 100px; 
-     left: 0; 
-     right: 0; 
-     margin: auto;
-
-     max-width: 400px; 
-     padding: 6px; 
-     background-color: #cccccc; 
-     color: #444444; 
-     font-family: sans-serif; 
-     text-align: center; 
-     z-index: 999999; 
-     border: 1px solid #aaaaaa; 
-     border-radius: 5px;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-     
-     visibility: hidden;
-     opacity: 0;
-     transition: opacity .2s, top .2s, visibility .2s;
-}
-
-.toastify--visible {
-     top: 0;
-     opacity: 1;
-     visibility: visible;
-}
-
-.toastify--success {
-     background-color: #00C02B;
-     border-color: #009D23;
-     color: #ffffff;
-}
-
-.toastify--danger {
-     background-color: #D50000;
-     border-color: #BA0000;
-     color: #ffffff;
-} */

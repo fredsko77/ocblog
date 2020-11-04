@@ -25,13 +25,41 @@ abstract class AbstractController
      public function view(string $path, array $params = []) 
      {
 
-          if ($this->session instanceof Session) $params['user'] = $this->session->getUser();
+          if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
+          
+          $params['request'] = new Request();
+          
+          $path = str_replace(".", "/", $path);
+          
+          ob_start();          
+          
+          $params = (object) $params; 
+          
+          require get_template("elements/header");
+          require get_template($path);
+          require get_template('elements/footer');
+          
+          $content = ob_get_clean();
+          
+          require get_template("layouts");
+     }
+     
+     /**
+      * Return a view
+      * @param string $path
+      * @param array $params
+      * @return void
+      */
+      public function adminView(string $path, array $params = []) 
+      {
+           
+          if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
           
           $params['request'] = new Request();
 
-          // if ( preg_match('#^/admin#i', get_current_url()) ) {
-          //      $path = "users.not-allowed";
-          // }
+          if ( $params['user'] ) {
+               $path = "users.not-allowed";
+          }
 
           $path = str_replace(".", "/", $path);
           
@@ -39,7 +67,7 @@ abstract class AbstractController
 
           $params = (object) $params; 
           
-          require get_template("elements/header");
+          require get_template("elements/header-admin");
           require get_template($path);
           require get_template('elements/footer');
 

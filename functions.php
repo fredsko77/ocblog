@@ -220,7 +220,7 @@ function generate_csrf():string
 function generate_token(int $length):string
 {
     $char_to_shuffle =  'azertyuiopqsdfghjklwxcvbnAZERTYUIOPQSDFGHJKLLMWXCVBN1234567890';
-    return substr( str_shuffle($char_to_shuffle) , 0 , $length) . (new \DateTime())->getTimestamp();
+    return substr( str_shuffle($char_to_shuffle) , 0 , $length) . (new \Datetime)->format('YmdHsiu');
 }
 
 /**

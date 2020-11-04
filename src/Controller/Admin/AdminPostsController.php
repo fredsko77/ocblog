@@ -2,11 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\Controller;
+use App\Controller\AbstractController;
 use App\Model\PostsModel;
 use App\Services\Session;
 
-class AdminPostsController extends Controller
+class AdminPostsController extends AbstractController
 {
 
      protected $pm;
