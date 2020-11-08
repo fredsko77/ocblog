@@ -27,7 +27,6 @@ class BlogController extends AbstractController
      { 
           $posts = $this->pm->pagePosts();
           $page = array_key_exists('id', $params) ? (int) $params['id'] : 0;
-          dd($page);
           return $this->view('blog.index', compact('posts', 'page'));
      }
      

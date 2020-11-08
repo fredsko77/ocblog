@@ -40,7 +40,7 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0">
 
-                         <form action="<?php echo 'http://' . $params->request->server('HTTP_HOST') ?>/post-contact" onsubmit="contact(this,event)" method="post" role="form" class="php-email-form">
+                         <form action="<?php echo 'http://' . $params->request->server('HTTP_HOST') . generate_url('home.contact') ?>" onsubmit="contact(this,event)" method="post" role="form" class="php-email-form">
                               <div class="form-row">
                                    <div class="col-md-6 form-group">
                                         <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />

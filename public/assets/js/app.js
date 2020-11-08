@@ -34,14 +34,6 @@ const getValues = selector => {
      return object;
 }
 
-const setFormMessages = (type, messages) => {
-     element = document.querySelector('#error_msg_form');
-     element.classList.remove("alert-danger", "alert-success", "alert-warning", "alert-primary");
-     element.classList.add(`alert-${type}`);
-     element.innerHTML = messages;
-     return;
-}
-
 const isFilled = data => {
         
      for (const key in data) {
@@ -62,3 +54,53 @@ const flash = (message, type = 'success', close = true) => {
                     </div>`;
      document.querySelector('.flash').innerHTML = alert;
 }
+
+const validateField = fields => {
+     for (const name in fields) {
+          if (fields.hasOwnProperty(name)) {
+               input = document.querySelector(`[name=${name}]`).classList.toggle('is-invalid')         
+          }
+     }
+}
+
+const listErrors = errors => {
+     list = '';
+     for (const key in errors) {
+          if (errors.hasOwnProperty(key)) {
+               list += `<li> ${errors[key]} </li>`;               
+          }
+     }
+     console.log(list)
+     return list;
+}
+
+const setFormErrors = errors => {
+     let element = document.querySelector('#error_msg_form');
+     errors = listErrors(errors)
+     let alert =   `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                         <ul>
+                              ${errors}
+                         </ul>
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                         </button>
+                    </div>`
+     element.innerHTML = alert;
+}
+
+// function readURL(input) {
+//      if (input.files && input.files[0]) {
+//          var reader = new FileReader();
+         
+//          reader.onload = function(e) {
+//          $('#img-uploaded').attr('src', e.target.result);
+//          }
+         
+//          reader.readAsDataURL(input.files[0]);
+//      }
+//      }
+     
+//  $("#upload_form_imageFile").change(function() {
+//      $('#img-uploaded').removeClass('hidden')
+//      readURL(this);
+//  });

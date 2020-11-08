@@ -71,8 +71,8 @@ class Model
 
      public function update(array $set = [], array $where = [], bool $object = false) {
           $sql = "UPDATE {$this->table} SET {$this->getSetTables($set)}";  
-          if ( count($where) > 1 ) $sql .= " WHERE {$this->getSetTables($where)}"; 
-          $stmt = $this->db->prepare($sql);
+          if ( count($where) > 0 ) $sql .= " WHERE {$this->getWhereTables($where)}"; 
+          $stmt = $this->db->prepare($sql); 
           $data = array_merge($set, $where);
           if ( $stmt->execute(Helpers::transformKeys($data)) ) {
                return $object === true ? $this->find($this->class, $where['id'] ) : true;
@@ -97,7 +97,16 @@ class Model
           foreach ($data as $k => $v){
                $set[] = "{$k} = :{$k}";
           }
-          return Helpers::putBetween(',', $set);
+          return Helpers::putBetween(' , ', $set);
+     }
+
+     public function getWhereTables(array $data)
+     {          
+          $where = [];
+          foreach ($data as $k => $v){
+               $where[] = "{$k} = :{$k}";
+          }
+          return Helpers::putBetween(' AND ', $where);
      }
 
 }

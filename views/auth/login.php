@@ -1,8 +1,13 @@
 <section id="main">
      <div id="login-form">
+          
+          <?= generate_url('auth.authenticate') ?>
+
+          <h1 class="h3 mb-4">Connexion</h1>
+          
           <?php 
      
-          echo $params->form->start('/auth/authenticate', 'authenticateUsers(this,event)'); 
+          echo $params->form->start(generate_url('auth.authenticate'), 'authenticateUsers(this,event)'); 
      
           echo $params->form->input('username', ['label' => 'Nom d\'utilisateur'], true);
      

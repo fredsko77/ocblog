@@ -99,4 +99,9 @@ abstract class AbstractController
           echo json_encode($data);
      }
 
+     public function setJsonMessage($type, $message)
+     {
+          return ['type' => $type, 'content' => $message];
+     }
+
 }

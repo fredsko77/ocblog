@@ -28,10 +28,10 @@ class Mailer
      {
           try {
                $mailer = new \Swift_Mailer($this->getTransport());
-               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('user.confirm', ['s' => $user->getToken()]);
+               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.confirm', ['s' => $user->getToken()]);
                // Create a message
                $body ="<p>Bienvenu sur <u>Mon Super Blog</u>, <a href='{$link}'>cliquer ici</a> pour confirmer votre compte.</p>";
-               $message = $this->setMessage($body, [$user->getEmail()] );
+               $message = $this->setMessage($body, [$user->getEmail()], "Confirmer votre compte"  );
                // Send the message
                $mailer->send($message);
           } catch(\Exception $e) {
@@ -72,7 +72,7 @@ class Mailer
                          L'équipe Mon Super Blog
                     </p>
                ";
-               $message = $this->setMessage($body, [$data->email] );
+               $message = $this->setMessage($body, [$data->email], "Confirmer votre compte" );
                // Send the message
                $mailer->send($message);
                return true;
@@ -81,9 +81,37 @@ class Mailer
           }
      }
 
-     public function setMessage(string $body, array $to, array $cc = [], array $bcc = []):\Swift_Message 
+     public function sendPasswordToken(Users $users, $object)
      {
-          $message =  (new \Swift_Message('Inscription sur Mon Super Blog'))
+          try {
+               $mailer = new \Swift_Mailer($this->getTransport());
+               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.reset_password', ['s' => $users->getToken()]);
+               $body ="
+                    <p>
+                         Bonjour {$users->getFirstname()}, 
+                         <br/> 
+                         <br/> 
+                         Pour réinitialiser votre mot de passe cliquer <a href={$link}> ici </a>                        
+                         <br/> 
+                         <br/> 
+                         Cordialement, 
+                         <br/> 
+                         <br/> 
+                         L'équipe Mon Super Blog
+                    </p>
+               ";
+               $message = $this->setMessage($body, [$users->getEmail()],$object );
+               // Send the message
+               $mailer->send($message);
+               return true;
+          } catch(\Exception $e) {
+               dump($e->getMessage());
+          }
+     }
+
+     public function setMessage(string $body, array $to, string $object, array $cc = [], array $bcc = []):\Swift_Message 
+     {
+          $message =  (new \Swift_Message($object))
           ->setFrom(['testwamp08@gmail.com' => "Mon Super Blog"])
           ->setTo($to);
           if ( count($cc) > 0 ) $message->setCc($cc);

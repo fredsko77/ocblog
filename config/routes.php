@@ -26,7 +26,7 @@ return $routes = [
                'action' => "App\Controller\BlogController@show",
                'path' => "/blog/posts/:id/:slug/"
           ],
-          '404' => [
+          'not.found' => [
                'action' => "App\Controller\BlogController@notFound",
                'path' => "/404"
           ],
@@ -42,9 +42,17 @@ return $routes = [
                'action' => "App\Controller\AuthController@register",
                'path' => "/auth/register"
           ],
+          'auth.confirm' => [
+               'action' => "App\Controller\AuthController@confirm",
+               'path' => "/auth/users/:s/confirm"
+          ],
           'auth.forget' => [
-               'action' => "App\Controller\AuthController@register",
+               'action' => "App\Controller\AuthController@forget",
                'path' => "/auth/mot-de-passe-oublie"
+          ],
+          'auth.reset_password' => [
+               'action' => "App\Controller\AuthController@reset",
+               'path' => "/auth/reset-password/:s/user"
           ],
           'admin' => [
                'action' => "App\Controller\Admin\DashboardController@index",
@@ -52,13 +60,29 @@ return $routes = [
           ]
      ],
      'POST' => [
-          'post-contact' => [
+          'home.contact' => [
                'action' => "App\Controller\HomeController@postContact",
                'path' => "/post-contact"
+          ],
+          'auth.store' => [
+               'action' => "App\Controller\AuthController@store",
+               'path' => "/auth/store"
           ],
           'auth.authenticate' => [
                'action' => "App\Controller\AuthController@authenticate",
                'path' => "/auth/authenticate"
+          ],
+          'auth.reset' => [
+               'action' => "App\Controller\AuthController@changePassword",
+               'path' => "/auth/reset-password"
+          ],
+          'user.confirm' => [
+               'action' => "App\Controller\AuthController@changePassword",
+               'path' => "/auth/complete-users-account"
+          ],
+          'auth.forget' => [
+               'action' => "App\Controller\AuthController@sendPasswordToken",
+               'path' => "/auth/forget-password"
           ]
      ],
      'PUT' => [], 

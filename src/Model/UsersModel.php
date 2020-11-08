@@ -26,13 +26,13 @@ class UsersModel extends Model
           return $stmt->rowCount() > 0 ? true : false; 
      }
 
-     public function findUserByEmail(string $email):Users
+     public function findUserByEmail(string $email)
      {
           $sql = "SELECT * FROM {$this->table} WHERE email = :email";
           $stmt = $this->db->prepare($sql);
           $stmt->bindParam(':email', $email, PDO::PARAM_STR);
           $stmt->execute();
-          return new Users($stmt->fetch()); 
+          return $stmt->rowCount() > 0 ? new Users($stmt->fetch()) : null; 
      }
 
      public function findUserByToken(string $token)

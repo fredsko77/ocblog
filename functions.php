@@ -182,11 +182,16 @@ function get_current_url()
 function generate_url(string $name, array $params = []):string 
 {
     $routes = require 'config/routes.php';
-    $path = $routes['GET'][$name]['path'];
-    if ( is_array($params) ) {               
-        foreach ( $params as $k => $p) {
-            if ( preg_match("#:{$k}#", $path) ) {
-                $path = preg_replace("#:{$k}#", $p, $path);
+    foreach($routes as $method => $value) {
+        if ( array_key_exists($name, $value) === true )
+        {
+            $path = $value[$name]['path'];
+            if ( count($params) > 0 ) {               
+                foreach ( $params as $k => $p) {
+                    if ( preg_match("#:{$k}#", $path) ) {
+                        $path = preg_replace("#:{$k}#", $p, $path);                
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-.hidden { display: none !important; transition: all ease-in-out .3s; }
+.hidden { display: none !important; }
 #main { min-height: calc(100vh - 150px); }
 #error_msg_form { list-style: none; }
 
@@ -22,7 +22,7 @@ img.post-item-thumbnail:hover { transform: scale(1.05); cursor: pointer; }
 .box.show { animation: slide_show 2s ease forwards; } */
 
 .alert.show { animation: mymove 750ms forwards; }
-.alert { border-right-width: 5px; max-width: 450px; position: fixed; bottom: 3.5em; left: -1000px; z-index: 99999999; }
+.flash .alert { border-right-width: 5px; max-width: 450px; position: fixed; bottom: 3.5em; left: -1000px; z-index: 99999999; }
 .alert-danger { border-right-color: #721c24; }
 .alert-success { border-right-color: #155724; }
 .alert-warning { border-right-color: #856404; }
@@ -38,7 +38,7 @@ img.post-item-thumbnail:hover { transform: scale(1.05); cursor: pointer; }
 
 @keyframes mymove {
      0% {left: 0px;}
-     50% {left: 200px;}
-     90% {left: 190px;}
-     100% {left: 200px;}
+     50% {left: 15px;}
+     90% {left: 10px;}
+     100% {left: 15px;}
 }
