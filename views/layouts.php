@@ -31,8 +31,5 @@
      <!-- Template Home JS File -->
      <?php echo get_script('home'); ?>
 
-     <!-- Template Admin JS File -->
-     <?php echo get_script('admin'); ?>
-
      </body> 
 </html>

@@ -3,22 +3,29 @@
 namespace App\Entity;
 
 use \DateTime;
+use App\Entity\Users;
 use App\Helpers\Helpers;
 use App\Model\UsersModel;
+use App\Model\UploadsModel;
+use App\Model\CommentsModel;
+use App\Model\CategoriesModel;
 
 class Posts 
 {
 
      private $id;
-     private $author;
+     private $category_id;
+     private $writer;
      private $title;
-     private $chapo;
-     private $slug;
-     private $image;
      private $content;
+     private $image;
+     private $slug;
+     private $chapo;
+     private $status;
      private $updated_at;
      private $created_at;
-     private $categories_id;
+
+     public const STATUS = ["draft" => "Brouillon", "published" => "Publié"];
 
     /**
      * __construct
@@ -164,21 +171,20 @@ class Posts
      }
 
      /**
-      * Get the value of author
+      * Get the value of writer
       */ 
-     public function getAuthor()
+     public function getWriter()
      {
-          return (new UsersModel())->find($this->author);
+          return $this->writer !== null ? (new UsersModel())->find($this->writer, Users::class) : null;
      }
 
      /**
-      * Set the value of author
-      *
+      * Set the value of writer
       * @return  self
       */ 
-     public function setAuthor($author)
+     public function setWriter($writer)
      {
-          $this->author = $author;
+          $this->writer = $writer;
           return $this;
      }
 
@@ -187,7 +193,7 @@ class Posts
       */ 
      public function getCreatedAt()
      {
-          return (new DateTime($this->created_at) )->format('d/m/Y à H:m');
+          return (new DateTime($this->created_at) )->format('Y-m-d à H:m');
      }
 
      /**
@@ -202,22 +208,45 @@ class Posts
      }
 
      /**
-      * Get the value of categories_id
+      * Get the value of category_id
       */ 
-     public function getCategoriesId()
+     public function getCategoryId()
      {
-          // (new CategoriesModel)->find($this->categories_id)
-          return $this->categories_id;
+          (new CategoriesModel)->find($this->category_id);
+          return $this->category_id;
      }
 
      /**
-      * Set the value of categories_id
+      * Set the value of category_id
       *
       * @return  self
       */ 
-     public function setCategoriesId($categories_id)
+     public function setCategoryId($category_id)
      {
-          $this->categories_id = $categories_id;
+          $this->category_id = $category_id;
+          return $this;
+     }
+
+     /**
+      * Get the value of status
+      */ 
+     public function getStatus()
+     {
+          return $this->status;
+     }
+
+     /**
+      * Set the value of status
+      *
+      * @return  self
+      */ 
+     public function setStatus($status)
+     {
+          if ( array_key_exists($status, self::STATUS) ) {
+               $this->status = $status;
+          } else {
+               $this->status = 'draft';
+          }
           return $this;
      }
 
@@ -226,7 +255,7 @@ class Posts
       */ 
      public function getImage()
      {
-          return $this->image;
+          return (new UploadsModel)->findPath((int) $this->image);
      }
 
      /**
@@ -239,5 +268,10 @@ class Posts
           $this->image = $image;
 
           return $this;
+     }
+
+     public function getComments()
+     {
+          return $this->comments = $this->getId();
      }
 }

@@ -13,10 +13,11 @@ class Users
      private $lastname;
      private $email;
      private $chapo;
+     private $image;
      private $password;
      private $confirm;
      private $token;
-     private $roles;
+     private $role;
      private $last_connection;
      private $created_at;
 
@@ -51,7 +52,7 @@ class Users
      */ 
      public function getId()
      {
-          return $this->id;
+          return (int) $this->id;
      }
  
       /**
@@ -107,21 +108,21 @@ class Users
      }
 
      /**
-      * Get the value of roles
+      * Get the value of role
       */ 
-     public function getRoles()
+     public function getRole()
      {
-          return $this->roles;
+          return $this->role;
      }
 
      /**
-      * Set the value of roles
+      * Set the value of role
       *
       * @return  self
       */ 
-     public function setRoles($roles)
+     public function setRole($role)
      {
-          $this->roles = $roles;
+          $this->role = $role;
 
           return $this;
      }
@@ -262,6 +263,26 @@ class Users
      public function setLastConnection()
      {
           $this->last_connection = (new DateTime())->format('Y-m-d H:i:s');
+          return $this;
+     }
+
+     /**
+      * Get the value of image
+      */ 
+     public function getImage()
+     {
+          return $this->image;
+     }
+
+     /**
+      * Set the value of image
+      *
+      * @return  self
+      */ 
+     public function setImage($image)
+     {
+          $this->image = $image;
+
           return $this;
      }
 }

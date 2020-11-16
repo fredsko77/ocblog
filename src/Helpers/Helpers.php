@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Entity\Comments;
+use App\Entity\Posts;
 use App\Entity\Users;
 use App\Services\Session;
 
@@ -78,6 +80,11 @@ class Helpers
           return $str;
      }
 
+     /**
+      * Transform keys for PDO::execute()
+      * @param array $values
+      * @return array
+      */
      public static function transformKeys(array $values):array 
      {
           $execute = [];
@@ -107,7 +114,7 @@ class Helpers
      } 
 
      /**
-      * Get URL parameters
+      * Get URL pattern
       * @param string $path
       * @return string
       */
@@ -152,19 +159,50 @@ class Helpers
      public static function sanitize(array $data = []):array
      {
           $sanitize = [];
-          $tags = ['a', 'article', 'aside', 'b', 'br', 'div', 'em', 'font', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'img', 'li', 'ol', 'pre', 'section', 'small', 'strong', 'sub', 'sup', 'u'];
+          $tags = ['a', 'article', 'aside', 'b', 'br', 'div', 'em', 'font', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'img', 'li', 'ol','p', 'pre', 'section', 'small', 'strong', 'sub', 'sup', 'u', 'ul'];
           foreach ($data as $k => $v) {
                $v = trim($v);
                $v = strip_tags($v, array_to_string($tags));
+               $v = str_replace('\'', "&#39;", $v);
                $sanitize[$k] = htmlspecialchars(trim($v), ENT_IGNORE, "UTF-8" );
           }
           return $sanitize;
      }
 
+     /**
+      * Check if csrf_token is valid
+      * @param string $token
+      * @return void
+      */
      public static function checkCsrfToken(string $token) 
      {
           $session_csrf = (new Session)->get('csrf_token');
           return $session_csrf && $session_csrf === $token ? true : false;
+     }
+
+     public static function commentsStatus()
+     {
+          return Comments::STATUS;
+     }
+
+     public static function postsStatus()
+     {
+          return Posts::STATUS;
+     }
+
+     public static function checkExtension(string $file_name, array $allowed_extensions) 
+     {
+          $file_extension = explode('.', $file_name)[1];
+          return in_array($file_extension, $allowed_extensions);
+     }
+
+     public static function getWriters(array $users = []): array
+     {
+          $data = [];
+          foreach($users as $key => $user) {
+               $data[$user->getId()] = "{$user->getFirstname()} {$user->getLastname()}";
+          }
+          return $data;
      }
 
 }

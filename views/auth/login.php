@@ -1,7 +1,5 @@
 <section id="main">
      <div id="login-form">
-          
-          <?= generate_url('auth.authenticate') ?>
 
           <h1 class="h3 mb-4">Connexion</h1>
           
@@ -11,7 +9,7 @@
      
           echo $params->form->input('username', ['label' => 'Nom d\'utilisateur'], true);
      
-          echo $params->form->input('password', ['label' => 'Nom d\'utilisateur', 'type' => 'password'], true);
+          echo $params->form->input('password', ['label' => 'Mot de passe', 'type' => 'password'], true);
      
           echo $params->form->csrf();
           

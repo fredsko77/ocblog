@@ -35,7 +35,29 @@ class Model
           return NULL;
      }
 
-     public function findAll($order_by = false, string $class = "")
+     /**
+      * Get an item from db
+      * @param string $class
+      * @param integer $id
+      * @param boolean $instance
+      * @return mixed
+      */
+     public function findBy(string $args = "", string $class = "")
+     {
+          $field = explode('.', $args)[0];
+          $value = explode('.', $args)[1];
+          $sql = "SELECT * FROM {$this->table} WHERE {$field} = :{$field}";
+          $stmt = $this->db->prepare($sql);
+          $stmt->execute([":{$field}" => $value]);          
+          if( $stmt->rowCount() === 1 ) {               
+               return $class !== "" ? new $class($stmt->fetch()) : $stmt->fetch();
+          } else if ( $stmt->rowCount() > 1 ) {
+               return $class !== "" ? $this->getInstances($stmt->fetchAll(), $class) : $stmt->fetchAll();
+          }
+          return NULL;
+     }
+
+     public function findAll(string $class = "", $order_by = false)
      {
           $order = "";
           $result = [];
@@ -51,10 +73,7 @@ class Model
           $stmt = $this->db->query($sql);
           $data = $stmt->fetchAll();
           if ( $class !== "" ) {
-               foreach ($data as $key => $value) {
-                    $result[] = new $class($value);
-               }
-               return $result;
+               return $this->getInstances($data, $class);
           }
           return $data;
      }
@@ -69,13 +88,14 @@ class Model
           return false;
      }  
 
-     public function update(array $set = [], array $where = [], bool $object = false) {
+     public function update(array $set = [], array $where = [], bool $object = false) 
+     {
           $sql = "UPDATE {$this->table} SET {$this->getSetTables($set)}";  
           if ( count($where) > 0 ) $sql .= " WHERE {$this->getWhereTables($where)}"; 
           $stmt = $this->db->prepare($sql); 
           $data = array_merge($set, $where);
           if ( $stmt->execute(Helpers::transformKeys($data)) ) {
-               return $object === true ? $this->find($this->class, $where['id'] ) : true;
+               return $object === true ? $this->find((int) $where['id'], $this->class) : true;
           }
           return false;
      }
@@ -107,6 +127,15 @@ class Model
                $where[] = "{$k} = :{$k}";
           }
           return Helpers::putBetween(' AND ', $where);
+     }
+
+     public function getInstances(array $data, string $class = "") 
+     {
+          $result = [];
+          foreach ( $data as $key => $value ) {
+               $result[$key] = new $class($value); 
+          }
+          return $result;
      }
 
 }

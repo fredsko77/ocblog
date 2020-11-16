@@ -70,7 +70,6 @@ const listErrors = errors => {
                list += `<li> ${errors[key]} </li>`;               
           }
      }
-     console.log(list)
      return list;
 }
 
@@ -88,19 +87,54 @@ const setFormErrors = errors => {
      element.innerHTML = alert;
 }
 
-// function readURL(input) {
-//      if (input.files && input.files[0]) {
-//          var reader = new FileReader();
-         
-//          reader.onload = function(e) {
-//          $('#img-uploaded').attr('src', e.target.result);
-//          }
-         
-//          reader.readAsDataURL(input.files[0]);
-//      }
-//      }
-     
-//  $("#upload_form_imageFile").change(function() {
-//      $('#img-uploaded').removeClass('hidden')
-//      readURL(this);
-//  });
+const dropdown = elt => {
+     let arrow = elt.querySelector('i');
+     let container = elt.parentNode;
+     let angle = parseInt( arrow.style.transform.replace(/[^0-9]/g,'') );
+     let drop = elt.nextElementSibling;
+     angle += 180;
+     arrow.style.transform = `rotate(${angle}deg)`;  
+     container.classList.toggle('show');
+     drop.classList.toggle('hidden');
+} 
+
+const loadUploadedImage = (elt, event) => {
+     let imageContainer = document.querySelector('#uploaded-img');
+     let errorMessage = document.querySelector('#error-upload');
+     let acceptedFile = ["gif", "jpg", "jpeg", "png", "svg"];     
+     if (elt.files && elt.files[0]) {
+          let filename = elt.files[0].name;
+          let extension = (filename.split('.')[1]).toLowerCase();
+          if (acceptedFile.includes(extension)) {
+               imageContainer.classList.remove('hidden');
+               imageContainer.src = URL.createObjectURL(event.target.files[0]); 
+               imageContainer.srcset = URL.createObjectURL(event.target.files[0]); 
+               imageContainer.onload = () => URL.revokeObjectURL(imageContainer.src); // Free memory 
+               errorMessage.classList.add('hidden');
+               errorMessage.innerHTML = '';
+          } else {
+               imageContainer.classList.add('hidden');
+               errorMessage.classList.remove('hidden');
+               errorMessage.innerHTML = `Seuls les fichiers .gif, .jpg, .jpeg, .png ou .svg sont acceptés, votre fichier est fichier <i>.${extension}</i>`
+          }
+     } else {
+          imageContainer.classList.add('hidden');
+     }
+}   
+
+const loader = () => {
+     let container = document.querySelector('#loader-container');
+     let loader = document.querySelector('.loader');
+     container.classList.toggle('hidden')
+     loader.classList.toggle('spin');
+}
+
+const displayPanel = elt => {
+     let target = elt.dataset.target;
+     let panels = document.querySelectorAll('.panel');
+     panels.forEach( ({style, dataset}) => style.height = dataset.panel === target ? 'auto': '0' );
+}
+
+const displayForm = () => document.querySelector('#form').classList.toggle('hidden');
+
+const closeForm = () => document.querySelector('#form').classList.toggle('hidden');

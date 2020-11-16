@@ -38,6 +38,10 @@ return $routes = [
                'action' => "App\Controller\AuthController@login",
                'path' => "/auth/login"
           ],
+          'auth.logout' => [
+               'action' => "App\Controller\AuthController@logout",
+               'path' => "/auth/logout"
+          ],
           'auth.register' => [
                'action' => "App\Controller\AuthController@register",
                'path' => "/auth/register"
@@ -50,14 +54,30 @@ return $routes = [
                'action' => "App\Controller\AuthController@forget",
                'path' => "/auth/mot-de-passe-oublie"
           ],
-          'auth.reset_password' => [
+          'auth.reset.password' => [
                'action' => "App\Controller\AuthController@reset",
                'path' => "/auth/reset-password/:s/user"
           ],
           'admin' => [
                'action' => "App\Controller\Admin\DashboardController@index",
                'path' => "/admin/dashboard"
-          ]
+          ],
+          'admin.posts' => [
+               'action' => "App\Controller\Admin\AdminPostsController@index",
+               'path' => "/admin/posts"
+          ],
+          'admin.posts.edit' => [
+               'action' => "App\Controller\Admin\AdminPostsController@edit",
+               'path' => "/admin/posts/:id/edit"
+          ],          
+          'admin.posts.create' => [
+               'action' => "App\Controller\Admin\AdminPostsController@create",
+               'path' => "/admin/posts/create"
+          ],
+          'admin.categories' => [
+               'action' => "App\Controller\Admin\AdminCategoriesController@index",
+               'path' => "/admin/posts/categories"
+          ],
      ],
      'POST' => [
           'home.contact' => [
@@ -80,11 +100,37 @@ return $routes = [
                'action' => "App\Controller\AuthController@changePassword",
                'path' => "/auth/complete-users-account"
           ],
-          'auth.forget' => [
+          'auth.password.token' => [
                'action' => "App\Controller\AuthController@sendPasswordToken",
                'path' => "/auth/forget-password"
-          ]
+          ],
+          'admin.posts.store' => [
+               'action' => "App\Controller\Admin\AdminPostsController@store",
+               'path' => "/admin/posts/create"
+          ],
+          'admin.posts.update' => [
+               'action' => "App\Controller\Admin\AdminPostsController@update",
+               'path' => '/admin/posts/:id/update'
+          ],
+          'admin.categories.store' => [
+               'action' => "App\Controller\Admin\AdminCategoriesController@store",
+               'path' => "/admin/categories/create"
+          ],
      ],
-     'PUT' => [], 
-     'DELETE' => []
+     'PUT' => [
+          'admin.categories.update' => [
+               'action' => "App\Controller\Admin\AdminCategoriesController@update",
+               'path' => "/admin/categories/:id/update"
+          ],
+     ], 
+     'DELETE' => [
+          'admin.posts.delete' => [
+               'action' => "App\Controller\Admin\AdminPostsController@delete",
+               'path' => "/admin/posts/:id/delete"
+          ],
+          'admin.categories.delete' => [
+               'action' => "App\Controller\Admin\AdminCategoriesController@delete",
+               'path' => "/admin/categories/:id/delete"
+          ],
+     ]
 ];

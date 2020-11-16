@@ -19,7 +19,7 @@ class DashboardController extends AbstractController
      
      public function index() 
      {
-          return $this->adminView('admin.index');
+          return $this->adminView('index');
      }
 
 }

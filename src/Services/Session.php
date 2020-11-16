@@ -52,7 +52,7 @@ class Session
           $_SESSION['auth']['lastname'] = $users->getLastname();
           $_SESSION['auth']['chapo'] = $users->getChapo();
           $_SESSION['auth']['users_id'] = $users->getId();
-          $_SESSION['auth']['role'] = $users->getRoles();
+          $_SESSION['auth']['role'] = $users->getRole();
           $_SESSION['auth']['last_connection'] = $users->getLastConnection();
      }
 

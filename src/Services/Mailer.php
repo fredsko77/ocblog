@@ -85,7 +85,7 @@ class Mailer
      {
           try {
                $mailer = new \Swift_Mailer($this->getTransport());
-               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.reset_password', ['s' => $users->getToken()]);
+               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.reset.password', ['s' => $users->getToken()]);
                $body ="
                     <p>
                          Bonjour {$users->getFirstname()}, 

@@ -3,11 +3,12 @@
           <h1>Tous les articles</h1>
           <div class="post-list">
                <?php foreach($params->posts as $k => $post): ?>
+                    <?php //dump($post->getWriter()->getFirstname()); ?>
                     <div class="post-item">
                          <a 
                               href="<?= generate_url('blog.show', ['id' => $post->getId(), 'slug' => $post->getSlug()]) ?>" 
                               class="post-item-thumbnail">
-                              <img src="<?= $post->getImage() ?>" alt=""  class="post-item-thumbnail">
+                              <img src="<?= $post->getImage()->path ?>" alt=""  class="post-item-thumbnail">
                          </a>
                          <div class="post-item-body">
                               <p class="post-item-category">
@@ -15,16 +16,20 @@
                                         Catégorie<i class="icofont-rounded-right"></i> 
                                    </a>
                               </p>
-                              <a href="<?= generate_url('blog.show', ['id' => $post->getId(), 'slug' => $post->getSlug()]) ?>" class="post-item-title">Titre de l'article</a>
+                              <a 
+                                   href="<?= generate_url('blog.show', ['id' => $post->getId(), 'slug' => $post->getSlug()]) ?>" 
+                                   class="post-item-title">
+                                   Titre de l'article
+                              </a>
                               <div class="post-item-excerpt">
-                                   <?= '' ?>
+                                   <?= substr($post->getContent() ,0, 250) ?>
                               </div>
                               <div class="post-item-footer">
-                                   23 octobre 2020  
+                                   <?= fr_date( $post->getUpdatedAt() ) ?>
                                    &nbsp;&nbsp;&nbsp;
                                    <i class="icofont-minus"></i> 
                                    &nbsp;&nbsp;&nbsp;
-                                   10
+                                   <?= $post->getComments() ?>
                                    <i class="icofont-speech-comments"></i>   
                               </div>
                          </div>

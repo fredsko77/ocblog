@@ -57,9 +57,9 @@ abstract class AbstractController
           
           $params['request'] = new Request();
 
-          if ( $params['user'] ) {
-               $path = "users.not-allowed";
-          }
+          // if ( $params['user'] ) {
+          //      $path = "users.not-allowed";
+          // }
 
           $path = str_replace(".", "/", $path);
           
@@ -68,12 +68,12 @@ abstract class AbstractController
           $params = (object) $params; 
           
           require get_template("elements/header-admin");
-          require get_template($path);
+          require get_template("admin/{$path}");
           require get_template('elements/footer');
 
           $content = ob_get_clean();
 
-          require get_template("layouts");
+          require get_template("admin-layouts");
      }
 
      /**
@@ -99,9 +99,26 @@ abstract class AbstractController
           echo json_encode($data);
      }
 
-     public function setJsonMessage($type, $message)
+     /**
+      * Return json Message
+      *
+      * @param [type] $type
+      * @param [type] $message
+      * @return array
+      */
+     public function setJsonMessage($type, $message):array
      {
           return ['type' => $type, 'content' => $message];
+     }
+
+     /**
+      * Refresh page
+      * @return void
+      */
+     public function refresh()
+     {
+          header('refresh:0');
+          die();
      }
 
 }

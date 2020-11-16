@@ -28,18 +28,41 @@
      <?php endif; ?>
 
      <div class="header-social-links">
-
-          <a href="https://github.com/fredsko77" target="_blank" class="github" title="Mon compte github">
-               <i class="icofont-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/fr%C3%A9d%C3%A9rick-agathe-027553128/" target="_blank" class="linkedin" title="Mon compte LinkedIn">
-               <i class="icofont-linkedin"></i>
-          </a>
-          
-          <a href="<?= generate_url('resume') ?>" target="_blank" class="resume" title="Mon Cv">
-               <i class="icofont-file-pdf"></i>
-          </a>
-          
+          <?php if ( is_home() ): ?>
+               <a 
+                    href="https://github.com/fredsko77" 
+                    target="_blank" 
+                    class="github" 
+                    title="Mon compte github"
+               >
+                    <i class="icofont-github"></i>
+               </a>
+               <a 
+                    href="https://www.linkedin.com/in/fr%C3%A9d%C3%A9rick-agathe-027553128/" 
+                    target="_blank" 
+                    class="linkedin" 
+                    title="Mon compte LinkedIn"
+               >
+                    <i class="icofont-linkedin"></i>
+               </a>
+               
+               <a 
+                    href="<?= generate_url('resume') ?>" 
+                    target="_blank" 
+                    class="resume" 
+                    title="Mon Cv"
+               >
+                    <i class="icofont-file-pdf"></i>
+               </a>
+          <?php else: ?>
+               <a 
+                    href="<?= is_connected_user() ? generate_url('auth.logout') : generate_url('auth.login') ?>"  
+                    class="github" 
+                    title="<?= is_connected_user() ? 'Se déconnecter' : 'Se connecter' ?>"
+               >
+                    <?= is_connected_user() ? '<i class="icofont-logout"></i>' : ' <i class="icofont-login"></i>' ?>
+               </a>
+          <?php endif; ?>
      </div>
 
      </div>

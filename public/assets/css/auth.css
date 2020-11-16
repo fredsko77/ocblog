@@ -1,1 +1,2 @@
 #login-form { width: 100%; max-width: 500px; margin: 10rem auto; }
+#error_msg_form .alert { position: unset; }

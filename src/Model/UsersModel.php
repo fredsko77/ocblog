@@ -46,9 +46,13 @@ class UsersModel extends Model
      
      public function confirmUser(Users $user)
      {
-          $sql = "UPDATE {$this->table} SET confirm = 1 WHERE token = :token";
+          $sql = "UPDATE {$this->table} SET confirm = :confirm, token = :token WHERE id = :id";
           $stmt = $this->db->prepare($sql);
-          $stmt->execute([':token' => $user->getToken()]);
+          $stmt->execute([ 
+               ':confirm' => 1, 
+               ':token' => generate_token(80),
+               ':id' => $user->getId()
+          ]);
      }
      
      public function updateLogin(Users $users) 

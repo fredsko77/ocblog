@@ -5,7 +5,7 @@
 /* Page list post */
 .post-list { display: flex; flex-direction: column; padding: 35px 0; }
 .post-item { width: 100%; height: auto; border-radius: .6rem; background-color: #ffffff; box-shadow:0.25rem .25rem 1.25rem rgba(0, 0, 0, 0.102); padding: .8rem 1.5rem; display: flex; flex-direction: row; font-size: 1.12rem; transition: all ease-in-out 300ms; margin: 1rem 0; }
-.post-item-thumbnail { border-radius: .6rem; width: 100%;max-width: 185px; height: auto; max-height: 185px; transition: all ease-in-out 400ms; }
+.post-item-thumbnail { border-radius: .6rem; width: 100%;max-width: 185px; height: auto; min-height: 150px; max-height: 185px; transition: all ease-in-out 400ms; }
 img.post-item-thumbnail:hover { transform: scale(1.05); cursor: pointer; }
 .post-item-body { padding: 0 .75rem; display: flex; flex-direction: column; justify-content: space-between; }
 .post-item-title { text-decoration: underline; }
@@ -42,3 +42,6 @@ img.post-item-thumbnail:hover { transform: scale(1.05); cursor: pointer; }
      90% {left: 10px;}
      100% {left: 15px;}
 }
+
+/* Uploaded image */
+#uploaded-img { max-width: 100%; width: auto; }

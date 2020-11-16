@@ -2,8 +2,6 @@
      <div class="container">
           <h1 class="h3">Inscription</h1>
 
-          <p>link : </p>
-
           <div id="error_msg_form"></div>
 
           <?php 

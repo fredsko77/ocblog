@@ -2,10 +2,15 @@
 
 namespace App\Services;
 
+use App\Services\Session;
+
 class Request
 {
 
-     public function __construct(){}
+     public function __construct()
+     {
+          $this->session = new Session();
+     }
 
      /**
       * @return array $_GET
@@ -76,5 +81,20 @@ class Request
      */
      public function getContent() {
           return file_get_contents("php://input");
+     }
+
+     /**
+      * Check Authorization
+      * @return boolean
+      */
+     public function checkAuthorization():bool
+     {
+          $headers = apache_request_headers();
+          return array_key_exists('Authorization', $headers) && $headers['Authorization'] === $this->session->get('csrf_token') ? true : false;
+     }
+
+     public function putContent()
+     {
+          return fopen("php://input", "r");
      }
 }

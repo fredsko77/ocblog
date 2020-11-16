@@ -33,7 +33,7 @@ class BlogController extends AbstractController
      public function show(array $params = []) 
      {
           $posts = $this->pm->pagePosts();
-          return $this->view('blog.index', compact('posts'));
+          return $this->view('blog.show', compact('posts'));
      }
 
 }

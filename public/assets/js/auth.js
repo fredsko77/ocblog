@@ -38,31 +38,6 @@ const handleRegister = (form, e) => {
           console.warn(response);   
      }
      return;
-     try {
-          axios
-          .post(url, data)
-          .then( response => {
-               console.log(response);
-               let messages = response.data.messages;
-               let li = "";
-               let type = response.data.type; 
-               for (const property in messages) {
-                    if (messages.hasOwnProperty(property)) {    
-                         li += `<li>${property} : ${messages[property]}</li>`;                       
-                    }
-               }
-               if (response.data.type === 'danger') { 
-                    setErrorMessages(type, li);
-               } else if (response.data.type === 'success') { 
-                    setErrorMessages(type, li);
-                    // window.location.href = "/";
-               }
-          })
-     } catch(error) {
-          console.error(error.response.status);     
-     }
-     
-     // delete axios.defaults.headers["Authorization"];
 }
 
 const authenticateUsers = (form,e) => {
@@ -75,8 +50,11 @@ const authenticateUsers = (form,e) => {
                .then( ({data}) => {
                     let type = data.message.type; 
                     let message = data.message.content;
-                    flash(message, type, true);
-
+                    flash(message, type, true);                    
+                    let url = data.url;
+                    let delay = 2000; 
+                    // Faire une redirection sur le blog
+                    setTimeout(() => window.location = url , delay);
                })
                .catch( ({response}) => {
                     let type = response.data.message.type; 
@@ -130,13 +108,13 @@ const resetPassword = (form,e) => {
                     let type = data.message.type; 
                     let message = data.message.content;                    
                     let url = data.url;
-                    let delay = 1000; 
+                    let delay = 2000; 
                     if (data.hasOwnProperty('errors')) {
                          document.querySelector(`[name=${data.errors}]`).classList.toggle(invalid);
                     } else {
                          flash(message, type, true);
-                         // Faire une redirection sur le blog
-                         // setTimeout(() => window.location = url , delay);
+                         // Faire une redirection sur la page de connexion
+                         setTimeout(() => window.location = url , delay);
                     }
                })
                .catch( ({response}) => {

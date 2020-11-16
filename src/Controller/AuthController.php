@@ -124,7 +124,8 @@ class AuthController extends AbstractController
      public function register() 
      {
           $form = new FormBuilder();
-          return $this->view('auth.register', compact('form'));
+          $title = "Inscription ";
+          return $this->view('auth.register', compact('form', 'title'));
      }
 
      public function store() 
@@ -139,8 +140,7 @@ class AuthController extends AbstractController
           if ( !Helpers::checkFieldsSet($data) ) {
                $errors['formulaire'] = "Tous les champs du formulaire doivent être complétés ";
                return $this->json(['message' => $this->setJsonMessage('danger', $errors['formulaire'] )], 400);
-          }
-          if (Helpers::checkFieldsSet($data) === true) {
+          } else if (Helpers::checkFieldsSet($data) === true) {
                $data = (object) Helpers::sanitize($data);
                $user = [];
                $user['firstname'] = $data->firstname;
@@ -168,10 +168,10 @@ class AuthController extends AbstractController
                     return $this->json(['errors' => $errors]);
                } else {
                     $user['token'] = generate_token(80);
-                    $user['roles'] = "user";
+                    $user['role'] = "user";
                     $user['confirm'] = '0';
                     $newUser = $this->um->insert($user, true);
-                    $this->mailer->sendConfirmEmail(new Users($newUser));
+                    $this->mailer->sendConfirmEmail($newUser);
                     $this->session->unset('csrf_token');
                     return $this->json(['message' => $this->setJsonMessage('success','Votre demande d\'inscription a bien été prise en compte. Un courrier électronique vous a été envoyé pour confirmer votre inscription. ') ]);
                }
@@ -184,7 +184,8 @@ class AuthController extends AbstractController
      {
           if ($this->session->isLoggedUser()) $this->redirect(generate_url('blog'));
           $form = new FormBuilder();
-          return $this->view("auth.login", compact('form'));
+          $title = "Connexion ";
+          return $this->view("auth.login", compact('form', 'title'));
      }
 
      public function authenticate() 
@@ -232,6 +233,13 @@ class AuthController extends AbstractController
                // Envoyer une vue : Bienvenue sur Mon Super Blog
           }
           return $this->view('auth.confirm', compact('confirm'));  
+     }
+
+     public function logout()
+     {
+          $this->session->unset('auth');
+          if ( array_key_exists( "Referer", apache_request_headers() ) ) return $this->redirect(apache_request_headers()["Referer"]);
+          return $this->redirect(generate_url('blog'));
      }
 
 }

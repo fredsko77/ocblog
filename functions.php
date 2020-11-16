@@ -38,6 +38,11 @@ function dump($values)
             border-radius: 5px;
             max-width: 1200px;
             width: 100%;
+            box-sizing: content-box;
+            height: auto;
+            min-height: 5vh;
+            overflow-x: scroll;
+            word-break: break-word;
             margin : 10px auto;'>";
             var_dump($values);
     echo "</pre>";
@@ -160,7 +165,7 @@ function email_valid(string $email):bool
  */
 function is_connected_user():bool
 {
-    return isset($_SESSION['user']) ? true : false ;
+    return (new Session)->isLoggedUser();
 } 
 
 /**
@@ -210,6 +215,7 @@ function generate_csrf():string
         // No token present, generate a new one
         $token = generate_token(50);
         $session->set('csrf_token', $token);
+        ?> <script> localStorage.setItem('csrf_token', '<?= $token ?>'); </script> <?php
     } else {
         // Reuse the token
         $token = $session->get("csrf_token");
@@ -225,7 +231,18 @@ function generate_csrf():string
 function generate_token(int $length):string
 {
     $char_to_shuffle =  'azertyuiopqsdfghjklwxcvbnAZERTYUIOPQSDFGHJKLLMWXCVBN1234567890';
-    return substr( str_shuffle($char_to_shuffle) , 0 , $length) . (new \Datetime)->format('YmdHsiu');
+    return substr( str_shuffle($char_to_shuffle) , 0 , $length) . (new \DateTime)->format('YmwdHsiu');
+}
+
+/**
+ * Generate a token
+ * @param integer $length
+ * @return string
+ */
+function generate_filename():string
+{
+    $char_to_shuffle =  'azertyuiopqsdfghjklwxcvbnAZERTYUIOPQSDFGHJKLLMWXCVBN1234567890';
+    return substr( str_shuffle($char_to_shuffle) , 0 , 30);
 }
 
 /**
@@ -279,4 +296,17 @@ function is_blog():bool
 function is_auth():bool
 {
     return preg_match('#^/auth(.*?)#',get_current_url() ) ? true : false;
+}
+
+function init_session()
+{
+    if ( session_status() === PHP_SESSION_NONE || session_status() === PHP_SESSION_DISABLED ) {
+        return session_start();
+    }
+    session_start();
+}
+
+function fr_date(string $date)
+{
+    return utf8_encode( strftime("%d %B %Y", strtotime($date ?? (new DateTime())->format('d/m/Y à H:m')) ) );
 }
