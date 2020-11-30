@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Users;
+use App\Model\UsersModel;
 
 class Session
 {
@@ -44,8 +45,9 @@ class Session
           return array_key_exists('auth', $_SESSION) ? true : false ;
      }     
 
-     public function setAuth(Users $users) 
+     public function setAuth(Users $users):void 
      {
+          $_SESSION['auth']['id'] = $users->getId();
           $_SESSION['auth']['email'] = $users->getEmail();
           $_SESSION['auth']['token'] = $users->getToken();
           $_SESSION['auth']['firstname'] = $users->getFirstname();
@@ -60,9 +62,9 @@ class Session
       * Get logged user
       * @return Users 
       */
-     public function getLoggedUser():Users 
+     public function getLoggedUser() 
      {
-          return new Users($this->get('auth'));
+          return array_key_exists('auth', $this->all()) && count($this->get('auth')) > 0 ? (new UsersModel)->find($this->get('auth')['id'], Users::class) : null;
      }
 
 }

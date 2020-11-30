@@ -43,7 +43,7 @@
                          <div class="drop position-relative">
                               <?php echo $params->form->select('status', $params->status, "Status", false, true) ?>
                               <?php echo $params->form->select('writer', $params->writers, "Auteur", true, true) ?>
-                              <a href="<?= generate_url('blog.show', ['slug' => $params->post->getSlug(), 'id' => $params->post->getId()]) ?>">Voir l'article sur le site</a>
+                              <a target="_blank" href="<?= generate_url('blog.show', ['slug' => $params->post->getSlug(), 'id' => $params->post->getId()]) ?>">Voir l'article sur le site</a>
                          </div>
                     </div> 
                     <div class="col-12 drop-down">
@@ -62,11 +62,11 @@
                          <div class="drop-btn" onclick="dropdown(this)"> Image 
                               <i class="icofont-caret-down float-right" style="transform: rotate(<?= $params->post->getImage()->path === NULL ? '0' : '180' ?>deg);"></i> 
                          </div>
-                         <div class="drop position-relative <?= $params->post->getImage()->path !== NULL ? '' : 'hidden' ?>">
+                         <div class="drop position-relative <?= $params->post->getImage() !== NULL ? '' : 'hidden' ?>">
                               <img 
-                                   src="<?= $params->post->getImage()->path ?>" 
+                                   src="<?= $params->post->getImage()->path ?? '' ?>" 
                                    alt="Image de l'article" 
-                                   srcset="<?= $params->post->getImage()->path ?>" 
+                                   srcset="<?= $params->post->getImage()->path ?? '' ?>" 
                                    title="Affiche de l'article"
                                    class="<?= $params->post->getImage()->path !== NULL ? '' : 'hidden' ?>" 
                                    id="uploaded-img"

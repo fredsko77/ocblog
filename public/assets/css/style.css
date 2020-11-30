@@ -276,16 +276,16 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Mobile Navigation */
 .mobile-nav-toggle {
-  position: fixed;
+  position: absolute;
   right: 15px;
-  top: 17px;
+  top: 13px;
   z-index: 9998;
   border: 0;
   background: none;
   font-size: 24px;
   transition: all 0.4s;
   outline: none !important;
-  line-height: 1;
+  line-height: 1.5;
   cursor: pointer;
   text-align: right;
 }

@@ -2,7 +2,7 @@
      <section class="container" id="blog-list">
           <h1>Tous les articles</h1>
           <div class="post-list">
-               <?php require_once get_template('posts/repeater'); ?>
+               <?php require_once get_template('posts/repeater') ?>
           </div>
           <div class="d-flex flex-row justify-content-center hidden">
                <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
@@ -17,6 +17,5 @@
                     </circle>
                </svg>
           </div>
-          <?php echo $params->pagination->create() ?> 
      </section>
 </main><!-- End of Main -->

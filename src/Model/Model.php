@@ -48,11 +48,13 @@ class Model
           $value = explode('.', $args)[1];
           $sql = "SELECT * FROM {$this->table} WHERE {$field} = :{$field}";
           $stmt = $this->db->prepare($sql);
-          $stmt->execute([":{$field}" => $value]);          
+          $stmt->execute([":{$field}" => $value]);
           if( $stmt->rowCount() === 1 ) {               
                return $class !== "" ? new $class($stmt->fetch()) : $stmt->fetch();
           } else if ( $stmt->rowCount() > 1 ) {
                return $class !== "" ? $this->getInstances($stmt->fetchAll(), $class) : $stmt->fetchAll();
+          } else if ( $stmt->rowCount() < 1 ) {
+               return [];
           }
           return NULL;
      }
@@ -60,14 +62,13 @@ class Model
      public function findAll(string $class = "", $order_by = false)
      {
           $order = "";
-          $result = [];
           if (is_bool($order_by) && $order_by === true) {
                $order = "ORDER BY created_at DESC";
           } elseif (is_bool($order_by) && $order_by === false) {
                $order = "";
           } elseif (is_string($order_by)) {
                $explode = explode('.', $order_by);
-               $order = count($explode) === 1 ? "ORDER BY {$explode[0]} ASC" : "ORDER BY {$explode[0]} {$explode[1]}";
+               $order = count($explode) === 1 ? "ORDER BY {$explode[0]}" : "ORDER BY {$explode[0]} {$explode[1]}";
           }
           $sql = "SELECT * FROM {$this->table} {$order}";
           $stmt = $this->db->query($sql);
@@ -131,11 +132,19 @@ class Model
 
      public function getInstances(array $data, string $class = "") 
      {
+          if ( $class === "" ) $class = $this->class; 
           $result = [];
           foreach ( $data as $key => $value ) {
                $result[$key] = new $class($value); 
           }
           return $result;
+     }
+     
+     public function pending() 
+     {
+          $sql = "SELECT * FROM {$this->table} WHERE status = 'pending' ORDER BY created_at DESC";
+          $data = $this->db->query($sql)->fetchAll();
+          return $this->getInstances($data);
      }
 
 }

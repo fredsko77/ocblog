@@ -24,7 +24,7 @@ class Router
 
      public function match()
      {          
-          $this->url = $this->request->server('REQUEST_URI');
+          $this->url = explode('?', $this->request->server('REQUEST_URI'))[0];
           foreach ( $this->routes[$this->request->server('REQUEST_METHOD')] as $k => $v ) {
                if ( preg_match(Helpers::getUrlPattern($v["path"]), $this->url) ) {
                     $this->path = $v["path"];

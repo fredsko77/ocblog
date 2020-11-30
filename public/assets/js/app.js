@@ -138,3 +138,59 @@ const displayPanel = elt => {
 const displayForm = () => document.querySelector('#form').classList.toggle('hidden');
 
 const closeForm = () => document.querySelector('#form').classList.toggle('hidden');
+
+if ( document.querySelector('textarea#content') !== null ) {
+     tinymce.init({
+          selector: 'textarea#content',
+          menu: {
+               file: { title: 'File', items: 'newdocument restoredraft | preview | print ' },
+               edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace' },
+               view: { title: 'View', items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen' },
+               insert: { title: 'Insert', items: 'image link media template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime' },
+               format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align lineheight | forecolor backcolor | removeformat' },
+               tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | code wordcount' },
+               table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' },
+               help: { title: 'Help', items: 'help' }
+          },
+     });
+}
+
+const urlParamsAll = () => window.location.search; 
+
+const urlParam = key => {
+     let params = new URLSearchParams(urlParamsAll())
+     return params.get(key);
+} 
+
+const showUserMenu = e => {
+     e.preventDefault();
+     let voiture = {
+          marque: "Renault",
+          modèle: "Talisman",
+          couleurs: "noire",
+          chevaux: "120ch",
+          immatriculation: "AA-000-AA",
+     }
+     delete voiture.immatriculation;
+     console.warn(voiture);
+     let menu = document.querySelector('#menu-user');
+     if ( menu.classList.contains('show') || menu.classList.contains('hide') ) {
+          menu.classList.toggle('show');
+          menu.classList.toggle('hide');
+          return;
+     }
+     return menu.classList.add('show');
+}
+
+const switchTabs = (a, e) => {
+     e.preventDefault();
+     let tabs = document.querySelectorAll("[data-tabs]");
+     let targets = document.querySelectorAll("[data-target]");
+     let target = a.dataset.target;
+     targets.forEach(targs => {
+          targs.dataset.target === target ?  targs.classList.add('active') : targs.classList.remove('active');
+     })
+     tabs.forEach(tab => {
+          tab.dataset.tabs === target ?  tab.classList.remove('hidden') : tab.classList.add('hidden');
+     })
+}

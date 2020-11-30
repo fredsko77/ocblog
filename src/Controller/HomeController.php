@@ -8,17 +8,19 @@ use App\Services\Request;
 use App\Services\Session;
 use App\Services\FormBuilder;
 use App\Controller\AbstractController;
+use App\Model\ContactsModel;
 
 class HomeController extends AbstractController
 {
      
-     private $request;
+     protected $request;
      protected $session;
 
      public function __construct()
      {
-          $this->request = new Request();
-          $this->session = new Session();
+          $this->request = new Request;
+          $this->session = new Session;
+          $this->contact = new ContactsModel;
      }
 
      public function index()
@@ -53,14 +55,17 @@ class HomeController extends AbstractController
                     ], 401);
           }
           if (Helpers::checkFieldsSet((array) $data)) {
-               $data = (object) Helpers::sanitize((array) $data);
-               if ($mail->sendConfirmContact($data)) {
+               $data = Helpers::sanitize((array) $data);
+               unset($data['csrf_token']);
+               $data['status'] = 'pending';
+               if ($mail->sendConfirmContact((object) $data)) {
+                    $contact = $this->contact->insert($data, true);
                     return $this->json([
                          'message' => [
                               'type' =>'success',
                               'content' =>'Nous avons bien reçu votre message 👍.', 
-                              ]
-                         ], 200);
+                         ]
+                    ], 200);
                }
           }
           

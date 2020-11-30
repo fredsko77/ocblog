@@ -23,7 +23,7 @@
                               </a>                         
                          </th>
                          <td>
-                              <?= $p->getWriter() === null ? '' : "{$p->getWriter()->getFirstname()} {$p->getWriter()->getLastname()}" ?>
+                              <?= $p->getWriter() ? "{$p->getWriter()->getFirstname()} {$p->getWriter()->getLastname()}" : '' ?>
                          </td>
                          <td>
                               <?= $params->status[ $p->getStatus() ] ?>

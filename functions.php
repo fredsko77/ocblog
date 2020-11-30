@@ -174,7 +174,6 @@ function is_connected_user():bool
  */
 function get_current_url()  
 {
-
     return (new Request)->server('REQUEST_URI');
 }
 
@@ -298,15 +297,46 @@ function is_auth():bool
     return preg_match('#^/auth(.*?)#',get_current_url() ) ? true : false;
 }
 
+/**
+ * init_session
+ *
+ * @return mixed
+ */
 function init_session()
 {
     if ( session_status() === PHP_SESSION_NONE || session_status() === PHP_SESSION_DISABLED ) {
         return session_start();
     }
-    session_start();
+    return session_start();
 }
 
-function fr_date(string $date)
+/**
+ * french date
+ *
+ * @param string $date
+ * @return string
+ */
+function fr_date(string $date):string
 {
     return utf8_encode( strftime("%d %B %Y", strtotime($date ?? (new DateTime())->format('d/m/Y à H:m')) ) );
+}
+
+function diff(string $date)
+{
+    $now = new DateTime('now');
+    $date = new DateTime($date);
+    $diff = $date->diff($now, false);
+    $str = '';
+    if ( $diff->y > 0 ) {
+        $str = "{$diff->y} " . ($diff->y === 1 ? "an" : "ans");
+    } else if ( $diff->m > 0  ) {
+        $str = "{$diff->m} mois";
+    }  else if ( $diff->d > 0  ) {
+        $str = "{$diff->d} " . ($diff->d === 1 ? "jour" : "jours");
+    } else if ( $diff->h > 0  ) {
+        $str = "{$diff->h} " . ($diff->h === 1 ? "heure" : "heures");
+    } else if ( $diff->i > 0  ) {
+        $str = "{$diff->i} " . ($diff->i === 1 ? "minute" : "minutes");
+    }
+    return "il y a {$str}";
 }

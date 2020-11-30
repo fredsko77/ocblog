@@ -59,11 +59,12 @@ class UsersModel extends Model
      {
           $sql = "UPDATE {$this->table} SET token = :token, last_connection = :last_connection WHERE id = :id";
           $stmt = $this->db->prepare($sql);
-          $stmt->execute([
+          $data = [
                ':id' => $users->getId(), 
                ':token' => $users->getToken(), 
                ':last_connection' => $users->getLastConnection()
-          ]);
+          ];
+          return $stmt->execute($data) ? true : false;
      }
 
 }

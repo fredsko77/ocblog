@@ -2,17 +2,22 @@
 
 namespace App\Entity;
 
-use App\Helpers\Helpers;
 use DateTime;
+use App\Helpers\Helpers;
+use App\Model\UploadsModel;
 
 class Users 
 {
 
      private $id;
+     private $gender;
      private $firstname;
      private $lastname;
+     private $pseudo;
      private $email;
      private $chapo;
+     private $slug;
+     private $position;
      private $image;
      private $password;
      private $confirm;
@@ -47,8 +52,8 @@ class Users
      }
   
   
-      /**
-       * Get the value of id
+     /**
+      * Get the value of id
      */ 
      public function getId()
      {
@@ -260,9 +265,9 @@ class Users
       *
       * @return  self
       */ 
-     public function setLastConnection()
+     public function setLastConnection($last_connection)
      {
-          $this->last_connection = (new DateTime())->format('Y-m-d H:i:s');
+          $this->last_connection = $last_connection;
           return $this;
      }
 
@@ -271,7 +276,7 @@ class Users
       */ 
      public function getImage()
      {
-          return $this->image;
+          return (new UploadsModel)->findPath((int) $this->image);
      }
 
      /**
@@ -282,6 +287,86 @@ class Users
      public function setImage($image)
      {
           $this->image = $image;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of gender
+      */ 
+     public function getGender()
+     {
+          return $this->gender;
+     }
+
+     /**
+      * Set the value of gender
+      *
+      * @return  self
+      */ 
+     public function setGender($gender)
+     {
+          $this->gender = $gender;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of pseudo
+      */ 
+     public function getPseudo()
+     {
+          return $this->pseudo;
+     }
+
+     /**
+      * Set the value of pseudo
+      *
+      * @return  self
+      */ 
+     public function setPseudo($pseudo)
+     {
+          $this->pseudo = $pseudo;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of slug
+      */ 
+     public function getSlug()
+     {
+          return $this->slug;
+     }
+
+     /**
+      * Set the value of slug
+      *
+      * @return  self
+      */ 
+     public function setSlug($slug)
+     {
+          $this->slug = $slug;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of position
+      */ 
+     public function getPosition()
+     {
+          return $this->position;
+     }
+
+     /**
+      * Set the value of position
+      *
+      * @return  self
+      */ 
+     public function setPosition($position)
+     {
+          $this->position = $position;
 
           return $this;
      }

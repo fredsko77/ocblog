@@ -2,9 +2,18 @@
 
 namespace App\Controller;
 
-use App\Controller\AbstractController;
+use App\Entity\Posts;
 use App\Model\PostsModel;
+use App\Services\Request;
 use App\Services\Session;
+use App\Controller\AbstractController;
+use App\Entity\Categories;
+use App\Helpers\Helpers;
+use App\Model\CategoriesModel;
+use App\Model\CommentsModel;
+use App\Services\FormBuilder;
+use App\Services\Pagination;
+use DateTime;
 
 class BlogController extends AbstractController
 {
@@ -14,8 +23,11 @@ class BlogController extends AbstractController
 
      public function __construct()
      {
-          $this->pm = new PostsModel();
-          $this->session = new Session();
+          $this->pm = new PostsModel;
+          $this->session = new Session;
+          $this->request = new Request;
+          $this->cm = new CommentsModel;
+          $this->category = new CategoriesModel;
      }
 
      public function notFound()
@@ -25,15 +37,64 @@ class BlogController extends AbstractController
      
      public function index(array $params = []) 
      { 
-          $posts = $this->pm->pagePosts();
-          $page = array_key_exists('id', $params) ? (int) $params['id'] : 0;
-          return $this->view('blog.index', compact('posts', 'page'));
+          $nbPosts = (float) ($this->pm->nbPost())->nb_posts;
+          $nbPages = ceil( $nbPosts / 10 );
+          $currentPage = array_key_exists('id', $params) ? (int) $params['id'] : 0;
+          $posts = $this->pm->pagePosts((int) $currentPage);
+          $pagination = new Pagination($nbPages, $currentPage);
+          $title = 'Blog';
+          return $this->view('blog.index', compact('posts', 'pagination'));
+     }
+     
+     public function category(array $params = []) 
+     { 
+          $posts    = $this->pm->category((int) $params['id']);
+          $category = $this->category->find((int) $params['id'], Categories::class);
+          $title    = "Articles - {$category->getCategory()}";
+          return $this->view('blog.category', compact('posts', 'title'));
      }
      
      public function show(array $params = []) 
      {
-          $posts = $this->pm->pagePosts();
-          return $this->view('blog.show', compact('posts'));
+          $post = $this->pm->find((int) $params['id'], Posts::class);
+          if ($post instanceof Posts) {
+               if ($params['slug'] !== $post->getSlug()) return $this->redirect(generate_url('blog.show', [
+                    'slug' => $post->getSlug(),
+                    'id' => $post->getId(),
+               ]));
+          }
+          $title = $post->getTitle();
+          $posts = $this->pm->similar((int) $post->getCategoryId()->getId());
+          $form = new FormBuilder();
+          $comments = $this->cm->getPostComments( (int) $post->getId() );
+          return $this->view('blog.show', compact('post', 'title', 'form', 'comments', 'posts'));
      }
 
+     public function comment(array $params = [])
+     {
+          $data = (array) json_decode( $this->request->getContent() );
+          if ( $this->request->checkAuthorization() || Helpers::checkCsrfToken($data['csrf_token']) ) {
+               $data = Helpers::sanitize($data);
+               $data['post_id'] = (int) $params['id'];
+               $data['author'] = $this->session->getLoggedUser()->getId();
+               $data['status'] = 'pending';
+               $data['created_at'] = (new DateTime)->format('Y-m-d H:i:s');
+               unset($data['csrf_token']);
+               // dd($data);
+               if ( $this->cm->insert($data) ) return $this->json([
+                    'message' => $this->setJsonMessage('success', 'Le commentaire a bien été enregistré 👍, en attente de l\'approbation d\'un modérateur')
+               ], 202);
+               return $this->json([
+                    'message' => $this->setJsonMessage('danger', 'Une erreur est surevnue lors de l\enregistrement de votre commentaire ! 🤕')
+               ], 500);
+          } else {
+               return $this->json([
+                    'message' => $this->setJsonMessage('danger', 'Vous n\'êtes pas autorisé à soumettre ce formulaire ! ')
+               ], 401);
+          }
+          return $this->json([
+               'message' => $this->setJsonMessage('danger', 'Une erreur est survenue lors du traitement de votre requête ! ')
+          ], 500);
+     }
+     
 }

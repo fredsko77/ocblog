@@ -16,7 +16,7 @@ class AdminCategoriesController extends AbstractController
 
      protected $pm;
      protected $session;
-     public $request;
+     protected $request;
 
      public function __construct()
      {

@@ -26,7 +26,8 @@ const deletePost = (a, e) => {
 }
 
 const handleCreatePost = (form, e) =>{
-     e.preventDefault()
+     e.preventDefault();
+     tinymce.triggerSave();
      let url = form.action;
      let formData = new FormData(form);
      let data = form.querySelector('#image').value === "" ? { ...getValues('select, textarea, input') } : formData;
@@ -57,10 +58,10 @@ const handleCreatePost = (form, e) =>{
 }
 
 const handleUpdatePost = (form, e) => {
-     e.preventDefault()
+     e.preventDefault();
+     tinymce.triggerSave();
      let url = form.action;
-     let formData = new FormData(form);
-     let data = form.querySelector('#image').value === "" ? { ...getValues('select, textarea, input') } : formData;
+     let data = form.querySelector('#image').value === "" ? { ...getValues('select, textarea, input') } : new FormData(form);
      axios
      .post(url, data) 
      .then( ({data}) => {
@@ -128,7 +129,6 @@ const handleCategory = (form, e) => {
      e.preventDefault();
      const data = { ...getValues('input, textarea')};
      const url = data.id === '' ? "/admin/categories/create" : `/admin/categories/${data.id}/update`;
-     console.warn(data);
      try {
           if ( data.id === "" ) {          
                axios
@@ -219,4 +219,96 @@ const deleteCategory = (a) => {
           console.error(errors)
      }
      loader()
+}
+
+const validateComment = (a, e) => {
+     e.preventDefault();
+     let url = a.href;
+     let id = a.dataset.id;
+     let row = document.querySelector(`tr[data-comment='${id}']`);
+     let countContainer  = document.querySelector('#count-comment')
+     let count = parseInt(countContainer.innerText);
+     try {
+          axios
+          .put(url)
+          .then( ({data}) => {
+               let type = data.message.type; 
+               let message = data.message.content;                    
+               console.info(data.status);
+               row.remove();
+               count--;
+               countContainer.innerText = count;
+               if ( count === 0 ) document.querySelector("#comment-none").classList.toggle("hidden");
+               flash(message, type);
+          })
+          .catch( ({response}) =>{
+               let type = response.data.message.type; 
+               let message = response.data.message.content;    
+               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+          })
+     } catch ( errors ) {
+          console.error(errors)
+     }
+}
+
+const displayMessage = (a, e) => {
+     e.preventDefault();
+     let id = a.dataset.id;
+     let url = a.href;
+     let container = document.querySelector('#form');
+     container.classList.toggle('hidden');
+     document.querySelector('form').setAttribute('action', url)
+     let row = document.querySelector(`tr[data-contact='${id}']`);
+     data = {
+          id,
+          name : row.querySelector('[data-name]').dataset.name,
+          email : row.querySelector('[data-email]').dataset.email,
+          subject : row.querySelector('[data-subject]').dataset.subject,
+          message : row.querySelector('[data-message]').dataset.message,
+     }
+     console.info(data);
+     for (const property in data) {
+          if (data.hasOwnProperty(property)) {
+               document.querySelector(`[name=${property}]`).value = data[property];
+          }
+     }
+     return;
+}
+
+const closeMessage = () => {
+     document.querySelector('#form').classList.toggle('hidden');
+     form = document.querySelector('form');
+     form.setAttribute('action', '');
+     form.reset();
+}
+
+const readContact = (form, e) => {
+     e.preventDefault();
+     let url = form.action;
+     let checked = document.querySelector('#status').checked;  
+     let countContainer  = document.querySelector('#count-contact')
+     let count = parseInt(countContainer.innerText);
+     let id = document.querySelector('#id').value;
+     if (checked) {
+          data =  {status: document.querySelector('#status').value};
+          axios
+          .put(url, data)
+          .then( ({data}) => {
+               let type = data.message.type; 
+               let message = data.message.content;                    
+               flash(message, type)
+               count--;
+               countContainer.innerText = count;
+               if ( count === 0 ) document.querySelector("#contact-none").classList.toggle("hidden");
+               document.querySelector(`tr[data-contact='${id}']`).remove();
+               closeMessage();
+          })
+          .catch( ({response}) =>{
+               let type = response.data.message.type; 
+               let message = response.data.message.content;    
+               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+          })
+     }
 }

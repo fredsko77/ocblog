@@ -40,6 +40,25 @@ class Mailer
           
      }
 
+     public function sendResetEmail(string $email, int $id) 
+     {
+          try {
+               $mailer = new \Swift_Mailer($this->getTransport());
+               $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.email.reset.confirm', [
+                    'id' => $id,
+                    's' => $email,
+               ]);
+               // Create a message
+               $body ="<p>Pour modifier votre adresse e-mail, <a href='{$link}'>cliquer ici</a>.</p>";
+               $message = $this->setMessage($body, [$email], "Modifier l'adresse e-mail de votre compte"  );
+               // Send the message
+               $mailer->send($message);
+          } catch(\Exception $e) {
+               dump($e->getMessage());
+          }
+          
+     }
+
      public function sendConfirmContact(object $data) 
      {
           // dd($data);

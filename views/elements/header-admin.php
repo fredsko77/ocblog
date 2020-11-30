@@ -4,7 +4,14 @@
      <a href="#" class="hamburger-menu" onclick="displayMenu(this,event)" title="Afficher le menu">
           <i class="icofont-navigation-menu"></i>
      </a>
-     <a href="#"><img class="img_profile_circle" src="https://via.placeholder.com/150" alt="photo de profil" srcset="https://via.placeholder.com/150"></a>
+     <a href="#">
+          <img 
+               class="img_profile_circle" 
+               src="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
+               alt="photo de profil" 
+               srcset="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>"
+          >
+     </a>
 </nav>
 <div id="wrapper">
      <aside class="mobi-nav">
@@ -38,7 +45,7 @@
                     </ul>
                </div>
                <div class="accordion"> 
-                    <a href="<?= generate_url('admin.posts') ?>">
+                    <a href="<?= generate_url('admin.users') ?>">
                          <i class="icofont-users"></i> Utilisteurs 
                     </a>
                     <i class="icofont-rounded-down float-right dropdown" data-target="users" onclick="displayPanel(this)" ></i>
@@ -56,9 +63,16 @@
                          </li>
                     </ul>
                </div>
-               <div class="accordion"> <i class="icofont-comment"></i> Commentaires </div>
-               <div class="accordion"> <i class="icofont-multimedia"></i> Médias </div>
-               <div class="accordion"> <i class="icofont-contacts"></i> Contacts </div>
+               <div class="accordion"> 
+                    <a href="<?= generate_url('admin.comments') ?>"> 
+                         <i class="icofont-comment"></i> Commentaires 
+                    </a>
+               </div>
+               <div class="accordion"> 
+                    <a href="<?= generate_url('admin.contacts') ?>"> 
+                         <i class="icofont-contacts"></i> Contacts 
+                    </a>
+               </div>
           </div>
           <!--<nav class="menu-aside-admin">
                <ul class="nav-vertical">

@@ -21,12 +21,12 @@
      <script src="assets/vendor/counterup/counterup.min.js"></script>
      <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
      <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-     <script src="<?php echo get_vendor("tinymce/js/tinymce/tinymce.min.js") ?>"></script>
+     <script src="https://cdn.tiny.cloud/1/bf8h5df57k7p928sv5wrubivsekxgv64ihbdvzmtsbm1rbt6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
      <!-- Axios Ajax library Js File --> 
      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-     <!-- Template App JS File -->
+     <!-- Template Config JS File -->
      <?php echo get_script('config'); ?>
 
      <!-- Template App JS File -->
@@ -39,4 +39,5 @@
      <?php echo get_script('admin'); ?>
      
      </body> 
+     
 </html>

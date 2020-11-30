@@ -175,7 +175,7 @@ class Posts
       */ 
      public function getWriter()
      {
-          return $this->writer !== null ? (new UsersModel())->find($this->writer, Users::class) : null;
+          return $this->writer !== null ? (new UsersModel())->find((int) $this->writer, Users::class) : $this->writer;
      }
 
      /**
@@ -212,8 +212,8 @@ class Posts
       */ 
      public function getCategoryId()
      {
-          (new CategoriesModel)->find($this->category_id);
-          return $this->category_id;
+          ;
+          return (new CategoriesModel)->find($this->category_id, Categories::class);
      }
 
      /**
@@ -272,6 +272,6 @@ class Posts
 
      public function getComments()
      {
-          return $this->comments = $this->getId();
+          return (new CommentsModel)->getPostComments($this->getId());
      }
 }

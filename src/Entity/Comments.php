@@ -10,13 +10,13 @@ class Comments
 {
 
      private $id;
-     private $writer;
-     private $content;
+     private $author;
+     private $comment;
      private $status;
      private $created_at;
      private $post_id;
 
-     const STATUS = ["to_validate" => "A valider", "validated" => "Validé"];
+     const STATUS = ["pending" => "A valider", "validated" => "Validé"];
 
      /**
       * __construct
@@ -84,41 +84,41 @@ class Comments
      }
 
      /**
-      * Get the value of writer
+      * Get the value of author
       */ 
-     public function getWriter()
-     {          
-          return (new UsersModel())->find($this->writer);
-     }
+      public function getAuthor()
+      {
+           return $this->author !== null ? (new UsersModel())->find((int) $this->author, Users::class) : $this->author;
+      }
 
      /**
-      * Set the value of writer
+      * Set the value of author
       *
       * @return  self
       */ 
-     public function setWriter($writer)
+     public function setAuthor($author)
      {
-          $this->writer = $writer;
+          $this->author = $author;
 
           return $this;
      }
 
      /**
-      * Get the value of content
+      * Get the value of comment
       */ 
-     public function getContent()
+     public function getComment()
      {
-          return $this->content;
+          return $this->comment;
      }
 
      /**
-      * Set the value of content
+      * Set the value of comment
       *
       * @return  self
       */ 
-     public function setContent($content)
+     public function setComment($comment)
      {
-          $this->content = $content;
+          $this->comment = $comment;
 
           return $this;
      }

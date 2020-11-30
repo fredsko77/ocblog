@@ -37,9 +37,9 @@ class Helpers
       * @param string $str
       * @return string
       */
-     public static function generateSlug(string $str) 
+     public static function generateSlug(string $str,string ...$vars) 
      {
-          $str = trim($str);
+          $str = trim( self::putBefore(' ', func_get_args() ));
           $str = trim(skip_accents($str));
           return strtolower(preg_replace('/[^A-Za-z0-9\-]/', '-', $str ) );
      }
@@ -123,7 +123,8 @@ class Helpers
           $patterns = [
                'slug' => '([\/A-Za-z0-9\-]+)',
                'id' => '([0-9]+)',
-               's' => '([\w]+)'
+               's' => '(.*?)',
+               'token' => '(.*?)',
           ]; 
           $explode_path = explode('/', trim($path, '/'));
           $parts = [];
@@ -163,8 +164,7 @@ class Helpers
           foreach ($data as $k => $v) {
                $v = trim($v);
                $v = strip_tags($v, array_to_string($tags));
-               $v = str_replace('\'', "&#39;", $v);
-               $sanitize[$k] = htmlspecialchars(trim($v), ENT_IGNORE, "UTF-8" );
+               $sanitize[$k] = htmlspecialchars(trim($v), ENT_COMPAT | ENT_HTML5 | ENT_IGNORE | ENT_QUOTES, "UTF-8" );
           }
           return $sanitize;
      }
@@ -201,6 +201,15 @@ class Helpers
           $data = [];
           foreach($users as $key => $user) {
                $data[$user->getId()] = "{$user->getFirstname()} {$user->getLastname()}";
+          }
+          return $data;
+     }
+
+     public static function getCategories(array $categories = []): array
+     {
+          $data = [];
+          foreach($categories as $key => $category) {
+               $data[$category->getId()] = "{$category->getCategory()}";
           }
           return $data;
      }

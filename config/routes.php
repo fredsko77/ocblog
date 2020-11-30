@@ -24,8 +24,12 @@ return $routes = [
           ],
           'blog.show' => [
                'action' => "App\Controller\BlogController@show",
-               'path' => "/blog/posts/:id/:slug/"
-          ],
+               'path' => "/blog/posts/:id/:slug"
+          ],          
+          'blog.category' => [
+               'action' => "App\Controller\BlogController@category",
+               'path' => "/blog/category/:id/:slug"
+          ],          
           'not.found' => [
                'action' => "App\Controller\BlogController@notFound",
                'path' => "/404"
@@ -58,6 +62,14 @@ return $routes = [
                'action' => "App\Controller\AuthController@reset",
                'path' => "/auth/reset-password/:s/user"
           ],
+          'auth.profile' => [
+               'action' => "App\Controller\AuthController@profile",
+               'path' => "/auth/profile"
+          ],
+          'auth.email.reset.confirm' => [
+               'action' => 'App\Controller\AuthController@resetEmailConfirm',
+               'path' => '/auth/reset/email/:s/:id'
+          ],
           'admin' => [
                'action' => "App\Controller\Admin\DashboardController@index",
                'path' => "/admin/dashboard"
@@ -78,6 +90,22 @@ return $routes = [
                'action' => "App\Controller\Admin\AdminCategoriesController@index",
                'path' => "/admin/posts/categories"
           ],
+          'admin.comments' => [
+               'action' => "App\Controller\Admin\AdminCommentsController@index",
+               'path' => "/admin/comments"
+          ],
+          'admin.contacts' => [
+               'action' => "App\Controller\Admin\AdminContactsController@index",
+               'path' => "/admin/contacts"
+          ],
+          'admin.users' => [
+               'action' => "App\Controller\Admin\AdminUsersController@index",
+               'path' => "/admin/users"
+          ],
+          'admin.users.create' => [
+               'action' => "App\Controller\Admin\AdminUsersController@create",
+               'path' => "/admin/users/create"
+          ],
      ],
      'POST' => [
           'home.contact' => [
@@ -96,13 +124,21 @@ return $routes = [
                'action' => "App\Controller\AuthController@changePassword",
                'path' => "/auth/reset-password"
           ],
-          'user.confirm' => [
-               'action' => "App\Controller\AuthController@changePassword",
-               'path' => "/auth/complete-users-account"
-          ],
           'auth.password.token' => [
                'action' => "App\Controller\AuthController@sendPasswordToken",
                'path' => "/auth/forget-password"
+          ],
+          'auth.profile.change.password' => [
+               'action' => 'App\Controller\AuthController@updatePassword',
+               'path' => '/auth/change-password/:id'
+          ],
+          'auth.email.reset.send' => [
+               'action' => 'App\Controller\AuthController@resetEmail',
+               'path' => '/auth/reset/email/:id'
+          ],
+          'auth.profile.edit' => [
+               'action' => 'App\Controller\AuthController@updateProfile',
+               'path' => '/auth/profile/:id/edit'
           ],
           'admin.posts.store' => [
                'action' => "App\Controller\Admin\AdminPostsController@store",
@@ -116,11 +152,31 @@ return $routes = [
                'action' => "App\Controller\Admin\AdminCategoriesController@store",
                'path' => "/admin/categories/create"
           ],
+          'blog.posts.comment.add' => [
+               'action' => "App\Controller\BlogController@comment",
+               'path' => "/blog/posts/:id/comment"
+          ],
+          'admin.users.store' => [
+               'action' => 'App\Controller\Admin\AdminUsersController@store',
+               'path' => '/admin/users/store',
+          ],
      ],
      'PUT' => [
           'admin.categories.update' => [
                'action' => "App\Controller\Admin\AdminCategoriesController@update",
                'path' => "/admin/categories/:id/update"
+          ],
+          'admin.comments.edit' => [
+               'action' => "App\Controller\Admin\AdminCommentsController@edit",
+               'path' => "/admin/comments/:id/edit"
+          ],
+          'admin.contacts.edit' => [
+               'action' => "App\Controller\Admin\AdminContactsController@read",
+               'path' => "/admin/contacts/:id/edit"
+          ],
+          'admin.users.edit.role' => [
+               'action' => 'App\Controller\Admin\AdminUsersController@editRole', 
+               'path' => "/admin/users/:id/:s", 
           ],
      ], 
      'DELETE' => [
@@ -131,6 +187,14 @@ return $routes = [
           'admin.categories.delete' => [
                'action' => "App\Controller\Admin\AdminCategoriesController@delete",
                'path' => "/admin/categories/:id/delete"
+          ],
+          "admin.users.delete" => [
+               'action' => "App\Controller\Admin\AdminUsersController@delete",
+               "path" => "/admin/users/:id/delete",
+          ],
+          'auth.delete' => [
+               'action' => "App\Controller\AuthController@delete",
+               'path' => "/auth/:id/delete"
           ],
      ]
 ];

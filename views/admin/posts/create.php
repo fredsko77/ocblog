@@ -5,7 +5,6 @@
      <div class="col-12"> 
           <a href="<?= generate_url('admin.posts') ?>" title="Revenir en arrière" class="text-secondary mb-3 mt-3 text-underline">Revenir aux articles</a>
           <h1 class="h3 mt-2 mb-4">Ajouter un nouvel article</h1>
-          <?php dump($params->writers); ?>
           <div class="row mb-4">
                <div class="col-xs-12 col-lg-9">
                     <?php 
@@ -16,11 +15,10 @@
                                    'placeholder' => "Titre de l'article"
                          ]], true);
                          echo $params->form->textarea('content', [
-                              'label' => null, 
+                              'label' => null,
                               'attr' => [
-                                   'placeholder' => "Contenu de l&#39;article ici",
-                                   'rows' => 25
-                              ]
+                                   'rows' => 20
+                              ],
                          ], true);
                     ?>
                     <div class="col-12 drop-down">
@@ -55,7 +53,7 @@
                     <div class="col-12 drop-down">
                          <div class="drop-btn" onclick="dropdown(this)"> Catégorie <i class="icofont-caret-down float-right" style="transform: rotate(0deg);"></i> </div>
                          <div class="drop position-relative hidden">
-                              <?php echo $params->form->input('category_id', ['label' => null, 'type' => 'number'], true) ?>
+                              <?php echo $params->form->select('category_id', $params->categories, null, false, true) ?>
                          </div>
                     </div> 
                     <div class="col-12 drop-down">
@@ -91,4 +89,7 @@ echo $params->form->csrf();
 
 echo $params->form->end();
 
-// <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor quisquam doloremque incidunt perferendis aut! Totam alias sunt ullam dolor repellendus animi nostrum itaque facilis molestiae. Doloremque vero quam provident nihil veritatis, similique quod magni dolore deserunt optio, laboriosam perferendis voluptatibus porro, dolorem minima dolor ducimus ad. Omnis qui eos blanditiis.</p>  -->
+/** <p>
+* Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor quisquam doloremque incidunt perferendis aut! Totam alias sunt ullam dolor repellendus animi nostrum itaque facilis molestiae. Doloremque vero quam provident nihil veritatis, similique quod magni dolore deserunt optio, laboriosam perferendis * voluptatibus porro, dolorem minima dolor ducimus ad. Omnis qui eos blanditiis.
+*</p>  
+*/

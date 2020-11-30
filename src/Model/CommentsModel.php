@@ -17,11 +17,13 @@ class CommentsModel extends Model
           $this->db = (new Connection())->getPdo();
      }
 
-     public function getPostComments(int $posts_id)
+     public function getPostComments(int $post_id)
      {
-          $sql = "SELECT * FROM comments WHERE posts_id = :id AND status = :status";
-          $this->db->prepare($sql);
+          $sql = "SELECT * FROM {$this->table} WHERE post_id = :post_id AND status = 'validated' ORDER BY created_at DESC";
+          $stmt = $this->db->prepare($sql);
+          $stmt->execute([':post_id' => $post_id]);
+          $result = $stmt->fetchAll();
+          return $this->getInstances($result, $this->class);
      }
-
 
 }

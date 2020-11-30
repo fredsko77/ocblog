@@ -26,13 +26,11 @@ class FormBuilder
       * @param boolean $upload
       * @return string
       */
-     public function start(string $action = "",string $onsubmit = "", bool $upload = false, string $method = "POST") :string
+     public function start(string $action = "",string $onsubmit = "", bool $upload = false,array $attr = [], string $method = "POST") :string
      {
           $enctype = $upload === true ?  "enctype='multipart/form-data'" : '';
-          $host = (new Request())->server("HTTP_HOST");
-          $action = "http://{$host}{$action}"; 
           if ($onsubmit !== "" ) $onsubmit =  "onsubmit='{$onsubmit}'";
-          return "<form action='{$action}' method='{$method}' {$enctype} {$onsubmit}>";           
+          return "<form action='{$action}' method='{$method}' {$enctype} {$this->attr($attr)} {$onsubmit}>";           
      }
 
      /**
@@ -49,6 +47,7 @@ class FormBuilder
           $value = $this->data[$name] ?? '';
           $label = $data['label'] !== null ? "<label for='{$name}'>{$data['label']}</label>" : "";
           $attr = array_key_exists('attr', $data) ? $this->attr($data['attr']) : '';
+          $value = array_key_exists('attr', $data) && array_key_exists('value', $data['attr']) ? $data['attr']['value'] : '';
           $textarea =    "{$label}
                          <textarea name='{$name}' class='{$class}' id='{$name}' $attr>{$value}</textarea>";
           if ( $bootstrap === true ) {
@@ -73,6 +72,7 @@ class FormBuilder
           $type = $data['type'] ?? 'text';
           $label = $data['label'];
           $attr = array_key_exists('attr', $data) ? $this->attr($data['attr']) : '';
+          $value = array_key_exists('attr', $data) && array_key_exists('value', $data['attr']) ? $data['attr']['value'] : '';
           if ( $label !== null ) $input = "<label for=\"{$name}\">{$label}</label> \n\r";
           $input .= "<input type=\"{$type}\" name=\"{$name}\" id=\"{$name}\" value=\"{$value}\" class=\"{$class}\" {$attr}> \n\r";
           if ( $bootstrap === true ) {

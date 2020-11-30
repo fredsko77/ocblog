@@ -1,30 +1,32 @@
 <?php require get_template('elements/head'); ?>
 
+<?php //dd( $params ); ?>
+
 <!-- ======= Header ======= -->
-<header id="header" class="fixed-top">
+<header id="header">
      <div class="container-fluid d-flex justify-content-between align-items-center">
 
      <h1 class="logo"><a href="<?= generate_url('home') ?>">Kelly</a></h1>
      <!-- Uncomment below if you prefer to use an image logo -->
      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-     <?php if (is_home() || is_blog()): ?>
+     <?php if (is_home() || is_blog() || generate_url('auth.profile') ) : ?>
           <nav class="nav-menu d-none d-lg-block">
-          <ul>
-               <li <?php if(generate_url('home') === get_current_url()): ?> class="active" <?php endif; ?> >
-                         <a href="<?= generate_url('home') ?>">Accueil</a>
-               </li>
-               <li  <?php if(generate_url('about') === get_current_url()): ?> class="active" <?php endif; ?> >
-                    <a href="<?= generate_url('about') ?>">A propos</a>
-               </li>
-               <li  <?php if(generate_url('contact') === get_current_url()): ?> class="active" <?php endif; ?> >
-                    <a href="<?= generate_url('contact') ?>">Nous contacter</a>
-               </li>
-               <li  <?php if( is_blog() ): ?> class="active" <?php endif; ?> >
-                    <a href="<?= generate_url('blog') ?>">Blog</a>
-               </li>
-          </ul>
-     </nav><!-- .nav-menu -->
+               <ul>
+                    <li <?php if(generate_url('home') === get_current_url()): ?> class="active" <?php endif; ?> >
+                              <a href="<?= generate_url('home') ?>">Accueil</a>
+                    </li>
+                    <li  <?php if(generate_url('about') === get_current_url()): ?> class="active" <?php endif; ?> >
+                         <a href="<?= generate_url('about') ?>">A propos</a>
+                    </li>
+                    <li  <?php if(generate_url('contact') === get_current_url()): ?> class="active" <?php endif; ?> >
+                         <a href="<?= generate_url('contact') ?>">Nous contacter</a>
+                    </li>
+                    <li  <?php if( is_blog() ): ?> class="active" <?php endif; ?> >
+                         <a href="<?= generate_url('blog') ?>">Blog</a>
+                    </li>
+               </ul>
+          </nav><!-- .nav-menu -->
      <?php endif; ?>
 
      <div class="header-social-links">
@@ -44,8 +46,7 @@
                     title="Mon compte LinkedIn"
                >
                     <i class="icofont-linkedin"></i>
-               </a>
-               
+               </a>               
                <a 
                     href="<?= generate_url('resume') ?>" 
                     target="_blank" 
@@ -54,17 +55,68 @@
                >
                     <i class="icofont-file-pdf"></i>
                </a>
-          <?php else: ?>
-               <a 
-                    href="<?= is_connected_user() ? generate_url('auth.logout') : generate_url('auth.login') ?>"  
-                    class="github" 
-                    title="<?= is_connected_user() ? 'Se déconnecter' : 'Se connecter' ?>"
-               >
-                    <?= is_connected_user() ? '<i class="icofont-logout"></i>' : ' <i class="icofont-login"></i>' ?>
-               </a>
+          <?php else: ?> 
+               <?php if ( !is_auth() || generate_url('auth.profile') ): ?> 
+                    <?php if ( is_connected_user() ): ?>
+                         <a 
+                              href="#"
+                              onclick="showUserMenu(event)"
+                         >
+                              <img 
+                                   class="img_profile_circle" 
+                                   src="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
+                                   alt="photo de profil" 
+                                   srcset="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>"
+                              >
+                         </a>
+                         <div class="position-absolute" id="menu-user">
+                              <ul class="nav-drop">
+                                   <li>
+                                        <a href="<?= generate_url('auth.profile') ?>"> 
+                                             <i class="icofont-user-alt-3"></i> &nbsp; Mon profil
+                                        </a>
+                                   </li>
+
+                                   <?php if ( property_exists($params, 'user')  ): 
+                                             if ( $params->user->getRole() === "admin" && $params->user !== null ): 
+                                   ?>
+                                             <li>
+                                                  <a href="<?= generate_url('admin') ?>"> 
+                                                       <i class="icofont-home"></i> &nbsp; Tableau de bord
+                                                  </a>
+                                             </li> 
+                                   <?php     endif; 
+                                        endif; 
+                                   ?>
+                                   <li>
+                                        <a href="<?= generate_url('auth.logout') ?>"> 
+                                             <i class="icofont-power"></i> &nbsp; Se déconnecter
+                                        </a>
+                                   </li>
+                              </ul>
+                         </div>
+                    <?php else: ?>
+                         <a 
+                              href="<?= generate_url('auth.login') ?>" 
+                              class="btn btn-home btn-outline-green"
+                         >
+                              Se connecter
+                         </a>
+                         <a 
+                              href="<?= generate_url('auth.register') ?>"  
+                              class="btn btn-home btn-green"
+                         >
+                              S'inscrire
+                         </a>
+                    <?php endif; ?>
+               <?php endif; ?>
           <?php endif; ?>
      </div>
-
-     </div>
+     
+</div>
 
 </header><!-- End Header -->
+
+<?php 
+// dump($params->user->getRole());
+ 

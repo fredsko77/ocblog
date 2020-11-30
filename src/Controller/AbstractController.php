@@ -10,10 +10,10 @@ abstract class AbstractController
 {
 
      protected $session;
+     protected $request;
 
      public function __construct()
      {
-          $this->session = new Session();
      }
 
      /**
@@ -27,7 +27,8 @@ abstract class AbstractController
 
           if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
           
-          $params['request'] = new Request();
+          $params['request'] = $this->request;
+          $params['session'] = $this->session;
           
           $path = str_replace(".", "/", $path);
           
@@ -50,16 +51,12 @@ abstract class AbstractController
       * @param array $params
       * @return void
       */
-      public function adminView(string $path, array $params = []) 
-      {
-           
+     public function adminView(string $path, array $params = []) 
+     {
           if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
           
           $params['request'] = new Request();
-
-          // if ( $params['user'] ) {
-          //      $path = "users.not-allowed";
-          // }
+          $params['session'] = new Session();
 
           $path = str_replace(".", "/", $path);
           

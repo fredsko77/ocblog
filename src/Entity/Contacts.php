@@ -8,12 +8,14 @@ class Contacts
 {
 
      private $id;
-     private $firstname;
-     private $lastname;
+     private $name;
      private $email;
-     private $object;
+     private $subject;
      private $message;
      private $status;
+     private $created_at;
+
+     const STATUS = ['pending' => 'En attente', 'read' => 'Lu'];
 
      /**
       * __construct
@@ -63,46 +65,6 @@ class Contacts
           return $this;
      }
 
-
-     /**
-      * Get the value of firstname
-      */ 
-     public function getFirstname()
-     {
-          return $this->firstname;
-     }
-
-     /**
-      * Set the value of firstname
-      *
-      * @return  self
-      */ 
-     public function setFirstname($firstname)
-     {
-          $this->firstname = $firstname;
-
-          return $this;
-     }
-
-     /**
-      * Get the value of lastname
-      */ 
-     public function getLastname()
-     {
-          return $this->lastname;
-     }
-
-     /**
-      * Set the value of lastname
-      *
-      * @return  self
-      */ 
-     public function setLastname($lastname)
-     {
-          $this->lastname = $lastname;
-
-          return $this;
-     }
 
      /**
       * Get the value of email
@@ -180,6 +142,46 @@ class Contacts
      public function setSubject($subject)
      {
           $this->subject = $subject;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of name
+      */ 
+     public function getName()
+     {
+          return $this->name;
+     }
+
+     /**
+      * Set the value of name
+      *
+      * @return  self
+      */ 
+     public function setName($name)
+     {
+          $this->name = $name;
+
+          return $this;
+     }
+
+     /**
+      * Get the value of created_at
+      */ 
+     public function getCreatedAt()
+     {
+          return $this->created_at;
+     }
+
+     /**
+      * Set the value of created_at
+      *
+      * @return  self
+      */ 
+     public function setCreatedAt($created_at)
+     {
+          $this->created_at = $created_at;
 
           return $this;
      }
