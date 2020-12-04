@@ -64,9 +64,9 @@
                          >
                               <img 
                                    class="img_profile_circle" 
-                                   src="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
+                                   src="<?= $params->auth->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
                                    alt="photo de profil" 
-                                   srcset="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>"
+                                   srcset="<?= $params->auth->getImage()->path ?? "uploads/profile-default.jpg" ?>"
                               >
                          </a>
                          <div class="position-absolute" id="menu-user">
@@ -77,8 +77,8 @@
                                         </a>
                                    </li>
 
-                                   <?php if ( property_exists($params, 'user')  ): 
-                                             if ( $params->user->getRole() === "admin" && $params->user !== null ): 
+                                   <?php if ( property_exists($params, 'auth')  ): 
+                                             if ( $params->auth->getRole() === "admin" && $params->auth !== null ): 
                                    ?>
                                              <li>
                                                   <a href="<?= generate_url('admin') ?>"> 
@@ -96,18 +96,22 @@
                               </ul>
                          </div>
                     <?php else: ?>
-                         <a 
-                              href="<?= generate_url('auth.login') ?>" 
-                              class="btn btn-home btn-outline-green"
-                         >
-                              Se connecter
-                         </a>
-                         <a 
-                              href="<?= generate_url('auth.register') ?>"  
-                              class="btn btn-home btn-green"
-                         >
-                              S'inscrire
-                         </a>
+                         <span>
+                              <a 
+                                   href="<?= generate_url('auth.login') ?>" 
+                                   class=""
+                              >
+                                   Se connecter
+                              </a>
+                              |
+                              <a 
+                                   href="<?= generate_url('auth.register') ?>"  
+                                   class=""
+                              >
+                                   S'inscrire
+                              </a>
+                         </span>
+                         
                     <?php endif; ?>
                <?php endif; ?>
           <?php endif; ?>
@@ -118,5 +122,5 @@
 </header><!-- End Header -->
 
 <?php 
-// dump($params->user->getRole());
+// dump($params->auth->getRole());
  

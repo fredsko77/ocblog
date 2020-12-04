@@ -19,7 +19,12 @@ class PostsModel extends Model
           $this->db = (new Connection())->getPdo();
      }
 
-     public function pagePosts(int $page = 0)
+     /**
+      * pagePosts
+      * @param integer $page
+      * @return array
+      */
+     public function pagePosts(int $page = 0):array
      {
           $offset = ($page * $this->limit);          
           $data = [];
@@ -27,14 +32,10 @@ class PostsModel extends Model
                     FROM {$this->table}
                     WHERE status = 'published' 
                     ORDER BY updated_at DESC
-                    LIMIT {$this->limit} OFFSET {$offset}";
+                    LIMIT {$this->limit} OFFSET {$offset};";
           $stmt = $this->db->prepare($sql);
           $stmt->execute();
-          $results = $stmt->fetchAll();
-          foreach($results as $k => $result) {
-               $data[] = new Posts($result);
-          }
-          return $data;
+          return $this->getInstances($stmt->fetchAll(), $this->class);
      }
      
      /**
@@ -46,11 +47,19 @@ class PostsModel extends Model
           $sql = "  SELECT * FROM {$this->table}
                     WHERE status = 'published' 
                     ORDER BY updated_at DESC;";
-          $stmt = $this->db->prepare($sql);
-          if ( $stmt->execute() ) {
-               return $this->getInstances($stmt->fetchAll(), $this->class);
-          }
-          return [];
+          return $this->getInstances($this->db->query($sql)->fetchAll(), $this->class);
+     }
+     
+     /**
+      * draft posts
+      * @return array
+      */
+     public function draft():array
+     {
+          $sql = "  SELECT * FROM {$this->table}
+                    WHERE status = 'draft' 
+                    ORDER BY updated_at DESC;";
+          return $this->getInstances($this->db->query($sql)->fetchAll(), $this->class);
      }
      
      /**
@@ -110,6 +119,36 @@ class PostsModel extends Model
                return $this->getInstances($stmt->fetchAll(), $this->class);
           }
           return [];
+     }
+     
+     /**
+      * latest
+      * @return array
+      */
+     public function latest():array 
+     {
+          $sql = "  SELECT * 
+                    FROM {$this->table}
+                    WHERE status = 'published'
+                    ORDER BY updated_at DESC
+                    LIMIT 5
+                    OFFSET 0";
+          return $this->getInstances($this->db->query($sql)->fetchAll(), $this->class); 
+     }
+
+     /**
+      * lastUpdatedPost
+      * @return Posts
+      */
+     public function lastUpdatedPost():Posts
+     {
+          $sql = "  SELECT *
+                    FROM {$this->table}
+                    WHERE status = 'draft'
+                    ORDER BY updated_at DESC
+                    LIMIT 1
+                    OFFSET 0";
+          return new Posts($this->db->query($sql)->fetch());
      }
 
 }

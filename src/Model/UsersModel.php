@@ -2,10 +2,11 @@
 
 namespace App\Model;
 
-use App\Database\Connection;
+use \PDO;
 use App\Model\Model;
 use App\Entity\Users;
-use \PDO;
+use App\Services\Session;
+use App\Database\Connection;
 
 class UsersModel extends Model
 {
@@ -13,7 +14,8 @@ class UsersModel extends Model
      protected $class = Users::class;
      protected $db;
 
-     public function __construct() {
+     public function __construct() 
+     {
           $this->db = (new Connection())->getPdo();
      }
 
@@ -65,6 +67,13 @@ class UsersModel extends Model
                ':last_connection' => $users->getLastConnection()
           ];
           return $stmt->execute($data) ? true : false;
+     }
+
+     public function exceptAuth() 
+     {
+          $auth = (new Session)->getLoggedUser();
+          $sql  = "SELECT * FROM {$this->table} WHERE id <> {$auth->getId()}";
+          return $this->getInstances($this->db->query($sql)->fetchAll(), $this->class);
      }
 
 }

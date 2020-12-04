@@ -39,7 +39,6 @@
                                         title="Voir le message l'article"
                                         data-id="<?= $contact->getId() ?>"
                                         onclick="displayMessage(this, event)"
-                                        style="color: #444444;"
                                    >
                                         <i class="icofont-eye"></i>
                                    </a>
@@ -98,16 +97,16 @@
                          'disabled' =>'disabled',
                     ],
                ], true);
-               echo $params->form->input('id', ['label' => null, 'type' => 'hidden'])
+               echo $params->form->input('id', ['label' => null, 'type' => 'hidden']);
           ?>
                <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="status" value="read">
                     <label class="form-check-label" for="status"><?= $params->status['read'] ?></label>
                </div>               
-          <div class="d-flex flex-row">
-               <?php echo $params->form->submit("Enregistrer"); ?>
-               <button class="btn btn-link" id="cancel-btn" onclick="closeMessage()">Annuler</button>
-          </div>
+               <div class="d-flex flex-row">
+                    <?php echo $params->form->submit("Enregistrer"); ?>
+                    <button class="btn btn-link" id="cancel-btn" onclick="closeMessage()">Annuler</button>
+               </div>
           <?= $params->form->end(); ?>
      
      </div>

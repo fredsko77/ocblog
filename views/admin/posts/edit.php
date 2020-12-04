@@ -1,4 +1,3 @@
-
 <?php echo $params->form->start(generate_url('admin.posts.update', ['id' => $params->post->getId()]), 'handleUpdatePost(this,event)', true ) ?>
 
 <div class="col-12 row" id="form-post">
@@ -55,7 +54,7 @@
                     <div class="col-12 drop-down">
                          <div class="drop-btn" onclick="dropdown(this)"> Catégorie <i class="icofont-caret-down float-right" style="transform: rotate(0deg);"></i> </div>
                          <div class="drop position-relative hidden">
-                              <?php echo $params->form->input('category_id', ['label' => null, 'type' => 'number'], true) ?>
+                              <?php echo $params->form->select('category_id', $params->categories, null, false, true) ?>
                          </div>
                     </div> 
                     <div class="col-12 drop-down">

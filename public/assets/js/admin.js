@@ -252,6 +252,32 @@ const validateComment = (a, e) => {
      }
 }
 
+const deleteComment = (a, e) => {
+     e.preventDefault();
+     let url = a.href; 
+     let id = a.dataset.id;
+     loader();
+     try {
+          axios
+          .delete(url)
+          .then( ({data}) => {
+               let type = data.message.type; 
+               let message = data.message.content;                    
+               flash(message, type);
+               document.querySelector(`tr[data-comment='${id}']`).remove();
+          })
+          .catch( ({response}) =>{
+               let type = response.data.message.type; 
+               let message = response.data.message.content;    
+               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+          })
+     } catch ( errors ) {
+          console.error(errors);
+     }
+     loader();
+}
+
 const displayMessage = (a, e) => {
      e.preventDefault();
      let id = a.dataset.id;
@@ -311,4 +337,126 @@ const readContact = (form, e) => {
                if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
           })
      }
+}
+
+const filterPosts = (element) => {
+     let td = document.querySelectorAll("[data-status]");
+     td.forEach(column => {
+          let row = column.parentNode;
+          if ( element.checked ) {
+               if (column.dataset.status !== "draft") row.classList.add('hidden');
+          } else {
+               row.classList.remove('hidden');
+          }
+     })
+
+}
+
+const deleteUser = (a, e) => {
+     e.preventDefault();
+     let url = a.href;
+     let id = a.dataset.id;
+     let choice = confirm("Êtes-vous sur de vouloir supprimer ce compte ? ");
+     if ( choice === true ) {
+          axios
+          .delete(url)
+          .then( ({data}) => {
+               let type = data.message.type; 
+               let message = data.message.content;
+               flash(message, type, true);     
+               document.querySelector(`tr[data-user='${id}']`).remove();          
+          })
+          .catch( ({response}) => {
+               let type = response.data.message.type; 
+               let message = response.data.message.content;    
+               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+          });
+     }
+     return;
+}
+
+const handleStoreUser = (form, e) => {
+     e.preventDefault();
+     let url = form.action;
+     let id = form.id;
+     let data = {...getValues(`#${id} select, #${id} input`)};
+     for (const key in data) {
+          if (data.hasOwnProperty(key)) { 
+               let input = document.querySelector(`[name=${key}]`);       
+               data[key] === "" ? input.classList.add('is-invalid') : input.classList.remove('is-invalid');             
+          }
+     }
+     if (isFilled(data)) {          
+          axios
+          .post(url, data)
+          .then( ({data}) => {
+               let type = data.message.type; 
+               let message = data.message.content;
+               flash(message, type, true);            
+               let url = data.url;
+               let delay = 2000; 
+               // Faire une redirection sur la page d'édition de l'article
+               setTimeout(() => window.location = url , delay);
+          })
+          .catch( ({response}) => {
+               let type = response.data.message.type; 
+               let message = response.data.message.content;    
+               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+          });
+     }
+     return; 
+}
+
+const openEditUserForm = (a, e) => {
+     e.preventDefault();
+     let action = a.href;
+     let form = document.querySelector('#form-edit-role');
+     let id = a.dataset.id;
+     let row = document.querySelector(`tr[data-user='${id}']`);
+     let role = row.querySelector('[data-role]').getAttribute('data-role');
+     form.classList.remove('hidden');
+     form.setAttribute('action', action);
+     document.querySelector(`option[value=${role}]`).setAttribute('selected', 'selected');
+     select = form.querySelector('select');     
+}
+
+const closeUserForm = () => {
+     form = document.querySelector('#form-edit-role');
+     form.classList.add('hidden');
+     form.querySelector('option[selected=selected]').removeAttribute('selected');
+     form.removeAttribute('action');
+}
+
+const handleEditRole = (form, e) => {
+     e.preventDefault();
+     let url = form.action;
+     let data = getValues(`#${form.id} select`);
+     axios
+     .post(url, data)
+     .then( ({data}) => {
+          let type = data.message.type; 
+          let message = data.message.content;
+          flash(message, type, true);  
+          let row = document.querySelector(`tr[data-user='${data.id}']`);
+          row.querySelector('td[data-role]').setAttribute('data-user', data.role.key);           
+          row.querySelector('td[data-role]').innerText = data.role.value;  
+          closeUserForm();       
+     })
+     .catch( ({response}) => {
+          let type = response.data.message.type; 
+          let message = response.data.message.content;    
+          if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
+          if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
+     });
+     return;
+}
+
+const displayNav = () => {
+     let width = document.getElementById('mobi-nav').style.width;
+     if (width === "" || width === '0px') {
+          return document.getElementById('mobi-nav').style.width = '100%';
+     }
+     return  document.getElementById('mobi-nav').style.width = '0px';
 }

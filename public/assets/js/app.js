@@ -164,15 +164,6 @@ const urlParam = key => {
 
 const showUserMenu = e => {
      e.preventDefault();
-     let voiture = {
-          marque: "Renault",
-          modèle: "Talisman",
-          couleurs: "noire",
-          chevaux: "120ch",
-          immatriculation: "AA-000-AA",
-     }
-     delete voiture.immatriculation;
-     console.warn(voiture);
      let menu = document.querySelector('#menu-user');
      if ( menu.classList.contains('show') || menu.classList.contains('hide') ) {
           menu.classList.toggle('show');

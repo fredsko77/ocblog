@@ -22,7 +22,7 @@ class AdminContactsController extends AbstractController
 
      public function index()
      {
-          $contacts = $this->contact->findBy("status.pending", Contacts::class);
+          $contacts = $this->contact->pending();
           $form = new FormBuilder();
           $status = Contacts::STATUS;
           return $this->adminView('contacts.index', compact('contacts', 'form', 'status') );

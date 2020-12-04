@@ -89,6 +89,7 @@ class Request
      public function checkAuthorization():bool
      {
           $headers = apache_request_headers();
+          if (is_admin() && (new Session)->getLoggedUser()->getRole() !== 'admin') return false;
           return array_key_exists('Authorization', $headers) && $headers['Authorization'] === (new Session)->get('csrf_token') ? true : false;
      }
 

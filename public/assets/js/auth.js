@@ -51,7 +51,10 @@ const authenticateUsers = (form,e) => {
                     let url = data.url;
                     let delay = 2000; 
                     // Faire une redirection sur le blog
-                    setTimeout(() => window.location = url , delay);
+                    console.info(url);
+                    setTimeout(() => {
+                         url === null ? window.history.go(-1) : window.location = url; 
+                    }, delay);
                })
                .catch( ({response}) => {
                     let type = response.data.message.type; 
@@ -149,12 +152,9 @@ const deleteAuth = (a, e) => {
      return;
 }
 
-const openProfileForm = () => {
-     form = document.querySelector('#form-profile').classList.toggle('hidden');
-     console.log(form);
-}
+const openProfileForm = () => document.querySelector('#form-profile').classList.toggle('hidden');
 
-const closeProfile = () => document.querySelector('#form-profile').classList.toggle('hidden');
+const closeProfileform = () => document.querySelector('#form-profile').classList.toggle('hidden');
 
 const handleEditProfile = (form, e) => {
      e.preventDefault();
@@ -171,11 +171,12 @@ const handleEditProfile = (form, e) => {
                let message = data.message.content;
                form.querySelector('#image').value = ''
                flash(message, type, true);
-               if (data.hasOwnProperty('image')) {
-                    document.querySelector('#image-profile').setAttribute('src', '');
-                    document.querySelector('#image-profile').setAttribute('srcset', '');
+               let imageProfile = document.querySelector('#image-profile')
+               if (data.hasOwnProperty('image') && data.image !== "") {
+                    imageProfile.src = data.image;
+                    imageProfile.srcset = data.image;
                }
-               closeProfile();
+               closeProfileform()
           } else if ( data.hasOwnProperty('errors') ) {
                validateField(data.errors);
                setFormErrors(data.errors);

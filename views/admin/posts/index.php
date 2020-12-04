@@ -1,7 +1,22 @@
 <h1 class="h3">
      Tous les articles 
-     <a href="<?= generate_url("admin.posts.create") ?>" class="btn btn-outline-primary">Ajouter</a>
+     <a 
+          href="<?= generate_url("admin.posts.create") ?>" 
+          class="btn btn-outline-primary"
+     >
+          Ajouter
+     </a>
 </h1>
+<div class="form-check">
+     <input 
+          type="checkbox" 
+          name="filter" 
+          id="filter" 
+          value="draft" 
+          onclick="filterPosts(this)"
+     >
+     <label for="filter">Voir le broillon</label>
+</div>
 <div class="table-responsive-md">
 
      <table class="table table-hover table-bordered table-striped">
@@ -25,7 +40,7 @@
                          <td>
                               <?= $p->getWriter() ? "{$p->getWriter()->getFirstname()} {$p->getWriter()->getLastname()}" : '' ?>
                          </td>
-                         <td>
+                         <td data-status="<?= $p->getStatus() ?>">
                               <?= $params->status[ $p->getStatus() ] ?>
                          </td>
                          <td>

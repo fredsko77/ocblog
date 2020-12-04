@@ -31,7 +31,8 @@ class AdminCategoriesController extends AbstractController
           $posts = $this->cm->findAll(Categories::class);
           $form = new FormBuilder();
           $categories = $this->cm->findAll(Categories::class);
-          return $this->adminView('categories.index', compact('form', 'categories')); 
+          $title = "Gestion des catégories";
+          return $this->adminView('categories.index', compact('form', 'categories', 'title')); 
      }  
      
      public function delete(array $params = [])

@@ -48,6 +48,16 @@
                               >
                                    Valider
                               </a>
+                              <a 
+                                   href="<?= generate_url("admin.comments.delete", [
+                                        'id' => $comment->getId()
+                                   ]); ?>" 
+                                   title="Supprimer le commentaire"
+                                   onclick="deleteComment(this, event)"
+                                   data-id="<?= $comment->getId() ?>"
+                              >
+                                   <i class="icofont-ui-delete"></i>
+                              </a>
                          </td>
                     </tr>
                <?php endforeach; ?>

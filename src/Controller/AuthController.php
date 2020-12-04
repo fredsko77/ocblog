@@ -198,7 +198,7 @@ class AuthController extends AbstractController
           }
           if ( $this->um->checkUserExists($data->username) ) {
                $user = $this->um->findUserByEmail($data->username);
-               $url = $user->getLastConnection() === null ? generate_url('auth.profile') : generate_url('blog');
+               $url = $user->getLastConnection() === null ? generate_url('auth.profile') : null;
                if (password_verify($data->password, $user->getPassword())) {
                     $token = generate_token(80);
                     $user->setToken($token)->setLastConnection((new DateTime)->format('Y-m-d H:i:s'));
@@ -287,10 +287,15 @@ class AuthController extends AbstractController
           $data = count($_POST) > 0 ? Helpers::sanitize($_POST) : (array) json_decode($this->request->getContent());
           $user = $this->um->find((int) $params['id'], Users::class);
           if ( $this->request->checkAuthorization() ) {
+               if ( array_key_exists('e-mail', $data) ) {
+                    $data['email'] = $data['e-mail'];
+                    unset($data['e-mail']);
+               }
                if ($user instanceof Users) {
                     $upload = $this->upm->findBy( "users_id.{$user->getId()}", Uploads::class);
                     $now = (new DateTime())->format('Y-m-d H:m:s'); 
                     $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;                 
+                    unset($data['image']);
                     if ( count($_FILES) > 0 ) {
                          if ( $file && $file->error === 0 && $file->name !== "" ) {
                               if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image'])) return $this->json([
@@ -423,7 +428,6 @@ class AuthController extends AbstractController
                     $user = $this->um->update(['email' => $email], ['id' => $id], true);
                     $message = "Votre adresse e-mail a bien été modifié !";
                }
-               // dd($user);
           } else {
                $message = 'Une erreur est survenue lors de la mise à jour de votre adresse email';
           }

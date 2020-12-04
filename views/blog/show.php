@@ -1,8 +1,14 @@
 <main id="main">
      <section class="container" id="blog-show">
           <div class="post-container">
-               <a href="<?= generate_url('blog') ?>" class="btn btn-primary">Retourner aux articles</a>
-               <h1 class="post-title text-center">
+               <a 
+                    href="<?= generate_url('blog') ?>" 
+                    class="back-button"
+               >
+                    <i class="icofont-rounded-left"></i>
+                    Retourner aux articles
+               </a>
+               <h1 class="post-title text-center mt-4">
                     <?= $params->post->getTitle(); ?> 
                </h1>
                <p class="post-chapo">
@@ -49,9 +55,21 @@
                          </p>
                     </div>
                </div>
+               <?php if (property_exists($params, 'auth') && $params->auth->getRole() === "admin"): ?> 
+               <p>
+                    <i class="icofont-pencil-alt-2"></i>
+                    <a 
+                         href="<?= generate_url('admin.posts.edit', ['id' => $params->post->getId()]) ?>"
+                         style="color: #444444;"
+                         target="_blank"
+                    >
+                         Modifier l'article
+                    </a>
+               </p>
+               <?php endif; ?>
                <div class="post-comment-form">
                     <?php 
-                         if ( property_exists( $params , 'user' ) ) {                              
+                         if ( property_exists( $params , 'auth' ) ) {                              
                               echo $params->form->start(generate_url('blog.posts.comment.add', [
                                    'id' => $params->post->getId()]
                               ), "handleComment(this, event)" );
@@ -76,7 +94,7 @@
                               data-target="comments" 
                               onclick="switchTabs(this,event)"
                               style="padding: 0 5px;"
-                              >
+                         >
                               <?= count($params->comments) ?>&nbsp;commentaires
                          </a>
                     </li>

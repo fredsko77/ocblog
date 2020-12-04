@@ -9,17 +9,21 @@
                     <li class="nav-item">
                          <a class="nav-link" href="#" data-target="params" onclick="switchTabs(this, event)">Paramètres</a>
                     </li>
-                    <li class="nav-item">
-                         <a class="nav-link" href="#" data-target="posts" onclick="switchTabs(this, event)">Articles</a>
-                    </li>
+                    <?php if ($params->auth->getRole() === "admin") : ?>
+                         <li class="nav-item">
+                              <a class="nav-link" href="#" data-target="posts" onclick="switchTabs(this, event)">Articles</a>
+                         </li>
+                    <?php endif; ?>
                </ul>
           </div>
      </div>
-     <div class="container">
+     <div class="container tabs-container">
           <?php 
                require_once get_template('auth/tabs/profile'); 
                require_once get_template('auth/tabs/params'); 
-               require_once get_template('auth/tabs/posts'); 
+               if ($params->auth->getRole() === "admin") {
+                    require_once get_template('auth/tabs/posts'); 
+               }               
           ?>
           
           

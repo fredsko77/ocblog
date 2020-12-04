@@ -25,7 +25,7 @@ abstract class AbstractController
      public function view(string $path, array $params = []) 
      {
 
-          if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
+          if ( $this->session->isLoggedUser() ) $params['auth'] = $this->session->getLoggedUser();
           
           $params['request'] = $this->request;
           $params['session'] = $this->session;
@@ -53,10 +53,12 @@ abstract class AbstractController
       */
      public function adminView(string $path, array $params = []) 
      {
-          if ( $this->session->isLoggedUser() ) $params['user'] = $this->session->getLoggedUser();
+          if ( $this->session->isLoggedUser() ) $params['auth'] = $this->session->getLoggedUser();
           
           $params['request'] = new Request();
           $params['session'] = new Session();
+
+          if ( !array_key_exists('title', $params) ) $params['title'] = "Administration du blog";
 
           $path = str_replace(".", "/", $path);
           

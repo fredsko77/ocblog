@@ -1,3 +1,10 @@
+img {
+     object-position: center;
+     object-fit: cover;
+}
+.hidden {
+     display: none !important; 
+}
 /* Navbar */
 .navbar-admin { 
      height: 15vh; 
@@ -6,18 +13,99 @@
      padding: .5rem 1rem; 
      background-color: #ffffff; 
      border-bottom: 0.8px solid rgba(0, 0, 0, .15); 
+     justify-content: flex-end;
 }
 .img_profile_circle { 
      height: 42px; 
      width: 42px; 
      border-radius: 50px; 
 }
-img {
-     object-position: center;
-     object-fit: cover;
+
+/* Header */
+#menu-user { 
+     top: 85px; 
+     right: -1000px; 
+     height: auto; 
+     border: 1px solid rgba(0, 0, 0, 0.102); 
+     max-width: 235px; 
+     width: 100%; 
+     border-radius: .5rem; 
+     z-index: 999999; 
+     box-shadow: 0.25rem .25rem 1.25rem rgba(0, 0, 0, 0.102);
+     background-color: #ffffff;
+     padding: 0; 
+     overflow: hidden;
+     transition: display 500ms ease-in-out;
+     display: none;
 }
-.hidden {
-     display: none !important; 
+#menu-user.show{     
+     animation: showmenu 1s forwards;
+     display: block;
+}
+#menu-user.hide{     
+     animation: hidemenu 1s forwards;
+}
+#menu-user ul {
+     width: 100%; 
+     margin: 0; 
+     padding: 0; 
+     box-sizing: border-box; 
+     list-style: none;
+}
+#menu-user ul li:hover {
+     background-color: #f5f5f5;
+}
+#menu-user ul li {
+     box-sizing: border-box; 
+     width: inherit; 
+     background-color: #ffffff;
+     border-bottom: 1px solid rgba(0,0,0, .2);
+}
+#menu-user ul li:last-child {
+     border-bottom: none;
+}
+#menu-user ul li a {
+     display: block; 
+     padding: .5rem 1rem;
+     line-height: 1.5; 
+     color: inherit; 
+     transition: all ease-out 500ms; 
+     box-sizing: content-box;
+     font-size: 1.09rem;
+     overflow: hidden;
+}
+@keyframes showmenu {
+     0% {
+          right: 0px;
+     }
+     50% {
+          right: 15px;
+     }
+     90% {
+          right: 10px;
+     }
+     100% {
+          right: 15px;
+     }
+}
+
+@keyframes hidemenu {
+     0% {
+          right: 15px;
+          display: block;
+     }
+     10% {
+          right: 10px;
+          display: block;
+     }
+     50% {
+          right: 15px;
+          display: block;
+     }
+     100% {
+          right: -1000px;
+          display: block;
+     }
 }
 
 /* Alert */
@@ -129,13 +217,38 @@ img {
      margin-top: 0; 
      box-sizing: border-box; 
 }
-aside { 
+#mobi-nav { 
      width: 20%; 
      max-width: 225px; 
      background-color: #ffffff; 
      border-right: 0.8px solid rgba(0, 0, 0, .15); 
      height: 100%; 
      padding: 20px 0 0; 
+     z-index: 99999;
+     overflow: hidden;
+     transition: width 800ms ease-in-out;
+}
+
+@media screen and (max-width : 1350px) {
+     #mobi-nav {
+          width: 0;
+          position: absolute;
+          top: 80px;
+          left: 0;
+     }
+     #hamburger-menu {
+          display: block !important;
+     }
+     .navbar-admin {
+          justify-content: space-between;
+     }
+}
+
+@media screen and (max-width : 500px) {
+     #mobi-nav {
+          max-width: unset;
+          width: 0;
+     }
 }
 main { 
      width: 100%; 
@@ -181,11 +294,12 @@ main {
      color: rgba(0, 0, 0, 0.92); 
      text-decoration: none; 
 }
-.hamburger-menu { 
+#hamburger-menu { 
      color: inherit; 
-     font-size: 1.75rem; 
+     font-size: 1.75rem;
+     display: none; 
 }
-.hamburger-menu:hover { 
+#hamburger-menu:hover { 
      color:inherit; 
      text-decoration: none; 
 }
@@ -342,4 +456,33 @@ main {
      background-color: #f9f9f9;
      z-index: 999999;
      padding: 1rem 2rem;
+}
+
+/* Dashboard page */
+.dash-panel
+{
+     height: auto;
+     min-height: 20vh;
+     font-size: 1.2rem;
+}
+.dash-panel > a 
+{
+     color: #444444;
+}
+.dash-panel a:hover 
+{
+     color: #444444;
+}
+#form-edit-role {
+     width: 100%;
+     max-width: 300px;
+     height: auto;
+     padding: .25rem 1.09rem .75rem;
+     position: fixed;
+     bottom: 1.5rem;
+     right: 2rem;
+     background-color: #ffffff;
+     border-radius: .25rem;
+     box-shadow: .25rem .25rem 1.25rem rgba(54, 33, 33, 0.35);
+     z-index: 999999;
 }

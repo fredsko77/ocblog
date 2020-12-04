@@ -156,5 +156,7 @@ class Uploads
           $this->posts_id = $posts_id;
           return $this;
      }
+
+     // public static function  
      
 }

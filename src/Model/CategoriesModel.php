@@ -17,5 +17,4 @@ class CategoriesModel extends Model
           $this->db = (new Connection())->getPdo();
      }
 
-
 }

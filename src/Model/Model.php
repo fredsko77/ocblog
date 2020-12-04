@@ -91,10 +91,15 @@ class Model
 
      public function update(array $set = [], array $where = [], bool $object = false) 
      {
-          $sql = "UPDATE {$this->table} SET {$this->getSetTables($set)}";  
-          if ( count($where) > 0 ) $sql .= " WHERE {$this->getWhereTables($where)}"; 
+          $sql = "UPDATE {$this->table} SET {$this->getSetTables($set)} ";  
+          if ( count($where) > 0 ) $sql .= "WHERE {$this->getWhereTables($where)}"; 
           $stmt = $this->db->prepare($sql); 
           $data = array_merge($set, $where);
+          // dd([
+          //      'set' => $this->getSetTables($set),
+          //      'where' => $this->getWhereTables($where),
+          //      'execute' => Helpers::transformKeys($data),
+          // ]);
           if ( $stmt->execute(Helpers::transformKeys($data)) ) {
                return $object === true ? $this->find((int) $where['id'], $this->class) : true;
           }

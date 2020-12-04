@@ -4,8 +4,8 @@
           <div class="col-lg-6 col-md-9 col-xs-12">               
                <?php 
                     echo $params->form->start(generate_url('auth.email.reset.send', [
-                              's' => $params->user->getEmail(),
-                              'id' => $params->user->getId()
+                              's' => $params->auth->getEmail(),
+                              'id' => $params->auth->getId()
                          ]), 
                          "handleEmailReset(this, event)", 
                          true, 
@@ -16,7 +16,7 @@
                               'type' => 'email',
                               'label' => 'Adresse e-mail actuelle',
                               'attr' => [
-                                   'value' => $params->user->getEmail(),
+                                   'value' => $params->auth->getEmail(),
                                    'disabled' => 'disabled',
                               ]
                          ], true); 
@@ -34,7 +34,7 @@
                <h5>Changer votre mot de passe</h5>             
                <?php 
                     echo $params->form->start( generate_url('auth.profile.change.password', [
-                              'id' => $params->user->getId()
+                              'id' => $params->auth->getId()
                          ])
                          , "handleProfileResetPassword(this, event)", 
                          false, 
@@ -57,7 +57,7 @@
      <p class="mt-5">
           <a 
                href="<?= generate_url('auth.delete', [
-                    'id' => $params->user->getId()
+                    'id' => $params->auth->getId()
                ]); ?>" 
                class="text-danger"
                title="Supprimer votre compte utilisateur"

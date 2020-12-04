@@ -192,7 +192,7 @@ class Helpers
 
      public static function checkExtension(string $file_name, array $allowed_extensions) 
      {
-          $file_extension = explode('.', $file_name)[1];
+          $file_extension = strtolower(explode('.', $file_name)[1]);
           return in_array($file_extension, $allowed_extensions);
      }
 

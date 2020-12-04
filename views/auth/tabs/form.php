@@ -3,12 +3,13 @@
           <i 
                class="icofont-close float-right" 
                title="Fermer le formulaire" 
-               onclick="closeProfile()" id="close-form"
+               onclick="closeProfileform()" 
+               id="close-form"
           ></i>
      </div>        
      <?php 
           echo $params->form->start( generate_url('auth.profile.edit', [
-                    'id' => $params->user->getId(),
+                    'id' => $params->auth->getId(),
                ]), 
                'handleEditProfile(this, event)', 
                true,
@@ -22,9 +23,9 @@
                     <img 
                          title="Photo de profil"
                          class="img-profile" 
-                         src="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
+                         src="<?= $params->auth->getImage()->path ?? "uploads/profile-default.jpg" ?>" 
                          alt="photo de profil" 
-                         srcset="<?= $params->user->getImage()->path ?? "uploads/profile-default.jpg" ?>"
+                         srcset="<?= $params->auth->getImage()->path ?? "uploads/profile-default.jpg" ?>"
                          id="uploaded-img" 
                     >
                     <div class="img-overlay">
@@ -42,7 +43,7 @@
                                    'value' => 'fredsko77',
                               ]
                          ], true);
-                         if ( $params->user->getRole() === 'admin' ) {
+                         if ( $params->auth->getRole() === 'admin' ) {
                               echo $params->form->input('position', [
                                    'label' => null,
                                    'attr' => [
@@ -66,7 +67,7 @@
                          id="firstname" 
                          class="form-control" 
                          disabled
-                         value="<?= $params->user->getFirstname() ?>"
+                         value="<?= $params->auth->getFirstname() ?>"
                     >
                </div>
                <div class="col-6">
@@ -77,7 +78,7 @@
                          id="lastname" 
                          class="form-control" 
                          disabled
-                         value="<?= $params->user->getlastname() ?>"
+                         value="<?= $params->auth->getlastname() ?>"
                     >
                </div>
           </div>
@@ -87,7 +88,7 @@
                     'label' => 'Adresse e-mail',
                     'attr' => [
                          'disabled' => 'disabled',
-                         'value' => $params->user->getEmail(),
+                         'value' => $params->auth->getEmail(),
                     ],
                ], true);
           ?>
@@ -99,7 +100,7 @@
                     'attr' => [
                          'placeholder' => "Châpo de l&#39;article ici",
                          'rows' => 4,
-                         'value' => $params->user->getChapo(),
+                         'value' => $params->auth->getChapo(),
                     ]
                ], true) 
           ?>

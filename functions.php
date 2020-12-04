@@ -316,12 +316,17 @@ function init_session()
  * @param string $date
  * @return string
  */
-function fr_date(string $date):string
+function fr_date(string $date = ''):string
 {
     return utf8_encode( strftime("%d %B %Y", strtotime($date ?? (new DateTime())->format('d/m/Y à H:m')) ) );
 }
 
-function diff(string $date)
+/**
+ * date diff 
+ * @param string $date
+ * @return string
+ */
+function diff(string $date):string
 {
     $now = new DateTime('now');
     $date = new DateTime($date);
@@ -339,4 +344,13 @@ function diff(string $date)
         $str = "{$diff->i} " . ($diff->i === 1 ? "minute" : "minutes");
     }
     return "il y a {$str}";
+}
+
+/**
+ * now
+ * @return string
+ */
+function now():string 
+{
+    return (new DateTime('now'))->format('Y-m-d H:i:s');
 }

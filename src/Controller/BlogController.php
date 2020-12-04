@@ -57,17 +57,19 @@ class BlogController extends AbstractController
      public function show(array $params = []) 
      {
           $post = $this->pm->find((int) $params['id'], Posts::class);
+          // dd($post->getId());
           if ($post instanceof Posts) {
                if ($params['slug'] !== $post->getSlug()) return $this->redirect(generate_url('blog.show', [
                     'slug' => $post->getSlug(),
                     'id' => $post->getId(),
                ]));
+               $title = $post->getTitle();
+               $posts = $this->pm->similar((int) $post->getCategoryId()->getId());
+               $form = new FormBuilder();
+               $comments = $this->cm->getPostComments( (int) $post->getId() );
+               return $this->view('blog.show', compact('post', 'title', 'form', 'comments', 'posts'));
           }
-          $title = $post->getTitle();
-          $posts = $this->pm->similar((int) $post->getCategoryId()->getId());
-          $form = new FormBuilder();
-          $comments = $this->cm->getPostComments( (int) $post->getId() );
-          return $this->view('blog.show', compact('post', 'title', 'form', 'comments', 'posts'));
+          return $this->view('blog.show');
      }
 
      public function comment(array $params = [])

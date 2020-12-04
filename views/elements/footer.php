@@ -5,7 +5,7 @@
           <div class="container content">
                <div class="row">
                     <div class="web-map col-12 col-md-6">
-                         <h4 class="text-left">Plan du site</h4>
+                         <h4 class="">Plan du site</h4>
                          <ul class="web-map-list">
                               <li class="web-map-item">
                                    <a href="<?= generate_url('home') ?>">
@@ -23,13 +23,13 @@
                                    </a>
                               </li>
                               <?php if (is_blog()):
-                                        if ( property_exists($params, 'user')  ): 
-                                             if ( $params->user->getRole() === "admin" && $params->user !== null ): ?>
-                                             <li class="web-map-item">
-                                                  <a href="<?= generate_url('admin') ?>">
-                                                       Administration
-                                                  </a>
-                                             </li>
+                                        if ( property_exists($params, 'auth')  ): 
+                                             if ( $params->auth->getRole() === "admin" && $params->auth !== null ): ?>
+                                                  <li class="web-map-item">
+                                                       <a href="<?= generate_url('admin') ?>">
+                                                            Administration
+                                                       </a>
+                                                  </li>
                               <?php          endif;
                                         endif;
                                    endif; 

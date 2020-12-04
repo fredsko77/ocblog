@@ -26,6 +26,11 @@ class Users
      private $last_connection;
      private $created_at;
 
+     const ROLES = [
+          'user' => 'Utilisateur',
+          'admin' => 'Administrateur',
+     ];
+
      /**
       * __construct
       * @param  mixed $data

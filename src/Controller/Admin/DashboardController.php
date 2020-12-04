@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\AbstractController;
+use App\Model\PostsModel;
 use App\Services\Session;
+use App\Controller\AbstractController;
+use App\Model\CommentsModel;
+use App\Model\ContactsModel;
 
 class DashboardController extends AbstractController
 {
@@ -13,13 +16,21 @@ class DashboardController extends AbstractController
 
      public function __construct()
      {
-          // $this->pm = new PostsModel();
-          $this->session = new Session();
+          $this->contact = new ContactsModel;
+          $this->cm = new CommentsModel;
+          $this->pm = new PostsModel;
+          $this->session = new Session;
      }
      
      public function index() 
      {
-          return $this->adminView('index');
+          $contacts = $this->contact->pending();
+          $comments = $this->cm->pending();
+          $posts = $this->pm->draft();
+          $latest = $this->pm->latest();
+          $lastUploadedPost = $this->pm->lastUpdatedPost(); 
+          $title = "Tableau de bord";
+          return $this->adminView('index', compact('contacts', "comments", 'posts', 'latest', 'lastUploadedPost', 'title'));
      }
 
 }

@@ -39,7 +39,8 @@ class AdminPostsController extends AbstractController
      {
           $posts = $this->pm->findAll(Posts::class, "updated_at.desc");
           $status = Posts::STATUS;
-          return $this->adminView('posts.index', compact('posts', 'status')); 
+          $title = "Gestion des articles";
+          return $this->adminView('posts.index', compact('posts', 'status', 'title')); 
      }     
 
      public function create()
@@ -48,7 +49,8 @@ class AdminPostsController extends AbstractController
           $status   = Posts::STATUS;
           $writers  = Helpers::getWriters($this->um->findBy("role.admin", Users::class));
           $categories  = Helpers::getCategories($this->cm->findAll(Categories::class));
-          return $this->adminView('posts.create', compact('form', 'status', 'writers', 'categories')); 
+          $title = 'Création d\'un article';
+          return $this->adminView('posts.create', compact('form', 'status', 'writers', 'categories', 'title')); 
      }   
      
      public function delete(array $params = [])
@@ -82,7 +84,9 @@ class AdminPostsController extends AbstractController
           $form     = new FormBuilder($data);
           $post     = new Posts($data);
           $writers  = Helpers::getWriters($this->um->findBy("role.admin", Users::class));
-          return $this->adminView('posts.edit', compact('form', 'status', 'post', 'writers'));
+          $categories  = Helpers::getCategories($this->cm->findAll(Categories::class));
+          $title = "Modification de l'article n°{$post->getId()}";
+          return $this->adminView('posts.edit', compact('form', 'status', 'post', 'writers', 'categories', 'title'));
      }
 
      public function update(array $params = [])
@@ -96,6 +100,7 @@ class AdminPostsController extends AbstractController
                if ( $post instanceof Posts) {
                     $now = (new DateTime())->format('Y-m-d H:m:s'); 
                     $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;
+                    if ($data['slug'] === "") $data['slug'] = Helpers::generateSlug($data['title']);
                     unset($data['image']);                      
                     if ( count($_FILES) > 0 ) {   
                          if ( $file && $file->error === 0 && $file->name !== "" ) {

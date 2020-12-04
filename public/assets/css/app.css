@@ -5,7 +5,7 @@
      position: relative;
 }
 #main { 
-     min-height: 105vh; 
+     min-height: 90vh; 
      margin-top: 0 !important;
      max-width: 100%;
 }
@@ -14,6 +14,20 @@
 }
 #error_msg_form { 
      list-style: none; 
+}
+a i.icofont {
+     color: inherit;
+}
+
+.back-button {
+     color: #ffffff;
+     font-size: 1.05rem;
+     padding: .45rem .75rem;
+     background-color: #34b7a7;
+     border-radius: .25rem;
+}
+.back-button:hover {
+     color: #ffffff;
 }
 
 /* Page list post */
@@ -253,6 +267,21 @@
      list-style: none; 
      text-align: left; 
 }
+.web-map h4 {
+     text-align: left;
+}
+
+@media screen and (max-width: 768px) {
+     .web-map {
+          margin-bottom: 1rem;
+     }
+     .web-map-item {
+          text-align: center;
+     }
+     .web-map h4 {
+          text-align: center;
+     }
+}
 
 @keyframes alert {
      0% {
@@ -281,7 +310,7 @@
      right: -1000px; 
      height: auto; 
      border: 1px solid rgba(0, 0, 0, 0.102); 
-     max-width: 200px; 
+     max-width: 235px; 
      width: 100%; 
      border-radius: .5rem; 
      z-index: 999999; 
@@ -431,7 +460,6 @@ ul.tabs li a.active {
 [data-tabs] {
      width: 100%;
      height: auto;
-     min-height: calc(75vh - 100px);
      box-sizing: border-box;
      padding: 1rem 0 1.5rem; 
      margin-bottom: 10px;
@@ -439,6 +467,17 @@ ul.tabs li a.active {
 }
 [data-tabs=profile] {
     position: relative;
+}
+.tabs-container {
+     height: auto;
+     min-height: 87vh;
+     overflow: hidden;
+     margin-bottom: 1rem;
+}
+@media screen and (max-width : 1450px) {
+     .tabs-container {
+          min-height: 100vh;
+     }
 }
 .btn-profile {
      padding: .33rem 1rem;

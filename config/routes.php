@@ -160,6 +160,10 @@ return $routes = [
                'action' => 'App\Controller\Admin\AdminUsersController@store',
                'path' => '/admin/users/store',
           ],
+          'admin.users.edit.role' => [
+               'action' => 'App\Controller\Admin\AdminUsersController@editRole', 
+               'path' => "/admin/users/role/:id/edit", 
+          ],
      ],
      'PUT' => [
           'admin.categories.update' => [
@@ -174,10 +178,6 @@ return $routes = [
                'action' => "App\Controller\Admin\AdminContactsController@read",
                'path' => "/admin/contacts/:id/edit"
           ],
-          'admin.users.edit.role' => [
-               'action' => 'App\Controller\Admin\AdminUsersController@editRole', 
-               'path' => "/admin/users/:id/:s", 
-          ],
      ], 
      'DELETE' => [
           'admin.posts.delete' => [
@@ -187,6 +187,10 @@ return $routes = [
           'admin.categories.delete' => [
                'action' => "App\Controller\Admin\AdminCategoriesController@delete",
                'path' => "/admin/categories/:id/delete"
+          ],
+          'admin.comments.delete' => [
+               'action' => "App\Controller\Admin\AdminCommentsController@delete",
+               'path' => "/admin/comments/:id/delete"
           ],
           "admin.users.delete" => [
                'action' => "App\Controller\Admin\AdminUsersController@delete",

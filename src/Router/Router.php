@@ -5,6 +5,7 @@ namespace App\Router;
 use App\Helpers\Helpers;
 use App\Services\Request;
 use App\Controller\BlogController;
+use App\Security;
 
 class Router 
 {
@@ -24,6 +25,9 @@ class Router
 
      public function match()
      {          
+          $security = new Security();
+          if($security() === "Unauthorized") return http_response_code(403);
+          
           $this->url = explode('?', $this->request->server('REQUEST_URI'))[0];
           foreach ( $this->routes[$this->request->server('REQUEST_METHOD')] as $k => $v ) {
                if ( preg_match(Helpers::getUrlPattern($v["path"]), $this->url) ) {
@@ -39,6 +43,7 @@ class Router
 
      public function execute()
      {
+
           $values = explode("@", $this->action);
           $controller = new $values[0]();
           $method = $values[1];
