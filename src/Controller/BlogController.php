@@ -57,7 +57,6 @@ class BlogController extends AbstractController
      public function show(array $params = []) 
      {
           $post = $this->pm->find((int) $params['id'], Posts::class);
-          // dd($post->getId());
           if ($post instanceof Posts) {
                if ($params['slug'] !== $post->getSlug()) return $this->redirect(generate_url('blog.show', [
                     'slug' => $post->getSlug(),
