@@ -30,7 +30,7 @@ class Mailer
                $mailer = new \Swift_Mailer($this->getTransport());
                $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.confirm', ['s' => $user->getToken()]);
                // Create a message
-               $body ="<p>Bienvenu sur <u>Mon Super Blog</u>, <a href='{$link}'>cliquer ici</a> pour confirmer votre compte.</p>";
+               $body = esc_html("<p>Bienvenu sur <u>Mon Super Blog</u>, <a href='{$link}'>cliquer ici</a> pour confirmer votre compte.</p>");
                $message = $this->setMessage($body, [$user->getEmail()], "Confirmer votre compte"  );
                // Send the message
                $mailer->send($message);
@@ -49,7 +49,7 @@ class Mailer
                     's' => $email,
                ]);
                // Create a message
-               $body ="<p>Pour modifier votre adresse e-mail, <a href='{$link}'>cliquer ici</a>.</p>";
+               $body = esc_html("<p>Pour modifier votre adresse e-mail, <a href='{$link}'>cliquer ici</a>.</p>");
                $message = $this->setMessage($body, [$email], "Modifier l'adresse e-mail de votre compte"  );
                // Send the message
                $mailer->send($message);
@@ -61,12 +61,11 @@ class Mailer
 
      public function sendConfirmContact(object $data) 
      {
-          // dd($data);
           try {
                $mailer = new \Swift_Mailer($this->getTransport());
                $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('blog');
                // Create a message
-               $body ="
+               $body = esc_html( "
                     <p>
                          Bonjour {$data->name}, 
                          <br/> 
@@ -90,7 +89,7 @@ class Mailer
                          <br/> 
                          L'équipe Mon Super Blog
                     </p>
-               ";
+               " );
                $message = $this->setMessage($body, [$data->email], "Confirmer votre compte" );
                // Send the message
                $mailer->send($message);
@@ -105,7 +104,7 @@ class Mailer
           try {
                $mailer = new \Swift_Mailer($this->getTransport());
                $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.reset.password', ['s' => $users->getToken()]);
-               $body ="
+               $body = esc_html( "
                     <p>
                          Bonjour {$users->getFirstname()}, 
                          <br/> 
@@ -118,7 +117,7 @@ class Mailer
                          <br/> 
                          L'équipe Mon Super Blog
                     </p>
-               ";
+               " );
                $message = $this->setMessage($body, [$users->getEmail()],$object );
                // Send the message
                $mailer->send($message);

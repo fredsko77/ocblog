@@ -59,7 +59,7 @@ class HomeController extends AbstractController
                unset($data['csrf_token']);
                $data['status'] = 'pending';
                if ($mail->sendConfirmContact((object) $data)) {
-                    $contact = $this->contact->insert($data, true);
+                    $this->contact->insert($data, true);
                     return $this->json([
                          'message' => [
                               'type' =>'success',

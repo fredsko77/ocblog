@@ -17,6 +17,6 @@
                     </circle>
                </svg>
           </div>
-          <?php echo $params->pagination->create() ?> 
+          <?php _e( $params->pagination->create() ) ?> 
      </section>
 </main><!-- End of Main -->

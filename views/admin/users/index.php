@@ -2,7 +2,7 @@
     Liste des utlisateurs 
     (<o id="count-contact"><?= $params->users !== NULL ? count($params->users) : 0 ?></o>)
     <a 
-        href="<?= generate_url("admin.users.create") ?>" 
+        href="<?php esc_url( generate_url("admin.users.create") ); ?>" 
         class="btn btn-outline-primary"
     >
         Ajouter
@@ -32,9 +32,9 @@
                 </td>
                 <td>
                     <a 
-                        href="<?= generate_url("admin.users.edit.role", [
+                        href="<?php esc_url( generate_url("admin.users.edit.role", [
                             'id' => $user->getId()
-                        ]) ?>" 
+                        ]) ); ?>" 
                         title="Modifier l'utilisateur"
                         data-id="<?= $user->getId() ?>"
                         onclick="openEditUserForm(this, event)"
@@ -42,9 +42,9 @@
                         <i class="icofont-edit"></i>
                     </a>
                     <a 
-                        href="<?= generate_url("admin.users.delete", [
+                        href="<?php esc_url( generate_url("admin.users.delete", [
                             'id' => $user->getId()
-                        ]) ?>" 
+                        ]) ); ?>" 
                         title="Supprimer l'utilisateur"
                         data-id="<?= $user->getId() ?>"
                         onclick="deleteUser(this, event)"
@@ -58,10 +58,10 @@
 </table>
 
 <?php 
-    echo $params->form->start("", "handleEditRole(this, event)", false, [
+    _e( $params->form->start("", "handleEditRole(this, event)", false, [
         'id' => 'form-edit-role',
         'class' => 'hidden',
-    ]);
+    ]) );
 ?>
 <div class="mb-1" id="close">
     <i 
@@ -71,9 +71,9 @@
         style="margin-right: 0 !important; margin-bottom: 5px"
     ></i>
 </div>  
-<?php echo $params->form->select('role', $params->roles, false, false, true); ?>
+<?php _e( $params->form->select('role', $params->roles, false, false, true) ); ?>
 <div class="d-flex flex-row mb-1">
-    <?php echo $params->form->submit("Enregistrer"); ?>
+    <?php _e( $params->form->submit("Enregistrer") ); ?>
     <button 
         class="btn btn-link" 
         id="cancel-btn" 
@@ -82,4 +82,4 @@
         Annuler
     </button>
 </div>
-<?php echo $params->form->end(); ?>
+<?php _e( $params->form->end() ); ?>

@@ -42,7 +42,6 @@ class BlogController extends AbstractController
           $currentPage = array_key_exists('id', $params) ? (int) $params['id'] : 0;
           $posts = $this->pm->pagePosts((int) $currentPage);
           $pagination = new Pagination($nbPages, $currentPage);
-          $title = 'Blog';
           return $this->view('blog.index', compact('posts', 'pagination'));
      }
      

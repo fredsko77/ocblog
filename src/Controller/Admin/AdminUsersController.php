@@ -73,7 +73,7 @@ class AdminUsersController extends AbstractController
           return $this->adminView("users.create", compact('form', 'roles', 'title'));
      }
 
-     public function store(array $params = [])
+     public function store()
      {
           $data = (array) json_decode( $this->request->getContent() ); 
           if ( $this->request->checkAuthorization() ) { 

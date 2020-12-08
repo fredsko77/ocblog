@@ -25,7 +25,7 @@ class Pagination
                               <a href=\"{$url}\"> {$i} </a> \r\n
                          </li> \r\n";
           }
-          return $page; 
+          return $page ; 
      }
 
      public function create()
@@ -39,7 +39,7 @@ class Pagination
                               <a href=\"{$next}\"><i class=\"icofont-curved-double-right\"></i></a> \r\n
                          </div>\r\n";
           $pagination .= "</span>";
-          return $pagination;
+          return esc_html( $pagination );
      }
 
 }

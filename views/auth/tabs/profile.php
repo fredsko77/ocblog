@@ -21,7 +21,9 @@
                </div>
                <div class="col-9 d-flex flex-column  justify-content-center">
                     <h4><?= $params->auth->getFirstname() ?>&nbsp;<?= strtoupper($params->auth->getLastname()) ?></h4>
-                    <h4> <?php if ( $params->auth->getRole() === 'admin' ) echo $params->auth->getPosition(); ?> </h4>
+                    <?php if ( $params->auth->getRole() === 'admin' ): ?>
+                         <h4><?= $params->auth->getPosition(); ?></h4>
+                    <?php endif; ?>
                </div>
           </div>
      </div>

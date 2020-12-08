@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Helpers\Helpers;
 use App\Services\Request;
 use App\Services\Session;
 
@@ -100,24 +99,13 @@ abstract class AbstractController
 
      /**
       * Return json Message
-      *
-      * @param [type] $type
-      * @param [type] $message
+      * @param string $type
+      * @param string $message
       * @return array
       */
-     public function setJsonMessage($type, $message):array
+     public function setJsonMessage(string $type,string $message):array
      {
           return ['type' => $type, 'content' => $message];
-     }
-
-     /**
-      * Refresh page
-      * @return void
-      */
-     public function refresh()
-     {
-          header('refresh:0');
-          die();
      }
 
 }
