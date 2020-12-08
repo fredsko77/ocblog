@@ -1,10 +1,10 @@
 <?php foreach($params->posts as $k => $post): ?>
      <div class="post-item">
           <a 
-               href="<?= generate_url('blog.show', [
+               href="<?php esc_url( generate_url('blog.show', [
                     'id' => $post->getId(), 
                     'slug' => $post->getSlug(),
-               ]) ?>" 
+               ]) ); ?>" 
                class="post-item-thumbnail"
           >
                <img 
@@ -17,20 +17,20 @@
                <?php if ( $post->getCategoryId() !== NULL ) : ?>
                     <p class="post-item-category">
                          <a 
-                              href="<?= generate_url('blog.category', [
+                              href="<?php esc_url( generate_url('blog.category', [
                                    'id' => $post->getCategoryId()->getId(), 
                                    'slug' => $post->getCategoryId()->getSlug(),
-                              ]); ?>"
+                              ]) ); ?>"
                          >     
                               <?= $post->getCategoryId() !== NULL ? $post->getCategoryId()->getCategory() : 'Catégorie' ?> <i class="icofont-rounded-right"></i> 
                          </a>
                     </p>
                <?php endif; ?>
                <a 
-                    href="<?= generate_url('blog.show', [
+                    href="<?php esc_url( generate_url('blog.show', [
                          'id' => $post->getId(), 
                          'slug' => $post->getSlug(),
-                    ]) ?>" 
+                    ]) ); ?>" 
                     class="post-item-title">
                     Titre de l'article
                </a>

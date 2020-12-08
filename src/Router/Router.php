@@ -29,7 +29,7 @@ class Router
           if($security() === "Unauthorized") return http_response_code(403);
           
           $this->url = explode('?', $this->request->server('REQUEST_URI'))[0];
-          foreach ( $this->routes[$this->request->server('REQUEST_METHOD')] as $k => $v ) {
+          foreach ( $this->routes[$this->request->server('REQUEST_METHOD')] as $v ) {
                if ( preg_match(Helpers::getUrlPattern($v["path"]), $this->url) ) {
                     $this->path = $v["path"];
                     $this->action = $v["action"];

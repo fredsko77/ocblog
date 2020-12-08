@@ -186,7 +186,7 @@ function get_current_url()
 function generate_url(string $name, array $params = []):string 
 {
     $routes = require 'config/routes.php';
-    foreach($routes as $method => $value) {
+    foreach($routes as $value) {
         if ( array_key_exists($name, $value) === true )
         {
             $path = $value[$name]['path'];
@@ -214,7 +214,7 @@ function generate_csrf():string
         // No token present, generate a new one
         $token = generate_token(50);
         $session->set('csrf_token', $token);
-        ?> <script> localStorage.setItem('csrf_token', '<?= $token ?>'); </script> <?php
+        ?> <script> localStorage.setItem('csrf_token', '<?php echo $token ?>'); </script> <?php
     } else {
         // Reuse the token
         $token = $session->get("csrf_token");
@@ -234,8 +234,7 @@ function generate_token(int $length):string
 }
 
 /**
- * Generate a token
- * @param integer $length
+ * Generate a filename
  * @return string
  */
 function generate_filename():string
@@ -246,14 +245,13 @@ function generate_filename():string
 
 /**
  * Transform array to string for strip_tags
- *
  * @param array $data
  * @return string
  */
 function array_to_string(array $data):string
 {
     $str = '';
-    foreach ($data as $k => $v) {
+    foreach ($data as $v) {
         $str .= "&lt;{$v}&gt;"; 
     }
     return $str;
@@ -331,19 +329,28 @@ function diff(string $date):string
     $now = new DateTime('now');
     $date = new DateTime($date);
     $diff = $date->diff($now, false);
-    $str = '';
+    $str = 'il y a ';
     if ( $diff->y > 0 ) {
-        $str = "{$diff->y} " . ($diff->y === 1 ? "an" : "ans");
-    } else if ( $diff->m > 0  ) {
-        $str = "{$diff->m} mois";
-    }  else if ( $diff->d > 0  ) {
-        $str = "{$diff->d} " . ($diff->d === 1 ? "jour" : "jours");
-    } else if ( $diff->h > 0  ) {
-        $str = "{$diff->h} " . ($diff->h === 1 ? "heure" : "heures");
-    } else if ( $diff->i > 0  ) {
-        $str = "{$diff->i} " . ($diff->i === 1 ? "minute" : "minutes");
+        return $str . "{$diff->y} " . ($diff->y === 1 ? "an" : "ans");
     }
-    return "il y a {$str}";
+    
+    if ( $diff->m > 0  ) {
+        return $str . "{$diff->m} mois";
+    }  
+    
+    if ( $diff->d > 0  ) {
+        return " $str {$diff->d} " . ($diff->d === 1 ? "jour" : "jours");
+    }
+
+    if ( $diff->h > 0  ) {
+        return " $str {$diff->h} " . ($diff->h === 1 ? "heure" : "heures");
+    } 
+
+    if ( $diff->i > 0  ) {
+        return " $str{$diff->i} " . ($diff->i === 1 ? "minute" : "minutes");
+    }
+
+    return "à l'instant";
 }
 
 /**
@@ -353,4 +360,29 @@ function diff(string $date):string
 function now():string 
 {
     return (new DateTime('now'))->format('Y-m-d H:i:s');
+}
+
+/**
+ * esc_html
+ * @param string $html
+ * @return string
+ */
+function esc_html(string $html):string
+{
+    return htmlentities($html, ENT_IGNORE);
+} 
+
+/**
+ * _e
+ * @param string $html
+ * @return void
+ */
+function _e(string $html)
+{
+    echo html_entity_decode($html, ENT_IGNORE);
+}
+
+function esc_url($url)
+{
+    echo urldecode( urlencode( $url ) );
 }

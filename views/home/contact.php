@@ -40,7 +40,7 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0">
 
-                         <form action="<?php echo 'http://' . $params->request->server('HTTP_HOST') . generate_url('home.contact') ?>" onsubmit="contact(this,event)" method="post" role="form" class="php-email-form">
+                         <form action="<?php esc_url( generate_url('home.contact') ); ?>" onsubmit="contact(this,event)" method="post" role="form" class="php-email-form">
                               <div class="form-row">
                                    <div class="col-md-6 form-group">
                                         <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
@@ -59,7 +59,7 @@
                                    <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
                                    <div class="validate">message</div>
                               </div>
-                              <?php echo $params->form->csrf() ?>
+                              <?php _e( $params->form->csrf() ); ?>
                               <div class="mb-3">
                                    <div class="loading">Loading</div>
                                    <div class="error-message"></div>

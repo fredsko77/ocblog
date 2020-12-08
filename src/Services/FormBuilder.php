@@ -30,7 +30,7 @@ class FormBuilder
      {
           $enctype = $upload === true ?  "enctype='multipart/form-data'" : '';
           if ($onsubmit !== "" ) $onsubmit =  "onsubmit='{$onsubmit}'";
-          return "<form action='{$action}' method='{$method}' {$enctype} {$this->attr($attr)} {$onsubmit}>";           
+          return esc_html( "<form action='{$action}' method='{$method}' {$enctype} {$this->attr($attr)} {$onsubmit}>" );           
      }
 
      /**
@@ -53,7 +53,7 @@ class FormBuilder
           if ( $bootstrap === true ) {
                return $this->surround($textarea, 'form-group');
           }
-          return $textarea;
+          return esc_html( $textarea );
      }
 
      /**
@@ -78,7 +78,7 @@ class FormBuilder
           if ( $bootstrap === true ) {
                return $this->surround($input, 'form-group');
           }
-          return $input;
+          return esc_html( $input );
      }
 
      /**
@@ -95,11 +95,12 @@ class FormBuilder
           $required = $required ? 'required' : '';
           $multiple = $multiple ? 'multiple' : '';
           $attr = count($attr) > 0 ? $this->attr($attr) : '';
-          return    "<div class=\"mb-3 mt-2 custom-file\">
+          $html =   "<div class=\"mb-3 mt-2 custom-file\">
                          <input type=\"file\" class=\"custom-file-input\" name=\"{$name}\" id=\"{$name}\" {$attr} {$required} {$multiple}>
                          <label class=\"custom-file-label\" for=\"{$name}\">{$label}...</label>
                          <div class=\"invalid-feedback\">Example invalid custom file feedback</div>
                     </div>";
+          return esc_html( $html );
      }
 
      /**
@@ -128,7 +129,7 @@ class FormBuilder
       */
      public function surround(string $html, string $class = "", string $tag = "div"):string
      {
-          return "<{$tag} class=\"{$class}\">\r\n{$html}\r\n</{$tag}>";
+          return esc_html( "<{$tag} class=\"{$class}\">\r\n{$html}\r\n</{$tag}>" );
      }
 
      /**
@@ -138,7 +139,7 @@ class FormBuilder
       */
      public function csrf():string 
      {
-          return "<input type=\"hidden\" id=\"csrf_token\" name=\"csrf_token\" value=\"" . generate_csrf() . "\">";
+          return esc_html( "<input type=\"hidden\" id=\"csrf_token\" name=\"csrf_token\" value=\"" . generate_csrf() . "\">" );
      }
 
      /**
@@ -162,7 +163,7 @@ class FormBuilder
           if ( $bootstrap === true ) {
                return $this->surround($output, 'form-group');
           }
-          return $output;
+          return esc_html( $output );
      }
      
      /**
@@ -179,10 +180,10 @@ class FormBuilder
           $label = $data['label'] ?? '';
           $value = $data['value'] ?? '';
           $checked = array_key_exists($value, $this->data) ? 'checked' : '';
-          return "<div class='form-check {$class}'>
+          return esc_html( "<div class='form-check {$class}'>
                     <input name='{$name}' type='{$type}' class='form-check-input' id='{$name}{$value}' {$checked} value='{$value}'>
                     <label class='form-check-label' for='{$name}{$value}'>{$label}</label>
-               </div>";
+               </div>" );
      }
 
      /**
@@ -201,7 +202,7 @@ class FormBuilder
           } else {
                $classes = "{$classes}";
           }
-          return "<button type=\"submit\" class=\"{$classes}\">{$value}</button>";
+          return esc_html("<button type=\"submit\" class=\"{$classes}\">{$value}</button>");
      }
 
      /**
@@ -211,7 +212,7 @@ class FormBuilder
       */
      public function end():string
      {
-          return "</form>";
+          return esc_html("</form>");
      }
 
 

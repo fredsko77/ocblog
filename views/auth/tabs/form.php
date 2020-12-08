@@ -8,14 +8,14 @@
           ></i>
      </div>        
      <?php 
-          echo $params->form->start( generate_url('auth.profile.edit', [
-                    'id' => $params->auth->getId(),
-               ]), 
-               'handleEditProfile(this, event)', 
-               true,
-               [
-                    'id' => 'profile-form'
-               ]);
+          _e( $params->form->start( esc_url( generate_url('auth.profile.edit', [
+               'id' => $params->auth->getId(),
+          ]) ), 
+          'handleEditProfile(this, event)', 
+          true,
+          [
+               'id' => 'profile-form'
+          ]) );
      ?>
      <div class="col-12">
           <div class="row">
@@ -36,21 +36,21 @@
                </div>
                <div class="col-9 d-flex flex-column justify-content-center">
                     <?php 
-                         echo $params->form->input('pseudo', [
+                         _e( $params->form->input('pseudo', [
                               'label' => null,
                               'attr' => [
                                    'placeholder' => 'Votre pseudo',
                                    'value' => 'fredsko77',
                               ]
-                         ], true);
+                         ], true) );
                          if ( $params->auth->getRole() === 'admin' ) {
-                              echo $params->form->input('position', [
+                              _e( $params->form->input('position', [
                                    'label' => null,
                                    'attr' => [
                                         'placeholder' => 'Votre poste',
                                         'value' => 'Développeur d\'application Web PHP/Symfony'
                                    ]
-                              ], true);
+                              ], true) );
                          }
                     ?>
                </div>
@@ -83,32 +83,32 @@
                </div>
           </div>
           <?php
-               echo $params->form->input('e-mail', [
+               _e( $params->form->input('e-mail', [
                     'type' => 'email',
                     'label' => 'Adresse e-mail',
                     'attr' => [
                          'disabled' => 'disabled',
                          'value' => $params->auth->getEmail(),
                     ],
-               ], true);
+               ], true) );
           ?>
      </div>          
      <div class="col-12">
           <?php 
-               echo $params->form->textarea('chapo',[
+               _e( $params->form->textarea('chapo',[
                     'label' => 'À propos de moi', 
                     'attr' => [
                          'placeholder' => "Châpo de l&#39;article ici",
                          'rows' => 4,
                          'value' => $params->auth->getChapo(),
                     ]
-               ], true) 
+               ], true) ); 
           ?>
      </div>
      <div class="col-12 mt-2">
           <?php            
-               echo $params->form->submit('Enregistrer', 'primary');
-               echo $params->form->end(); 
+               _e( $params->form->submit('Enregistrer', 'primary') );
+               _e( $params->form->end() ); 
           ?>
      </div>
 </div>

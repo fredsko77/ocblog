@@ -2,27 +2,27 @@
 
 <?php
 
-    echo $params->form->start(generate_url('admin.users.store'), "handleStoreUser(this,event)", false, [
+    _e( $params->form->start( esc_url( generate_url('admin.users.store') ), "handleStoreUser(this,event)", false, [
         'id' => 'form-create-user'
-    ]);
+    ]) );
 
-    echo $params->form->select('gender', ['mr' => 'M', 'mme' => 'Mme'], "Civilité", false, true);
+    _e( $params->form->select('gender', ['mr' => 'M', 'mme' => 'Mme'], "Civilité", false, true) );
 
-    echo $params->form->input('lastname', [
+    _e( $params->form->input('lastname', [
         'label' => 'Nom'
-    ], true);
+    ], true) );
 
-    echo $params->form->input('firstname', [
+    _e( $params->form->input('firstname', [
         'label' => 'Prénom'
-    ], true);
+    ], true) );
 
-    echo $params->form->input('email', [
+    _e( $params->form->input('email', [
         'type' => "email", 
         'label' => 'Adresse e-mail',
-    ], true);
+    ], true) );
 
-    echo $params->form->select('role', $params->roles, 'Rôle de l\'utilisateur', false, true);
+    _e( $params->form->select('role', $params->roles, 'Rôle de l\'utilisateur', false, true) );
 
-    echo $params->form->submit("Enregistrer", 'outline-primary');
+    _e( $params->form->submit("Enregistrer", 'outline-primary') );
 
-    echo $params->form->end();
+    _e( $params->form->end() );

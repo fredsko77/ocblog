@@ -2,7 +2,7 @@
      <section class="container" id="blog-show">
           <div class="post-container">
                <a 
-                    href="<?= generate_url('blog') ?>" 
+                    href="<?php esc_url( generate_url('blog') ); ?>" 
                     class="back-button"
                >
                     <i class="icofont-rounded-left"></i>
@@ -59,7 +59,7 @@
                <p>
                     <i class="icofont-pencil-alt-2"></i>
                     <a 
-                         href="<?= generate_url('admin.posts.edit', ['id' => $params->post->getId()]) ?>"
+                         href="<?php esc_url( generate_url('admin.posts.edit', ['id' => $params->post->getId()]) ); ?>"
                          style="color: #444444;"
                          target="_blank"
                     >
@@ -70,19 +70,19 @@
                <div class="post-comment-form">
                     <?php 
                          if ( property_exists( $params , 'auth' ) ) {                              
-                              echo $params->form->start(generate_url('blog.posts.comment.add', [
-                                   'id' => $params->post->getId()]
-                              ), "handleComment(this, event)" );
-                              echo $params->form->textarea('comment',[
-                                        'label' => "Commentaire", 
-                                        'attr' => [
-                                             'placeholder' => "Commentaire ... ",
-                                             'rows' => 4,
-                                             'required' => 'required',
-                                        ]
-                                   ], true);
-                              echo $params->form->csrf();
-                              echo $params->form->submit();
+                              _e( $params->form->start( esc_url( generate_url('blog.posts.comment.add', [
+                                   'id' => $params->post->getId()] 
+                              ) ), "handleComment(this, event)" ) );
+                              _e( $params->form->textarea('comment',[
+                                   'label' => "Commentaire", 
+                                   'attr' => [
+                                        'placeholder' => "Commentaire ... ",
+                                        'rows' => 4,
+                                        'required' => 'required',
+                                   ]
+                              ], true) );
+                              _e( $params->form->csrf() );
+                              _e( $params->form->submit() );
                          }
                     ?>
                </div>

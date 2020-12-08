@@ -36,7 +36,7 @@ class Model
      }
 
      /**
-      * Get an item from db
+      * Get items from db
       * @param string $class
       * @param integer $id
       * @param boolean $instance
@@ -59,6 +59,12 @@ class Model
           return NULL;
      }
 
+     /**
+      * findAll
+      * @param string $class
+      * @param boolean $order_by
+      * @return void
+      */
      public function findAll(string $class = "", $order_by = false)
      {
           $order = "";
@@ -79,6 +85,12 @@ class Model
           return $data;
      }
 
+     /**
+      * insert
+      * @param array $data
+      * @param boolean $last_insert
+      * @return void
+      */
      public function insert(array $data, bool $last_insert = false)
      {    
           $sql = "INSERT INTO {$this->table} SET {$this->getSetTables($data)}";
@@ -89,35 +101,42 @@ class Model
           return false;
      }  
 
+     /**
+      * update
+      * @param array $set
+      * @param array $where
+      * @param boolean $object
+      * @return void
+      */
      public function update(array $set = [], array $where = [], bool $object = false) 
      {
           $sql = "UPDATE {$this->table} SET {$this->getSetTables($set)} ";  
           if ( count($where) > 0 ) $sql .= "WHERE {$this->getWhereTables($where)}"; 
           $stmt = $this->db->prepare($sql); 
           $data = array_merge($set, $where);
-          // dd([
-          //      'set' => $this->getSetTables($set),
-          //      'where' => $this->getWhereTables($where),
-          //      'execute' => Helpers::transformKeys($data),
-          // ]);
           if ( $stmt->execute(Helpers::transformKeys($data)) ) {
                return $object === true ? $this->find((int) $where['id'], $this->class) : true;
           }
           return false;
      }
 
+     /**
+      * delete
+      * @param integer $id
+      * @return boolean
+      */
      public function delete(int $id):bool
      {
           $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
           return $stmt->execute([":id" => $id]) ? true : false;
      }
 
-     public function getDb()
-     {
-          return $this->db;
-     }
-
-     public function getSetTables(array $data)
+     /**
+      * getSetTables
+      * @param array $data
+      * @return string
+      */
+     public function getSetTables(array $data): string
      {          
           $set = [];
           foreach ($data as $k => $v){
@@ -126,7 +145,12 @@ class Model
           return Helpers::putBetween(' , ', $set);
      }
 
-     public function getWhereTables(array $data)
+     /**
+      * getWhereTables
+      * @param array $data
+      * @return string
+      */
+     public function getWhereTables(array $data):string
      {          
           $where = [];
           foreach ($data as $k => $v){
@@ -135,7 +159,13 @@ class Model
           return Helpers::putBetween(' AND ', $where);
      }
 
-     public function getInstances(array $data, string $class = "") 
+     /**
+      * getInstances
+      * @param array $data
+      * @param string $class
+      * @return array
+      */
+     public function getInstances(array $data, string $class = ""):array
      {
           if ( $class === "" ) $class = $this->class; 
           $result = [];
@@ -145,7 +175,11 @@ class Model
           return $result;
      }
      
-     public function pending() 
+     /**
+      * pending
+      * @return array
+      */
+     public function pending():array 
      {
           $sql = "SELECT * FROM {$this->table} WHERE status = 'pending' ORDER BY created_at DESC";
           $data = $this->db->query($sql)->fetchAll();

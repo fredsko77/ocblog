@@ -27,16 +27,16 @@
      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
      <!-- Template Config JS File -->
-     <?php echo get_script('config'); ?>
+     <?php esc_url( get_script('config') ); ?>
 
      <!-- Template App JS File -->
-     <?php echo get_script('app'); ?>
+     <?php esc_url( get_script('app') ); ?>
 
      <!-- Template Main JS File -->     
-     <?php echo get_script('main'); ?>
+     <?php esc_url( get_script('main') ); ?>
      
      <!-- Template Admin JS File -->
-     <?php echo get_script('admin'); ?>
+     <?php esc_url( get_script('admin') ); ?>
      
      </body> 
      

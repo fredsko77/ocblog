@@ -26,8 +26,7 @@ class PostsModel extends Model
       */
      public function pagePosts(int $page = 0):array
      {
-          $offset = ($page * $this->limit);          
-          $data = [];
+          $offset = ($page * $this->limit);       
           $sql = "  SELECT * 
                     FROM {$this->table}
                     WHERE status = 'published' 
@@ -99,7 +98,11 @@ class PostsModel extends Model
           return [];
      }
 
-     public function nbPost()
+     /**
+      * nbPost
+      * @return object
+      */
+     public function nbPost():object
      {
           return $this->db->query("SELECT COUNT(id) AS nb_posts FROM {$this->table} WHERE status = 'published'")->fetch(\PDO::FETCH_OBJ);
      }

@@ -26,7 +26,6 @@ class AuthController extends AbstractController
      public function __construct()
      {
           $this->um = new UsersModel();
-          $this->pm = new PostsModel();
           $this->upm = new UploadsModel();
           $this->session = new Session();
           $this->request = new Request();
@@ -75,7 +74,7 @@ class AuthController extends AbstractController
           return $this->view('auth.reset-password', compact('form', 'token'));
      }
 
-     public function changePassword(array $params = []) 
+     public function changePassword() 
      {
           $data = (object) json_decode($this->request->getContent());
           if ( !Helpers::checkCsrfToken($data->csrf_token) ) {
@@ -246,7 +245,7 @@ class AuthController extends AbstractController
           if ( !$this->session->isLoggedUser() ) return $this->redirect( generate_url('auth.login') );
           $title = 'Mon profil';
           $form = new FormBuilder();
-          $posts = $this->pm->authPosts((int) $this->session->getLoggedUser()->getId());
+          $posts = (new PostsModel)->authPosts((int) $this->session->getLoggedUser()->getId());
           return $this->view('auth.profile', compact('title', 'form', 'posts') );
      }
 
@@ -286,64 +285,64 @@ class AuthController extends AbstractController
      {
           $data = count($_POST) > 0 ? Helpers::sanitize($_POST) : (array) json_decode($this->request->getContent());
           $user = $this->um->find((int) $params['id'], Users::class);
-          if ( $this->request->checkAuthorization() ) {
-               if ( array_key_exists('e-mail', $data) ) {
-                    $data['email'] = $data['e-mail'];
-                    unset($data['e-mail']);
-               }
-               if ($user instanceof Users) {
-                    $upload = $this->upm->findBy( "users_id.{$user->getId()}", Uploads::class);
-                    $now = (new DateTime())->format('Y-m-d H:m:s'); 
-                    $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;                 
-                    unset($data['image']);
-                    if ( count($_FILES) > 0 ) {
-                         if ( $file && $file->error === 0 && $file->name !== "" ) {
-                              if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image'])) return $this->json([
-                                   'message' => $this->setJsonMessage('danger', 'Ce type de fichier n\'est pas accepté ! ')
-                              ], 400);
-                              // Vérifier la taille du fichier
-                              if( $file->size > ( (int) $this->config->max_size_accepted * pow(1024, 2)) ) return $this->json([
-                                   'message' => $this->setJsonMessage('danger', 'Ce fichier est trop volumineux ! ') 
-                              ], 400);
-                              // Vérifier que le répertoire existe
-                              if ( ! is_dir($this->config->directory."/user") ) mkdir($this->config->directory."/user", 0777, true);  
-                              // Générer un nouveau nom au fichier    
-                              $filename = generate_filename() . "." . explode('.', $file->name)[1];
-                              // Déplacer le fichier téléchargé dans le répertoire
-                              if ( ! move_uploaded_file($file->tmp_name, $this->config->directory . "/user/" . $filename) ) {
-                                   return $this->json(['message' => $this->setJsonMessage('danger', 'L\'image n\'a pas pu être téléchargée . ')], 500); 
-                              }
-                              // Initialiser les données à persister
-                              $uploaded_file = [
-                                   'type' => 'profile',
-                                   'path' => str_replace('../public/', '',  $this->config->directory . "/user/" . $filename),
-                                   'created_at' => $now,
-                                   'users_id' => (int) $user->getId()
-                              ]; 
-                              if ($upload instanceof Uploads) unlink("../public/{$upload->getPath()}");
-                              $count = $upload instanceof Uploads ? 1 : 0;
-                              $upload = !$count ? $this->upm->insert($uploaded_file, true) : $this->upm->update_image($uploaded_file, true);
-                              $data['image'] = $upload->getId();
-                              $image = $upload->getPath() ?? null;
-                              unset($_FILES['image']);
-                         }
-                    }
-                    if( $this->um->update($data, ['id' => (int) $params['id'] ]) ) {
-                         return $this->json([
-                              'message' => $this->setJsonMessage('success', 'Votre compte utilisateur a été supprimé avec succès 🚀'),
-                              'image' => $image ?? '',                              
-                         ]); 
-                    };
-                    $this->session->unset('auth');
-                    return $this->json([
-                         'message' => $this->setJsonMessage('danger', '🛑 Une erreur est survenu lors de la suppression de ce compte !'), 
-                    ], 400);
-               }
-          } else {
+          if ( !$this->request->checkAuthorization() ) {
                return $this->json([
                     'message' => $this->setJsonMessage('danger', '🛑 Vous n\'êtes pas autorisé à effectuer cette action !')
                ], 401);
+          } 
+          if ( array_key_exists('e-mail', $data) ) {
+               $data['email'] = $data['e-mail'];
+               unset($data['e-mail']);
           }
+          if ($user instanceof Users) {
+               $upload = $this->upm->findBy( "users_id.{$user->getId()}", Uploads::class);
+               $now = (new DateTime())->format('Y-m-d H:m:s'); 
+               $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;                 
+               unset($data['image']);
+               if ( count($_FILES) > 0 ) {
+                    if ( $file && $file->error === 0 && $file->name !== "" ) {
+                         if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image'])) return $this->json([
+                              'message' => $this->setJsonMessage('danger', 'Ce type de fichier n\'est pas accepté ! ')
+                         ], 400);
+                         // Vérifier la taille du fichier
+                         if( $file->size > ( (int) $this->config->max_size_accepted * pow(1024, 2)) ) return $this->json([
+                              'message' => $this->setJsonMessage('danger', 'Ce fichier est trop volumineux ! ') 
+                         ], 400);
+                         // Vérifier que le répertoire existe
+                         if ( ! is_dir($this->config->directory."/user") ) mkdir($this->config->directory."/user", 0777, true);  
+                         // Générer un nouveau nom au fichier    
+                         $filename = generate_filename() . "." . explode('.', $file->name)[1];
+                         // Déplacer le fichier téléchargé dans le répertoire
+                         if ( ! move_uploaded_file($file->tmp_name, $this->config->directory . "/user/" . $filename) ) return $this->json([
+                              'message' => $this->setJsonMessage('danger', 'L\'image n\'a pas pu être téléchargée . ')]
+                         , 500); 
+                         // Initialiser les données à persister
+                         $uploaded_file = [
+                              'type' => 'profile',
+                              'path' => str_replace('../public/', '',  $this->config->directory . "/user/" . $filename),
+                              'created_at' => $now,
+                              'users_id' => (int) $user->getId()
+                         ]; 
+                         if ($upload instanceof Uploads) unlink("../public/{$upload->getPath()}");
+                         $count = $upload instanceof Uploads ? 1 : 0;
+                         $upload = !$count ? $this->upm->insert($uploaded_file, true) : $this->upm->update_image($uploaded_file, true);
+                         $data['image'] = $upload->getId();
+                         $image = $upload->getPath() ?? null;
+                         unset($_FILES['image']);
+                    }
+               }
+               if( $this->um->update($data, ['id' => (int) $params['id'] ]) ) {
+                    return $this->json([
+                         'message' => $this->setJsonMessage('success', 'Votre compte utilisateur a été supprimé avec succès 🚀'),
+                         'image' => $image ?? '',                              
+                    ]); 
+               };
+               $this->session->unset('auth');
+               return $this->json([
+                    'message' => $this->setJsonMessage('danger', '🛑 Une erreur est survenu lors de la suppression de ce compte !'), 
+               ], 400);
+          }
+          
           return $this->json([
                'message' => $this->setJsonMessage('danger', 'Une erreur est survenu lors du traitement de votre requête 🤕')
           ], 500);

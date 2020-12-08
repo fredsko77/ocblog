@@ -23,12 +23,10 @@ class AdminCategoriesController extends AbstractController
           $this->session = new Session;
           $this->request = new Request;
           $this->cm = new CategoriesModel;
-          $this->config = require "../config/uploads.php";
      }
 
      public function index()
      {
-          $posts = $this->cm->findAll(Categories::class);
           $form = new FormBuilder();
           $categories = $this->cm->findAll(Categories::class);
           $title = "Gestion des catégories";

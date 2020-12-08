@@ -6,24 +6,24 @@
 <header id="header">
      <div class="container-fluid d-flex justify-content-between align-items-center">
 
-     <h1 class="logo"><a href="<?= generate_url('home') ?>">Kelly</a></h1>
+     <h1 class="logo"><a href="<?php esc_url( generate_url('home') ); ?>">Kelly</a></h1>
      <!-- Uncomment below if you prefer to use an image logo -->
      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
      <?php if (is_home() || is_blog() || generate_url('auth.profile') ) : ?>
           <nav class="nav-menu d-none d-lg-block">
                <ul>
-                    <li <?php if(generate_url('home') === get_current_url()): ?> class="active" <?php endif; ?> >
-                              <a href="<?= generate_url('home') ?>">Accueil</a>
+                    <li <?php if( generate_url('home') === get_current_url() ): ?> class="active" <?php endif; ?> >
+                              <a href="<?php esc_url( generate_url('home') ); ?>">Accueil</a>
                     </li>
-                    <li  <?php if(generate_url('about') === get_current_url()): ?> class="active" <?php endif; ?> >
-                         <a href="<?= generate_url('about') ?>">A propos</a>
+                    <li  <?php if( generate_url('about') === get_current_url() ): ?> class="active" <?php endif; ?> >
+                         <a href="<?php esc_url( generate_url('about') ); ?>">A propos</a>
                     </li>
-                    <li  <?php if(generate_url('contact') === get_current_url()): ?> class="active" <?php endif; ?> >
-                         <a href="<?= generate_url('contact') ?>">Nous contacter</a>
+                    <li  <?php if( generate_url('contact') === get_current_url() ): ?> class="active" <?php endif; ?> >
+                         <a href="<?php esc_url( generate_url('contact') ); ?>">Nous contacter</a>
                     </li>
                     <li  <?php if( is_blog() ): ?> class="active" <?php endif; ?> >
-                         <a href="<?= generate_url('blog') ?>">Blog</a>
+                         <a href="<?php esc_url( generate_url('blog') ); ?>">Blog</a>
                     </li>
                </ul>
           </nav><!-- .nav-menu -->
@@ -48,7 +48,7 @@
                     <i class="icofont-linkedin"></i>
                </a>               
                <a 
-                    href="<?= generate_url('resume') ?>" 
+                    href="<?php esc_url( generate_url('resume') ); ?>" 
                     target="_blank" 
                     class="resume" 
                     title="Mon Cv"
@@ -72,7 +72,7 @@
                          <div class="position-absolute" id="menu-user">
                               <ul class="nav-drop">
                                    <li>
-                                        <a href="<?= generate_url('auth.profile') ?>"> 
+                                        <a href="<?php esc_url( generate_url('auth.profile') ); ?>"> 
                                              <i class="icofont-user-alt-3"></i> &nbsp; Mon profil
                                         </a>
                                    </li>
@@ -81,7 +81,7 @@
                                              if ( $params->auth->getRole() === "admin" && $params->auth !== null ): 
                                    ?>
                                              <li>
-                                                  <a href="<?= generate_url('admin') ?>"> 
+                                                  <a href="<?php esc_url( generate_url('admin') ); ?>"> 
                                                        <i class="icofont-home"></i> &nbsp; Tableau de bord
                                                   </a>
                                              </li> 
@@ -89,7 +89,7 @@
                                         endif; 
                                    ?>
                                    <li>
-                                        <a href="<?= generate_url('auth.logout') ?>"> 
+                                        <a href="<?php esc_url( generate_url('auth.logout') ); ?>"> 
                                              <i class="icofont-power"></i> &nbsp; Se déconnecter
                                         </a>
                                    </li>
@@ -98,14 +98,14 @@
                     <?php else: ?>
                          <span>
                               <a 
-                                   href="<?= generate_url('auth.login') ?>" 
+                                   href="<?php esc_url( generate_url('auth.login') ); ?>" 
                                    class=""
                               >
                                    Se connecter
                               </a>
                               |
                               <a 
-                                   href="<?= generate_url('auth.register') ?>"  
+                                   href="<?php esc_url( generate_url('auth.register') ); ?>"  
                                    class=""
                               >
                                    S'inscrire

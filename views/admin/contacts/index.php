@@ -20,7 +20,7 @@
                     <?php foreach($params->contacts as $k => $contact): ?>
                          <tr data-contact="<?= $contact->getId() ?>">
                               <th scope="row" data-name="<?= $contact->getName() ?>">
-                                   <a href="<?= generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ?>">
+                                   <a href="<?php esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>">
                                         <?= ucwords($contact->getName()); ?>
                                    </a>                         
                               </th>
@@ -35,7 +35,7 @@
                               </td>
                               <td>
                                    <a 
-                                        href="<?= generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ?>" 
+                                        href="<?php esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>" 
                                         title="Voir le message l'article"
                                         data-id="<?= $contact->getId() ?>"
                                         onclick="displayMessage(this, event)"
@@ -66,48 +66,48 @@
           </div>
           
           <?php 
-               echo $params->form->start('', "readContact(this, event)");
-               echo $params->form->input('name', [
+               _e( $params->form->start('', "readContact(this, event)") );
+               _e( $params->form->input('name', [
                     'label' => 'Nom',
                     'attr' => [
                          'value' => '',
                          'disabled' => 'disabled'
                     ],
-               ], true);
-               echo $params->form->input('email', [
+               ], true) );
+               _e( $params->form->input('email', [
                     'label' => 'E-mail',
                     'type' => 'email',
                     'attr' => [
                          'value' => '',
                          'disabled' => 'disabled'
                     ],
-               ], true);
-               echo $params->form->input('subject', [
+               ], true) );
+               _e( $params->form->input('subject', [
                     'label' => 'Sujet',
                     'attr' => [
                          'value' => '',
                          'disabled' => 'disabled'
                     ],
-               ], true);
-               echo $params->form->textarea('message', [
+               ], true) );
+               _e( $params->form->textarea('message', [
                     'label' => 'Message',
                     'attr' => [
                          'row' => 20,
                          'value' => '',
                          'disabled' =>'disabled',
                     ],
-               ], true);
-               echo $params->form->input('id', ['label' => null, 'type' => 'hidden']);
+               ], true) );
+               _e( $params->form->input('id', ['label' => null, 'type' => 'hidden']) );
           ?>
                <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="status" value="read">
                     <label class="form-check-label" for="status"><?= $params->status['read'] ?></label>
                </div>               
                <div class="d-flex flex-row">
-                    <?php echo $params->form->submit("Enregistrer"); ?>
+                    <?php _e( $params->form->submit("Enregistrer") ); ?>
                     <button class="btn btn-link" id="cancel-btn" onclick="closeMessage()">Annuler</button>
                </div>
-          <?= $params->form->end(); ?>
+          <?php _e( $params->form->end() ); ?>
      
      </div>
 

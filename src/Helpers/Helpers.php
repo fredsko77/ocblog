@@ -2,9 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Entity\Comments;
-use App\Entity\Posts;
-use App\Entity\Users;
 use App\Services\Session;
 
 class Helpers
@@ -23,7 +20,7 @@ class Helpers
           if (preg_match( "#{$needle}#", $str) ){
                $array = preg_split("#{$needle}#", $str);
                if ( is_array($array) ) {
-                    foreach ($array as $k => $v) {
+                    foreach ($array as $v) {
                          $method .= ucfirst($v);
                     }
                }
@@ -37,7 +34,7 @@ class Helpers
       * @param string $str
       * @return string
       */
-     public static function generateSlug(string $str,string ...$vars) 
+     public static function generateSlug(string ...$vars) 
      {
           $str = trim( self::putBefore(' ', func_get_args() ));
           $str = trim(skip_accents($str));
@@ -73,7 +70,7 @@ class Helpers
           $str = "";
           if ( is_array($array) )
           {
-               foreach($array as $k => $v):
+               foreach($array as $v):
                     $str .= "{$separator}{$v}";
                endforeach;
           }
@@ -128,7 +125,7 @@ class Helpers
           ]; 
           $explode_path = explode('/', trim($path, '/'));
           $parts = [];
-          foreach ( $explode_path as $k => $p) {
+          foreach ( $explode_path as $p) {
                if ( preg_match("#:#", $p) ) {
                     $parts[] = $patterns[preg_replace('#:#', '', $p)] ;
                } else {
@@ -146,7 +143,7 @@ class Helpers
       */
      public static function checkFieldsSet(array $data = []):bool
      {
-          foreach($data as $k => $v) {
+          foreach($data as $v) {
                if ( $v === '' || $v === NULL ) return false;
           }
           return true;
@@ -172,43 +169,49 @@ class Helpers
      /**
       * Check if csrf_token is valid
       * @param string $token
-      * @return void
+      * @return boolean
       */
-     public static function checkCsrfToken(string $token) 
+     public static function checkCsrfToken(string $token):bool
      {
           $session_csrf = (new Session)->get('csrf_token');
           return $session_csrf && $session_csrf === $token ? true : false;
      }
 
-     public static function commentsStatus()
-     {
-          return Comments::STATUS;
-     }
-
-     public static function postsStatus()
-     {
-          return Posts::STATUS;
-     }
-
-     public static function checkExtension(string $file_name, array $allowed_extensions) 
+     /**
+      * Undocumented function
+      * @param string $file_name
+      * @param array $allowed_extensions
+      * @return boolean
+      */
+     public static function checkExtension(string $file_name, array $allowed_extensions):bool
      {
           $file_extension = strtolower(explode('.', $file_name)[1]);
           return in_array($file_extension, $allowed_extensions);
      }
 
+     /**
+      * getWriters from admins Array
+      * @param array $users
+      * @return array
+      */
      public static function getWriters(array $users = []): array
      {
           $data = [];
-          foreach($users as $key => $user) {
+          foreach($users as $user) {
                $data[$user->getId()] = "{$user->getFirstname()} {$user->getLastname()}";
           }
           return $data;
      }
 
+     /**
+      * getCategories from categories Array
+      * @param array $categories
+      * @return array
+      */
      public static function getCategories(array $categories = []): array
      {
           $data = [];
-          foreach($categories as $key => $category) {
+          foreach($categories as $category) {
                $data[$category->getId()] = "{$category->getCategory()}";
           }
           return $data;
