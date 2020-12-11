@@ -2,7 +2,7 @@
      <section class="container" id="blog-show">
           <div class="post-container">
                <a 
-                    href="<?php esc_url( generate_url('blog') ); ?>" 
+                    href="<?= esc_url( generate_url('blog') ); ?>" 
                     class="back-button"
                >
                     <i class="icofont-rounded-left"></i>
@@ -59,7 +59,7 @@
                <p>
                     <i class="icofont-pencil-alt-2"></i>
                     <a 
-                         href="<?php esc_url( generate_url('admin.posts.edit', ['id' => $params->post->getId()]) ); ?>"
+                         href="<?= esc_url( generate_url('admin.posts.edit', ['id' => $params->post->getId()]) ); ?>"
                          style="color: #444444;"
                          target="_blank"
                     >
@@ -112,7 +112,7 @@
                </ul>               
                <?php require get_template('posts/comments'); ?>
                <div data-tabs="similar" class="hidden" id="blog-list">
-                    <?php require_once get_template("posts/repeater") ?>
+                    <?php require get_template("posts/repeater") ?>
                </div>
           </div>
      </section>

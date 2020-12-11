@@ -2,7 +2,7 @@
     Liste des utlisateurs 
     (<o id="count-contact"><?= $params->users !== NULL ? count($params->users) : 0 ?></o>)
     <a 
-        href="<?php esc_url( generate_url("admin.users.create") ); ?>" 
+        href="<?= esc_url( generate_url("admin.users.create") ); ?>" 
         class="btn btn-outline-primary"
     >
         Ajouter
@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     <a 
-                        href="<?php esc_url( generate_url("admin.users.edit.role", [
+                        href="<?= esc_url( generate_url("admin.users.edit.role", [
                             'id' => $user->getId()
                         ]) ); ?>" 
                         title="Modifier l'utilisateur"
@@ -42,7 +42,7 @@
                         <i class="icofont-edit"></i>
                     </a>
                     <a 
-                        href="<?php esc_url( generate_url("admin.users.delete", [
+                        href="<?= esc_url( generate_url("admin.users.delete", [
                             'id' => $user->getId()
                         ]) ); ?>" 
                         title="Supprimer l'utilisateur"

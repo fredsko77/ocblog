@@ -6,7 +6,7 @@
                     <div class="drop-down">
                          <div class="drop-btn">D'un coup d'oeil</div>
                          <div class="drop position-relative dash-panel">
-                              <a href="<?php esc_url( generate_url('admin.contacts') ); ?>">
+                              <a href="<?= esc_url( generate_url('admin.contacts') ); ?>">
                                    <h5>
                                         <i class="icofont-contacts"></i>
                                         <?= count($params->contacts) ?>
@@ -14,7 +14,7 @@
                                         Message(s) non lu(s)
                                    </h5>
                               </a>
-                              <a href="<?php esc_url( generate_url('admin.posts') ); ?>">
+                              <a href="<?= esc_url( generate_url('admin.posts') ); ?>">
                                    <h5>                                   
                                         <i class="icofont-papers"></i>
                                         <?= count($params->posts) ?>
@@ -22,7 +22,7 @@
                                         Article(s) en brouillon
                                    </h5>
                               </a>
-                              <a href="<?php esc_url( generate_url('admin.comments') ); ?>">
+                              <a href="<?= esc_url( generate_url('admin.comments') ); ?>">
                                    <h5>                                   
                                         <i class="icofont-speech-comments"></i>
                                         <?= count($params->comments) ?>
@@ -42,7 +42,7 @@
                                    <?= diff($params->lastUploadedPost->getUpdatedAt()) ?>
                                    &nbsp;
                                    <a 
-                                        href="<?php esc_url( generate_url('admin.posts.edit', [
+                                        href="<?= esc_url( generate_url('admin.posts.edit', [
                                              'id' => $params->lastUploadedPost->getId(),
                                         ]) ); ?>"
                                    >
@@ -56,10 +56,10 @@
           <div class="col-12 col-md-6 d-flex flex-column justify-content-start">  
                <div class="col-xs-12 mb-4">
                     <div class="drop-down">
-                         <div class="drop-btn">Articles les plus populaires</div>
+                         <div class="drop-btn">Derniers articles publiés</div>
                          <div class="drop position-relative dash-panel">
                               <?php foreach($params->latest as $k => $p): ?>
-                                   <a href="<?php esc_url( generate_url('blog.show', [
+                                   <a href="<?= esc_url( generate_url('blog.show', [
                                         'id' => $p->getId(),
                                         'slug' => $p->getSlug(),
                                    ]) ); ?>">

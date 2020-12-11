@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Helpers\Helpers;
 use App\Model\PostsModel;
+use App\Services\Validator;
 
 class Uploads 
 {
@@ -22,7 +23,7 @@ class Uploads
       *
       * @return void
      */
-     public function __construct( array $data )
+     public function __construct( array $data = [] )
      {
          $this->_hydrate($data);
      }
@@ -157,6 +158,24 @@ class Uploads
           return $this;
      }
 
-     // public static function  
+     public function move_file(object $file, string $folder = 'user') 
+     {
+          $config =  require "../config/uploads.php";
+          $validator = new Validator();
+          if ( !$validator->checkExtension($file->name)) return 'Ce type de fichier n\'est pas accepté ! ';
+          // Vérifier la taille du fichier
+          if( !$validator->size($file->size) ) return 'Ce fichier est trop volumineux ! ';
+          // Vérifier que le répertoire existe
+          if ( ! is_dir($config->directory. "/{$folder}") ) mkdir($config->directory."/{$folder}", 0777, true);  
+          // Générer un nouveau nom au fichier    
+          $filename = generate_filename() . "." . explode('.', $file->name)[1];
+          // Déplacer le fichier téléchargé dans le répertoire
+          if ( ! move_uploaded_file($file->tmp_name, $config->directory . "/{$folder}/" . $filename) ) return 'L\'image n\'a pas pu être téléchargée . '; 
+          // Initialiser les données à persister
+          return [
+               'type' => 'profile',
+               'path' => str_replace('../public/', '',  $config->directory . "/{$folder}/" . $filename),
+          ]; 
+     } 
      
 }

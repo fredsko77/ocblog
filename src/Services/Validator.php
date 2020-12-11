@@ -6,7 +6,8 @@ class Validator
 {
 
      public function __construct()
-     {          
+     {       
+          $this->config = require "../config/uploads.php";   
      }
      
      /**
@@ -50,9 +51,23 @@ class Validator
           return strlen($pseudo) > 5 ? true : false;
      }
 
-     public function maxSize($size):bool 
+     public function size($size):bool 
      {
+          if ($size > ( (int) $this->config->max_size_accepted * pow(1024, 2) ) ) {
+               return false;
+          }
           return true;
+     }
+     
+     /**
+      * Undocumented function
+      * @param string $file_name
+      * @return boolean
+      */
+     public function checkExtension(string $file_name):bool
+     {
+          $file_extension = strtolower(explode('.', $file_name)[1]);
+          return in_array($file_extension, $this->config->file_accepted['image']);
      }
 
 }

@@ -91,7 +91,7 @@ class AdminPostsController extends AbstractController
 
      public function update(array $params = [])
      {
-          $data = count($_POST) > 0 ? Helpers::sanitize($_POST) : (array) json_decode($this->request->getContent());
+          $data = count($this->request->postAll()) > 0 ? Helpers::sanitize($this->request->postAll()) : (array) json_decode($this->request->getContent());
           if ( $this->request->checkAuthorization() || Helpers::checkCsrfToken($data['csrf_token']) ) {
                $post = $this->pm->find((int) $params['id'], Posts::class);
                unset($data['csrf_token']);
@@ -99,35 +99,23 @@ class AdminPostsController extends AbstractController
                $upload = $this->upm->findBy( "posts_id.{$post->getId()}", Uploads::class);
                if ( $post instanceof Posts) {
                     $now = (new DateTime())->format('Y-m-d H:m:s'); 
-                    $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;
+                    $file = array_key_exists('image', $this->request->files()) ? (object) $this->request->files()['image'] : null ;
                     if ($data['slug'] === "") $data['slug'] = Helpers::generateSlug($data['title']);
                     unset($data['image']);                      
-                    if ( count($_FILES) > 0 ) {   
+                    if ( count($this->request->files()) > 0 ) {   
                          if ( $file && $file->error === 0 && $file->name !== "" ) {
-                              if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image'])) return $this->json([
-                                   'message' => $this->setJsonMessage('danger', 'Ce type de fichier n\'est pas accepté ! ')
+                              $uploaded_file = (new Uploads)->move_file($file, 'post');
+                         
+                         if ( is_string($uploaded_file) ) {
+                              return $this->json([
+                                   'message' => $this->setJsonMessage('danger', $uploaded_file),
                               ], 400);
-                              // Vérifier la taille du fichier
-                              if( $file->size > ( (int) $this->config->max_size_accepted * pow(1024, 2)) ) return $this->json([
-                                   'message' => $this->setJsonMessage('danger', 'Ce fichier est trop volumineux ! ') 
-                              ], 400);
-                              // Vérifier que le répertoire existe
-                              if ( ! is_dir($this->config->directory."/post") ) mkdir($this->config->directory."/post", 0777, true);  
-                              // Générer un nouveau nom au fichier    
-                              $filename = generate_filename() . "." . explode('.', $file->name)[1];
-                              // Déplacer le fichier téléchargé dans le répertoire
-                              if ( ! move_uploaded_file($file->tmp_name, $this->config->directory . "/post/" . $filename) ) {
-                                   return $this->json(['message' => $this->setJsonMessage('danger', 'L\'image n\'a pas pu être téléchargée . ')], 500); 
-                              }
-                              // Initialiser les données à persister
-                              $uploaded_file = [
-                                   'type' => 'poster',
-                                   'path' => str_replace('../public/', '',  $this->config->directory . "/post/" . $filename),
-                                   'created_at' => $now,
-                                   'posts_id' => (int) $post->getId()
-                              ];
+                         }
+                         // Initialiser les données à persister
+                         $uploaded_file['created_at'] = $now;
+                         $uploaded_file['posts_id'] = (int) $post->getId();
                               if ($upload instanceof Uploads) unlink("../public/{$upload->getPath()}");
-                              $upload = $upload === null ? $this->upm->insert($uploaded_file, true) : $this->upm->update_image($uploaded_file, true);
+                              $upload = $upload instanceof Uploads ? $this->upm->update_image($uploaded_file, true) : $this->upm->insert($uploaded_file, true);
                               $data['image'] = $upload->getId();
                          }
                     }
@@ -147,34 +135,28 @@ class AdminPostsController extends AbstractController
 
      public function store()
      {
-          $data = count($_POST) > 0 ? Helpers::sanitize($_POST) : (array) json_decode($this->request->getContent());
+          $data = count($this->request->postAll()) > 0 ? Helpers::sanitize($this->request->postAll()) : (array) json_decode($this->request->getContent());
           if ( $this->request->checkAuthorization() || Helpers::checkCsrfToken($data['csrf_token']) ) {
                unset($data['csrf_token']);
                $now = (new DateTime())->format('Y-m-d H:m:s');
-               $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;
+               $file = array_key_exists('image', $this->request->files()) ? (object) $this->request->files()['image'] : null ;
                $data['title'] = $data['title'] === "" ? 'Titre de l\'article' : $data['title'];
                $data['slug'] = Helpers::generateSlug($data['slug'] === "" ? $data['title'] : $data['slug']);
                $data['updated_at'] = $now;    
                $data['created_at'] = $now;
                $post = $this->pm->insert($data, true); 
                if ( $file && $file->error === 0 && $file->name !== "" )  {
-                    if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image']) ) return $this->json([
-                         'message' => $this->setJsonMessage('danger', 'Ce type de fichier n\'est pas accepté ! ')
-                    ], 400);
-                    if( $file->size > ((int) $this->config->max_size_accepted * pow(1024, 2)) ) return $this->json([
-                         'message' => $this->setJsonMessage('danger', 'Ce fichier est trop volumineux ! ') 
-                    ], 400);
-                    if ( ! is_dir($this->config->directory."/post") ) mkdir($this->config->directory."/post", 0777, true);                         
-                    $filename = generate_filename() . "." . explode('.', $file->name)[1];
-                    if ( ! move_uploaded_file($file->tmp_name, $this->config->directory."/post/".$filename) ) {
-                         return $this->json(['message' => $this->setJsonMessage('danger', 'L\'image n\'a pas pu être téléchargée . ')], 500); 
+                    if ( $file && $file->error === 0 && $file->name !== "" ) {
+                         $uploaded_file = (new Uploads)->move_file($file, 'post');
                     }
-                    $uploaded_file = [
-                         'type' => 'poster',
-                         'path' => str_replace('../public/', '',  $this->config->directory."/post/".$filename),
-                         'created_at' => $now,
-                         'posts_id' => (int) $post->getId()
-                    ];
+                    if ( is_string($uploaded_file) ) {
+                         return $this->json([
+                              'message' => $this->setJsonMessage('danger', $uploaded_file),
+                         ], 400);
+                    }
+                    // Initialiser les données à persister
+                    $uploaded_file['created_at'] = $now;
+                    $uploaded_file['posts_id'] = $post->getId();
                     $upload = $this->upm->insert($uploaded_file, true);  
                     $this->pm->update([ 'image' => (int) $upload->getId() ], [ 'id' => (int) $post->getId() ]); 
                }

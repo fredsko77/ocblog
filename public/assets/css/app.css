@@ -199,7 +199,7 @@ a i.icofont {
      font-weight: 500; 
      border-radius: .2rem; 
      background-color: #ffffff; 
-     transition-duration: .4s; 
+     transition-duration: .5s; 
      width: 33px; 
      height: 33px; 
      color: #444444; 
@@ -207,6 +207,7 @@ a i.icofont {
      flex-direction: row;
      justify-content: center;
      align-items: center;
+     margin: 0 .1rem;
 }
 .pagination .page:hover, .pagination .page.active { 
      cursor: pointer; 

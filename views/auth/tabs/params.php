@@ -3,10 +3,10 @@
      <div class="row">
           <div class="col-lg-6 col-md-9 col-xs-12">               
                <?php 
-                    _e( $params->form->start( esc_url( generate_url('auth.email.reset.send', [
+                    _e( $params->form->start( generate_url('auth.email.reset.send', [
                          's' => $params->auth->getEmail(),
                          'id' => $params->auth->getId()
-                    ]) ), 
+                    ]) , 
                     "handleEmailReset(this, event)", 
                     true, 
                     [
@@ -33,14 +33,14 @@
           <div class="col-lg-6 col-md-9 col-xs-12">  
                <h5>Changer votre mot de passe</h5>             
                <?php 
-                    _e( $params->form->start( esc_url( generate_url('auth.profile.change.password', [
+                    _e( $params->form->start( generate_url('auth.profile.change.password', [
                          'id' => $params->auth->getId()
                     ]) )
                     , "handleProfileResetPassword(this, event)", 
                     false, 
                     [
                          'id' => 'password-form'
-                    ]) ); 
+                    ]); 
                     _e( $params->form->input( 'password', [
                          'type' => 'password',
                          'label' => 'Nouveau mot de passe',
@@ -56,7 +56,7 @@
      </div>
      <p class="mt-5">
           <a 
-               href="<?php esc_url( generate_url('auth.delete', [
+               href="<?= esc_url( generate_url('auth.delete', [
                     'id' => $params->auth->getId()
                ]) ); ?>" 
                class="text-danger"

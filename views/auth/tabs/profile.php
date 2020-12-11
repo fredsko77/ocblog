@@ -32,6 +32,6 @@
      <h5 class="mt-4 font-weight-bold">Informations sur le compte</h5>
      <p class="mb-0">Date d'inscription : <?= fr_date($params->auth->getCreatedAt()) ?></p>
      <p class="mb-0">Dernière connexion : <?= fr_date($params->auth->getLastConnection()) ?></p>
-     <?php require_once get_template('auth/tabs/form') ?>
+     <?php require get_template('auth/tabs/form') ?>
 </div>
 

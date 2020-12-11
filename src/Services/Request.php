@@ -40,9 +40,9 @@ class Request
      /**
       * Return an itme from $_POST
       * @param string $key
-      * @return mixed
+      * @return array
       */
-     public function post(string $key) 
+     public function post(string $key): array
      {
           return array_key_exists($key, $_POST) ? $_POST[$key] : null;
      }
@@ -93,8 +93,14 @@ class Request
           return array_key_exists('Authorization', $headers) && $headers['Authorization'] === (new Session)->get('csrf_token') ? true : false;
      }
 
-     public function putContent()
+     /**
+      * files
+      * @return array
+      */
+     public function files():array
      {
-          return fopen("php://input", "r");
+          return $_FILES;
      }
+
+
 }

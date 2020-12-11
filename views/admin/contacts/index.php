@@ -20,7 +20,7 @@
                     <?php foreach($params->contacts as $k => $contact): ?>
                          <tr data-contact="<?= $contact->getId() ?>">
                               <th scope="row" data-name="<?= $contact->getName() ?>">
-                                   <a href="<?php esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>">
+                                   <a href="<?= esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>">
                                         <?= ucwords($contact->getName()); ?>
                                    </a>                         
                               </th>
@@ -35,7 +35,7 @@
                               </td>
                               <td>
                                    <a 
-                                        href="<?php esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>" 
+                                        href="<?= esc_url( generate_url("admin.contacts.edit", ['id' => $contact->getId()]) ); ?>" 
                                         title="Voir le message l'article"
                                         data-id="<?= $contact->getId() ?>"
                                         onclick="displayMessage(this, event)"

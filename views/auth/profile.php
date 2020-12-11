@@ -19,10 +19,10 @@
      </div>
      <div class="container tabs-container">
           <?php 
-               require_once get_template('auth/tabs/profile'); 
-               require_once get_template('auth/tabs/params'); 
+               require get_template('auth/tabs/profile'); 
+               require get_template('auth/tabs/params'); 
                if ($params->auth->getRole() === "admin") {
-                    require_once get_template('auth/tabs/posts'); 
+                    require get_template('auth/tabs/posts'); 
                }               
           ?>
           

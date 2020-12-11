@@ -8,6 +8,8 @@
                
                _e( $params->form->start( esc_url( generate_url('auth.store') ), 'handleRegister(this,event)') );
 
+               _e( $params->form->select('gender', ['mr' => 'M', 'mme' => 'Mme'], "Civilité", false, true) );
+
                _e( $params->form->input('firstname', ['label' => 'Prénom'], true) );
 
                _e( $params->form->input('lastname', ['label' => 'Nom'], true) );

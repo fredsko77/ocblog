@@ -1,7 +1,7 @@
 <h1 class="h3">
      Tous les articles 
      <a 
-          href="<?php esc_url( generate_url("admin.posts.create") ); ?>" 
+          href="<?= esc_url( generate_url("admin.posts.create") ); ?>" 
           class="btn btn-outline-primary"
      >
           Ajouter
@@ -33,7 +33,7 @@
                <?php foreach($params->posts as $k => $p): ?>
                     <tr data-post="<?= $p->getId() ?>">
                          <th scope="row">
-                              <a href="<?php esc_url( generate_url("admin.posts.edit", ['id' => $p->getId()]) ); ?>">
+                              <a href="<?= esc_url( generate_url("admin.posts.edit", ['id' => $p->getId()]) ); ?>">
                                    <?= $p->getTitle() ?>
                               </a>                         
                          </th>
@@ -50,7 +50,7 @@
                          </td>
                          <td>
                               <a 
-                                   href="<?php esc_url( generate_url("admin.posts.delete", ['id' => $p->getId()]) ); ?>" 
+                                   href="<?= esc_url( generate_url("admin.posts.delete", ['id' => $p->getId()]) ); ?>" 
                                    title="Supprimer l'article"
                                    data-id="<?= $p->getId() ?>"
                                    onclick="deletePost(this, event)"
@@ -58,7 +58,7 @@
                                    <i class="icofont-ui-delete"></i>
                               </a>
                               <a 
-                                   href="<?php esc_url( generate_url("admin.posts.edit", ['id' => $p->getId()]) ); ?>" 
+                                   href="<?= esc_url( generate_url("admin.posts.edit", ['id' => $p->getId()]) ); ?>" 
                                    title="Modifier l'article"
                               >
                                    <i class="icofont-edit"></i>

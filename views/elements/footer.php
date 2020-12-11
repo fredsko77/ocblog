@@ -8,17 +8,17 @@
                          <h4 class="">Plan du site</h4>
                          <ul class="web-map-list">
                               <li class="web-map-item">
-                                   <a href="<?php esc_url( generate_url('home') ); ?>">
+                                   <a href="<?= esc_url( generate_url('home') ); ?>">
                                         Accueil
                                    </a>
                               </li>
                               <li class="web-map-item">
-                                   <a href="<?php esc_url( generate_url('about') ); ?>">
+                                   <a href="<?= esc_url( generate_url('about') ); ?>">
                                         A propos
                                    </a>
                               </li>
                               <li class="web-map-item">
-                                   <a href="<?php esc_url( generate_url('contact') ); ?>">
+                                   <a href="<?= esc_url( generate_url('contact') ); ?>">
                                         Contact
                                    </a>
                               </li>
@@ -26,7 +26,7 @@
                                         if ( property_exists($params, 'auth')  ): 
                                              if ( $params->auth->getRole() === "admin" && $params->auth !== null ): ?>
                                                   <li class="web-map-item">
-                                                       <a href="<?php esc_url( generate_url('admin') ); ?>">
+                                                       <a href="<?= esc_url( generate_url('admin') ); ?>">
                                                             Administration
                                                        </a>
                                                   </li>

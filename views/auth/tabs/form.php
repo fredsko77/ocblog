@@ -8,7 +8,7 @@
           ></i>
      </div>        
      <?php 
-          _e( $params->form->start( esc_url( generate_url('auth.profile.edit', [
+          _e( $params->form->start( esc_url(generate_url('auth.profile.edit', [
                'id' => $params->auth->getId(),
           ]) ), 
           'handleEditProfile(this, event)', 

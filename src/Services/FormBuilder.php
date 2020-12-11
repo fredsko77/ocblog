@@ -215,5 +215,15 @@ class FormBuilder
           return esc_html("</form>");
      }
 
+     /**
+      * getData
+      *
+      * @return object
+      */
+     public function getData():object
+     {
+          return (object) $this->data;
+     }
+
 
 }

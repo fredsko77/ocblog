@@ -25,7 +25,7 @@ const deletePost = (a, e) => {
      loader()
 }
 
-const handleCreatePost = (form, e) =>{
+const handleSubmitPost = (form, e) =>{
      e.preventDefault();
      tinymce.triggerSave();
      let url = form.action;
@@ -38,11 +38,13 @@ const handleCreatePost = (form, e) =>{
                let type = data.message.type; 
                let message = data.message.content;
                form.querySelector('#image').value = ''
-               flash(message, type, true);                
-               let url = data.url;
-               let delay = 2000; 
-               // Faire une redirection sur la page d'édition de l'article
-               setTimeout(() => window.location = url , delay);
+               flash(message, type, true);
+               if (data.hasOwnProperty('url')) {
+                    let url = data.url;
+                    let delay = 2000; 
+                    // Faire une redirection sur la page d'édition de l'article
+                    setTimeout(() => window.location = url , delay);
+               }                
           } else if ( data.hasOwnProperty('errors') ) {
                validateField(data.errors);
                setFormErrors(data.errors);
@@ -55,34 +57,6 @@ const handleCreatePost = (form, e) =>{
           if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
      }) 
           
-}
-
-const handleUpdatePost = (form, e) => {
-     e.preventDefault();
-     tinymce.triggerSave();
-     let url = form.action;
-     let data = form.querySelector('#image').value === "" ? { ...getValues('select, textarea, input') } : new FormData(form);
-     axios
-     .post(url, data) 
-     .then( ({data}) => {
-          if ( data.hasOwnProperty('message') ) {
-               let type = data.message.type; 
-               let message = data.message.content;
-               form.querySelector('#image').value = ''
-               flash(message, type, true);
-          } else if ( data.hasOwnProperty('errors') ) {
-               validateField(data.errors);
-               setFormErrors(data.errors);
-          }
-     })
-     .catch( ({response}) => {
-          if ( (response.data).hasOwnProperty('message') ) {                         
-               let type = response.data.message.type; 
-               let message = response.data.message.content;    
-               if ((response.status).toString().indexOf('4') === 0) flash(message, type, true);
-               if ((response.status).toString().indexOf('5') === 0) flash(message, type, true);
-          }
-     }) 
 }
 
 const addCategory = ({id, slug, description, category}) => {

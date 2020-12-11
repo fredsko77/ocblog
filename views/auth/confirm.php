@@ -4,7 +4,7 @@
                <h1 class="h2"> 
                     Bonjour  <?= $params->confirm->getFirstname() ?>,              
                </h1>
-               <p class="h3">Bienvenue sur Mon Super Blog, clique <a href="<?php esc_url( generate_url('auth.login') ); ?>"> ici </a> pour te connecter </p>
+               <p class="h3">Bienvenue sur Mon Super Blog, clique <a href="<?= esc_url( generate_url('auth.login') ); ?>"> ici </a> pour te connecter </p>
                🚀🚀🚀🚀🚀🚀🚀 
           <?php else : ?>
                <h1>Ce token n'est plus valide</h1>

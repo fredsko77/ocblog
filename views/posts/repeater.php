@@ -1,7 +1,7 @@
 <?php foreach($params->posts as $k => $post): ?>
      <div class="post-item">
           <a 
-               href="<?php esc_url( generate_url('blog.show', [
+               href="<?= esc_url( generate_url('blog.show', [
                     'id' => $post->getId(), 
                     'slug' => $post->getSlug(),
                ]) ); ?>" 
@@ -17,7 +17,7 @@
                <?php if ( $post->getCategoryId() !== NULL ) : ?>
                     <p class="post-item-category">
                          <a 
-                              href="<?php esc_url( generate_url('blog.category', [
+                              href="<?= esc_url( generate_url('blog.category', [
                                    'id' => $post->getCategoryId()->getId(), 
                                    'slug' => $post->getCategoryId()->getSlug(),
                               ]) ); ?>"
@@ -27,7 +27,7 @@
                     </p>
                <?php endif; ?>
                <a 
-                    href="<?php esc_url( generate_url('blog.show', [
+                    href="<?= esc_url( generate_url('blog.show', [
                          'id' => $post->getId(), 
                          'slug' => $post->getSlug(),
                     ]) ); ?>" 

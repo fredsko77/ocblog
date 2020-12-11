@@ -28,6 +28,8 @@ abstract class AbstractController
           
           $params['request'] = $this->request;
           $params['session'] = $this->session;
+
+          if ( !array_key_exists('title', $params) ) $params['title'] = "Blog";
           
           $path = str_replace(".", "/", $path);
           

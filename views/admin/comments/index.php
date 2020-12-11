@@ -38,7 +38,7 @@
                          </td>
                          <td>
                               <a 
-                                   href="<?php esc_url( generate_url("admin.comments.edit", [
+                                   href="<?= esc_url( generate_url("admin.comments.edit", [
                                         'id' => $comment->getId()
                                    ]) ); ?>" 
                                    class="btn btn-green"
@@ -49,7 +49,7 @@
                                    Valider
                               </a>
                               <a 
-                                   href="<?php esc_url( generate_url("admin.comments.delete", [
+                                   href="<?= esc_url( generate_url("admin.comments.delete", [
                                         'id' => $comment->getId()
                                    ]) ); ?>" 
                                    title="Supprimer le commentaire"

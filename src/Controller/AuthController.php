@@ -297,32 +297,19 @@ class AuthController extends AbstractController
           if ($user instanceof Users) {
                $upload = $this->upm->findBy( "users_id.{$user->getId()}", Uploads::class);
                $now = (new DateTime())->format('Y-m-d H:m:s'); 
-               $file = array_key_exists('image', $_FILES) ? (object) $_FILES['image'] : null ;                 
+               $file = array_key_exists('image', $this->request->files()) ? (object) $this->request->files()['image'] : null ;                 
                unset($data['image']);
-               if ( count($_FILES) > 0 ) {
+               if ( count($this->request->files()) > 0 ) {
                     if ( $file && $file->error === 0 && $file->name !== "" ) {
-                         if ( ! Helpers::checkExtension($file->name, $this->config->file_accepted['image'])) return $this->json([
-                              'message' => $this->setJsonMessage('danger', 'Ce type de fichier n\'est pas accepté ! ')
-                         ], 400);
-                         // Vérifier la taille du fichier
-                         if( $file->size > ( (int) $this->config->max_size_accepted * pow(1024, 2)) ) return $this->json([
-                              'message' => $this->setJsonMessage('danger', 'Ce fichier est trop volumineux ! ') 
-                         ], 400);
-                         // Vérifier que le répertoire existe
-                         if ( ! is_dir($this->config->directory."/user") ) mkdir($this->config->directory."/user", 0777, true);  
-                         // Générer un nouveau nom au fichier    
-                         $filename = generate_filename() . "." . explode('.', $file->name)[1];
-                         // Déplacer le fichier téléchargé dans le répertoire
-                         if ( ! move_uploaded_file($file->tmp_name, $this->config->directory . "/user/" . $filename) ) return $this->json([
-                              'message' => $this->setJsonMessage('danger', 'L\'image n\'a pas pu être téléchargée . ')]
-                         , 500); 
+                         $uploaded_file = (new Uploads)->move_file($file);
+                         if ( is_string($uploaded_file) ) {
+                              return $this->json([
+                                   'message' => $this->setJsonMessage('danger', $uploaded_file),
+                              ], 400);
+                         }
                          // Initialiser les données à persister
-                         $uploaded_file = [
-                              'type' => 'profile',
-                              'path' => str_replace('../public/', '',  $this->config->directory . "/user/" . $filename),
-                              'created_at' => $now,
-                              'users_id' => (int) $user->getId()
-                         ]; 
+                         $uploaded_file['created_at'] = $now;
+                         $uploaded_file['users_id'] = $user->getId(); 
                          if ($upload instanceof Uploads) unlink("../public/{$upload->getPath()}");
                          $count = $upload instanceof Uploads ? 1 : 0;
                          $upload = !$count ? $this->upm->insert($uploaded_file, true) : $this->upm->update_image($uploaded_file, true);

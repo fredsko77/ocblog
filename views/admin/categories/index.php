@@ -31,7 +31,9 @@
                                    </td>
                                    <td>
                                         <a 
-                                             href="/admin/categories/<?= $category->getId() ?>/delete" 
+                                             href="<?= esc_url( generate_url('admin.categories.delete', [
+                                                  'id' => $category->getId(),
+                                             ]) ); ?>" 
                                              title="Supprimer la catégorie"
                                              onclick="deleteCategory(this)"
                                              data-id="<?= $category->getId() ?>"

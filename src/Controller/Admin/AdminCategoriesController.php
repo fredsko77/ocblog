@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use \DateTime;
 use App\Helpers\Helpers;
 use App\Services\Request;
 use App\Services\Session;

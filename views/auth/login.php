@@ -17,12 +17,12 @@
 
           ?> 
 
-          <a class="ml-3" href="<?php esc_url( generate_url('auth.forget') ); ?>">Mot de passe oublié.</a>
+          <a class="ml-3" href="<?= esc_url( generate_url('auth.forget') ); ?>">Mot de passe oublié.</a>
 
           <?php _e( $params->form->end() );
      
           ?>
 
-          <p class="mt-2">Vous n'avez pas encore de compte, inscrivez-vous <a href="<?php esc_url( generate_url('auth.register') ); ?>">ici</a></p>
+          <p class="mt-2">Vous n'avez pas encore de compte, inscrivez-vous <a href="<?= esc_url( generate_url('auth.register') ); ?>">ici</a></p>
      </div>
 </section>

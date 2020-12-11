@@ -24,16 +24,16 @@ function skip_accents(string $str,string $charset='utf-8' ):string
 
 /**
  * custom var_dump() values
- * @param [type] $values
+ * @param mixed $values
  * @return void
  */
-function dump($values)
+function dump(...$values)
 {
     echo "<pre style='border-radius: .175rem;
             background-color: #efefef;
             color: #70AC9B;
             box-shadow: .1rem .22rem .3rem 0 rgba(175,190,180,.4);
-            padding: 10px 15px;
+            padding: 10px 1.95rem;
             color: #2f718d;
             border-radius: 5px;
             max-width: 1200px;
@@ -42,9 +42,15 @@ function dump($values)
             height: auto;
             min-height: 5vh;
             overflow-x: scroll;
-            word-break: break-word;
-            margin : 10px auto;'>";
-            var_dump($values);
+            text-align: justify;
+            margin : 10px auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;'
+            >";
+            var_dump(func_get_args());
     echo "</pre>";
 }
 
@@ -53,9 +59,9 @@ function dump($values)
  * @param [type] $values
  * @return void
  */
-function dd($values)
+function dd(...$values)
 {  
-    dump($values);
+    dump(func_get_args());
     die();  
 }
 
@@ -79,8 +85,7 @@ function redirect($url)
 }
 
 /**
- * Get templates path form /views
- *
+ * Get templates path form /views 
  * @param string $path
  * @return string
  */
@@ -112,9 +117,9 @@ function get_vendor(string $path):string
 /**
  * Get path of images from /assets
  * @param string $path
- * @return void
+ * @return string
  */
-function get_image(string $path)
+function get_image(string $path):string
 {
     return "assets/img/{$path}";
 }
@@ -382,7 +387,12 @@ function _e(string $html)
     echo html_entity_decode($html, ENT_IGNORE);
 }
 
-function esc_url($url)
+/**
+ * esc_url
+ * @param string $url
+ * @return string
+ */
+function esc_url(string $url):string
 {
-    echo urldecode( urlencode( $url ) );
+    return urldecode( urlencode( $url ) );
 }

@@ -63,7 +63,7 @@ class Model
       * findAll
       * @param string $class
       * @param boolean $order_by
-      * @return void
+      * @return mixed
       */
      public function findAll(string $class = "", $order_by = false)
      {
@@ -89,7 +89,7 @@ class Model
       * insert
       * @param array $data
       * @param boolean $last_insert
-      * @return void
+      * @return mixed
       */
      public function insert(array $data, bool $last_insert = false)
      {    
@@ -106,7 +106,7 @@ class Model
       * @param array $set
       * @param array $where
       * @param boolean $object
-      * @return void
+      * @return mixed
       */
      public function update(array $set = [], array $where = [], bool $object = false) 
      {

@@ -18,25 +18,25 @@
      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
      
      <!-- Template Config JS File -->
-     <?php esc_url( get_script('config') ); ?>
+     <?= esc_url( get_script('config') ); ?>
 
      <!-- Template App JS File -->     
-     <?php esc_url( get_script('app') ); ?>
+     <?= esc_url( get_script('app') ); ?>
 
      <!-- Template Main JS File -->     
-     <?php esc_url( get_script('main') ); ?>
+     <?= esc_url( get_script('main') ); ?>
 
      <!-- Template Contact JS File -->
-     <?php esc_url( get_script('contact') ); ?>
+     <?= esc_url( get_script('contact') ); ?>
 
      <!-- Template Contact JS File -->
-     <?php  if ( is_blog() ) esc_url( get_script('form') ); ?>
+     <?php  if ( is_blog() ) echo esc_url( get_script('form') ); ?>
 
      <!-- Template Auth JS File -->
-     <?php if ( is_auth() ) esc_url( get_script('auth') ); ?>
+     <?php if ( is_auth() ) echo esc_url( get_script('auth') ); ?>
 
      <!-- Template Home JS File -->
-     <?php if (is_home()) esc_url( get_script('home') ); ?>
+     <?php if (is_home()) echo esc_url( get_script('home') ); ?>
 
      </body> 
 </html>
