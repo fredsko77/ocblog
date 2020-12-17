@@ -1,5 +1,4 @@
 <main id="main">
-
      <!-- ======= About Section ======= -->
      <section id="about" class="about">
           <div class="container" data-aos="fade-up">
@@ -11,7 +10,12 @@
 
                <div class="row">
                     <div class="col-lg-4">
-                         <img src="assets/img/about.jpg" class="img-fluid" alt="">
+                         <img 
+                              src="<?= esc_url(file_exists( get_image('about.jpg') ) ? get_image('about.jpg') : get_image('about_default.jpg') ) ?>" 
+                              srcset="<?= esc_url(file_exists( get_image('about.jpg') ) ? get_image('about.jpg') : get_image('about_default.jpg') ) ?>" 
+                              class="img-fluid" 
+                              alt="photo a propos"
+                         >
                     </div>
                     <div class="col-lg-8 pt-4 pt-lg-0 content">
                          <h3>Développeur d'application PHP/Symfony</h3>
@@ -30,7 +34,7 @@
                               </div>
                               <div class="col-lg-6">
                                    <ul>
-                                        <li><i class="icofont-rounded-right"></i> <strong>Age:</strong> 30</li>
+                                        <li><i class="icofont-rounded-right"></i> <strong>Age:</strong> 25</li>
                                         <li><i class="icofont-rounded-right"></i> <strong>Niveau d'études:</strong> Bac +2</li>
                                         <li><i class="icofont-rounded-right"></i> <strong>Email:</strong> agathefrederick@gmail.com</li>
                                         <li><i class="icofont-rounded-right"></i> <strong>Disponibilité:</strong> Dès que possible</li>

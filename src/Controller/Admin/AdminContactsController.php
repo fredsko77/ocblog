@@ -40,17 +40,17 @@ class AdminContactsController extends AbstractController
                } else if (!$contact instanceof Contacts) {
                     return $this->json(['message' => $this->setJsonMessage('warning', 'Le message que vous essayé de marquer n\'exite pas')], 500); 
                }
-          } else {
                return $this->json([
-                    'message' => [
-                         'type' =>'danger',
-                         'content' =>' 🛑 Vous n\'êtes pas autorisé à effectuer cette action !', 
-                         ]
-               ], 401);
+                    'message' => $this->setJsonMessage('danger', 'Une erreur est survenu lors du traitement de votre requête 🤕')
+               ], 500);
           }
           return $this->json([
-               'message' => $this->setJsonMessage('danger', 'Une erreur est survenu lors du traitement de votre requête 🤕')
-          ], 500);
+               'message' => [
+                    'type' =>'danger',
+                    'content' =>' 🛑 Vous n\'êtes pas autorisé à effectuer cette action !', 
+                    ]
+          ], 401);
+          
      }
 
 }
