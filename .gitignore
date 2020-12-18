@@ -1,5 +1,5 @@
 /vendor
-/config/database.php
-/config/mail.php
+config/database.php
+config/mail.php
 /public/uploads
 /public/assets/img/about.jpg
