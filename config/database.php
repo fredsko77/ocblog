@@ -1,8 +1,8 @@
 <?php 
 
 return (object) [
-     'dbhost' => 'localhost',
-     'dbname' => 'ocblog',
-     'dbuser' => 'root',
-     'dbpass' => ''
+     'dbhost' => 'YOURDBHOST',
+     'dbname' => 'YOURDBNAME',
+     'dbuser' => 'YOURDBUSER',
+     'dbpass' => 'YOURDBPASS'
 ];
