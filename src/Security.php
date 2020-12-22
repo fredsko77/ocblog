@@ -4,7 +4,6 @@ namespace App;
 
 use App\Controller\AbstractController;
 use App\Controller\Admin\DashboardController;
-use App\Controller\AuthController;
 use App\Entity\Users;
 use App\Services\Session;
 

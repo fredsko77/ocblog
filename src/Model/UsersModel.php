@@ -12,17 +12,17 @@ class UsersModel extends Model
 {
      protected $table = "users";
      protected $class = Users::class;
-     protected $db;
+     protected $pdo;
 
      public function __construct() 
      {
-          $this->db = (new Connection())->getPdo();
+          $this->pdo = (new Connection())->getPdo();
      }
 
      public function checkUserExists(string $email):bool
      {
           $sql = "SELECT email FROM {$this->table} WHERE email = :email";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->pdo->prepare($sql);
           $stmt->bindParam(':email', $email, PDO::PARAM_STR);
           $stmt->execute();
           return $stmt->rowCount() > 0 ? true : false; 
@@ -31,7 +31,7 @@ class UsersModel extends Model
      public function findUserByEmail(string $email)
      {
           $sql = "SELECT * FROM {$this->table} WHERE email = :email";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->pdo->prepare($sql);
           $stmt->bindParam(':email', $email, PDO::PARAM_STR);
           $stmt->execute();
           return $stmt->rowCount() > 0 ? new Users($stmt->fetch()) : null; 
@@ -40,7 +40,7 @@ class UsersModel extends Model
      public function findUserByToken(string $token)
      {
           $sql = "SELECT * FROM {$this->table} WHERE token = :token";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->pdo->prepare($sql);
           $stmt->bindParam(':token', $token, PDO::PARAM_STR);
           $stmt->execute();
           return $stmt->rowCount() === 1 ? new Users($stmt->fetch()) : null; 
@@ -49,7 +49,7 @@ class UsersModel extends Model
      public function confirmUser(Users $user)
      {
           $sql = "UPDATE {$this->table} SET confirm = :confirm, token = :token WHERE id = :id";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->pdo->prepare($sql);
           $stmt->execute([ 
                ':confirm' => 1, 
                ':token' => generate_token(80),
@@ -60,7 +60,7 @@ class UsersModel extends Model
      public function updateLogin(Users $users) 
      {
           $sql = "UPDATE {$this->table} SET token = :token, last_connection = :last_connection WHERE id = :id";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->pdo->prepare($sql);
           $data = [
                ':id' => $users->getId(), 
                ':token' => $users->getToken(), 
@@ -73,7 +73,7 @@ class UsersModel extends Model
      {
           $auth = (new Session)->getLoggedUser();
           $sql  = "SELECT * FROM {$this->table} WHERE id <> {$auth->getId()}";
-          return $this->getInstances($this->db->query($sql)->fetchAll(), $this->class);
+          return $this->getInstances($this->pdo->query($sql)->fetchAll(), $this->class);
      }
 
 }

@@ -59,12 +59,11 @@ class AuthController extends AbstractController
                }
                return $this->json([
                     'message' => $this->setJsonMessage('warning', ' Un erreur est survenue lors de l\'envoi d\'email 👎'),
-                    ]);
-          } else {
-               return $this->json([
-                    'message' => $this->setJsonMessage('info', '🛑 Aucun compte avec cet adresse email existe !'), 
-                    ], 401);
+               ]);
           }
+          return $this->json([
+               'message' => $this->setJsonMessage('info', '🛑 Aucun compte avec cet adresse email existe !'), 
+          ], 401);
      }
 
      public function reset(array $params = []) 
@@ -100,20 +99,20 @@ class AuthController extends AbstractController
                          'url' => generate_url('auth.login')
                     ], 200);
      
-               } elseif ( !pass_valid($data->password) ) {
+               } else if ( !pass_valid($data->password) ) {
                     return $this->json([
                          'message' => $this->setJsonMessage('danger', 'Le mot de passe doit contenir au moins une minuscule, une majuscule et un chiffre ! '),
                          'violation' => 'password' 
                     ], 200);
-               }
-          } else {
+               } 
                return $this->json([
-                    'message' => $this->setJsonMessage('danger', ' 🤕 Ce jeton n\'est plus valide ! ')
+                    'message' => $this->setJsonMessage('danger', ' 👎 Nous n\'avouns rien reçu ! ')
                ], 400);
           }
           return $this->json([
-               'message' => $this->setJsonMessage('danger', ' 👎 Nous n\'avouns rien reçu ! ')
+               'message' => $this->setJsonMessage('danger', ' 🤕 Ce jeton n\'est plus valide ! ')
           ], 400);
+         
      }
 
      public function register() 
@@ -404,14 +403,14 @@ class AuthController extends AbstractController
      public function resetEmailConfirm(array $params = [])
      {
           $email = $params['s'];
-          $id = (int) $params['id'];
-          $user = $this->um->find($id, Users::class);
+          $int = (int) $params['id'];
+          $user = $this->um->find($int, Users::class);
           $message = "";
           if ($user instanceof Users) {
                if ( $this->um->checkUserExists($email) ) { 
                     $message = "Cette adresse e-mail est déja utilisée ! 🤕";
                } else {
-                    $user = $this->um->update(['email' => $email], ['id' => $id], true);
+                    $user = $this->um->update(['email' => $email], ['id' => $int], true);
                     $message = "Votre adresse e-mail a bien été modifié !";
                }
           } else {

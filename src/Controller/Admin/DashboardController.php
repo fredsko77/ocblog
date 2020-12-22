@@ -17,18 +17,18 @@ class DashboardController extends AbstractController
      public function __construct()
      {
           $this->contact = new ContactsModel;
-          $this->cm = new CommentsModel;
-          $this->pm = new PostsModel;
+          $this->comment = new CommentsModel;
+          $this->post = new PostsModel;
           $this->session = new Session;
      }
      
      public function index() 
      {
           $contacts = $this->contact->pending();
-          $comments = $this->cm->pending();
-          $posts = $this->pm->draft();
-          $latest = $this->pm->latest();
-          $lastUploadedPost = $this->pm->lastUpdatedPost(); 
+          $comments = $this->comment->pending();
+          $posts = $this->post->draft();
+          $latest = $this->post->latest();
+          $lastUploadedPost = $this->post->lastUpdatedPost(); 
           $title = "Tableau de bord";
           return $this->adminView('index', compact('contacts', "comments", 'posts', 'latest', 'lastUploadedPost', 'title'));
      }

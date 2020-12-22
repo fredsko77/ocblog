@@ -12,8 +12,7 @@ use App\Controller\AbstractController;
 
 class AdminCategoriesController extends AbstractController
 {
-
-     protected $pm;
+     
      protected $session;
      protected $request;
 
@@ -21,23 +20,23 @@ class AdminCategoriesController extends AbstractController
      {
           $this->session = new Session;
           $this->request = new Request;
-          $this->cm = new CategoriesModel;
+          $this->category = new CategoriesModel;
      }
 
      public function index()
      {
           $form = new FormBuilder();
-          $categories = $this->cm->findAll(Categories::class);
+          $categories = $this->category->findAll(Categories::class);
           $title = "Gestion des catégories";
           return $this->adminView('categories.index', compact('form', 'categories', 'title')); 
      }  
      
      public function delete(array $params = [])
      {
-          $category = $this->cm->find((int) $params['id'], Categories::class);
+          $category = $this->category->find((int) $params['id'], Categories::class);
           if ( $this->request->checkAuthorization() ) {
                if ($category instanceof Categories) {
-                    $this->cm->delete( (int) $category->getId() );
+                    $this->category->delete( (int) $category->getId() );
                     return $this->json(['message' => $this->setJsonMessage('success', 'La catégorie a été supprimé avec succès 🚀')]); 
                } else if ($category === NULL) {
                     return $this->json(['message' => $this->setJsonMessage('warning', 'La catégorie que vous essayé de supprimer n\'exite pas')], 500); 
@@ -62,7 +61,7 @@ class AdminCategoriesController extends AbstractController
                $data = Helpers::sanitize($data);
                unset($data['id'], $data['csrf_token']);
                $data['id'] = 22;
-               $category = $this->cm->insert($data, true);
+               $category = $this->category->insert($data, true);
                return $this->json([
                     'message' => $this->setJsonMessage('success', 'La catégorir a bien été enregistrée ! '),
                     'category' => [
@@ -88,10 +87,10 @@ class AdminCategoriesController extends AbstractController
      public function update(array $params = [])
      {
           $data = (array) json_decode($this->request->getContent());
-          $category = $this->cm->find((int) $params['id'], Categories::class);
+          $category = $this->category->find((int) $params['id'], Categories::class);
           if ($category instanceof Categories) {
                unset($data['id'], $data['csrf_token']);
-               $category = $this->cm->update($data, ['id' => $category->getId()], true);
+               $category = $this->category->update($data, ['id' => $category->getId()], true);
                return $this->json([
                     'message' => $this->setJsonMessage('success', 'La catégorie a bien été modifiée ! 👍'), 
                     'category' => [

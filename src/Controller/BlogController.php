@@ -18,15 +18,14 @@ use DateTime;
 class BlogController extends AbstractController
 {
 
-     protected $pm;
      protected $session;
 
      public function __construct()
      {
-          $this->pm = new PostsModel;
+          $this->post = new PostsModel;
           $this->session = new Session;
           $this->request = new Request;
-          $this->cm = new CommentsModel;
+          $this->comment = new CommentsModel;
           $this->category = new CategoriesModel;
      }
 
@@ -37,17 +36,17 @@ class BlogController extends AbstractController
      
      public function index(array $params = []) 
      { 
-          $nbPosts = (float) ($this->pm->nbPost())->nb_posts;
+          $nbPosts = (float) ($this->post->nbPost())->nb_posts;
           $nbPages = ceil( $nbPosts / 10 );
           $currentPage = array_key_exists('id', $params) ? (int) $params['id'] : 0;
-          $posts = $this->pm->pagePosts((int) $currentPage);
+          $posts = $this->post->pagePosts((int) $currentPage);
           $pagination = new Pagination($nbPages, $currentPage);
           return $this->view('blog.index', compact('posts', 'pagination'));
      }
      
      public function category(array $params = []) 
      { 
-          $posts    = $this->pm->category((int) $params['id']);
+          $posts    = $this->post->category((int) $params['id']);
           $category = $this->category->find((int) $params['id'], Categories::class);
           $title    = "Articles - {$category->getCategory()}";
           return $this->view('blog.category', compact('posts', 'title'));
@@ -55,16 +54,16 @@ class BlogController extends AbstractController
      
      public function show(array $params = []) 
      {
-          $post = $this->pm->find((int) $params['id'], Posts::class);
+          $post = $this->post->find((int) $params['id'], Posts::class);
           if ($post instanceof Posts) {
                if ($params['slug'] !== $post->getSlug()) return $this->redirect(generate_url('blog.show', [
                     'slug' => $post->getSlug(),
                     'id' => $post->getId(),
                ]));
                $title = $post->getTitle();
-               $posts = $this->pm->similar((int) $post->getCategoryId()->getId());
+               $posts = $this->post->similar((int) $post->getCategoryId()->getId());
                $form = new FormBuilder();
-               $comments = $this->cm->getPostComments( (int) $post->getId() );
+               $comments = $this->comment->getPostComments( (int) $post->getId() );
                return $this->view('blog.show', compact('post', 'title', 'form', 'comments', 'posts'));
           }
           return $this->view('blog.show');
@@ -81,7 +80,7 @@ class BlogController extends AbstractController
                $data['created_at'] = (new DateTime)->format('Y-m-d H:i:s');
                unset($data['csrf_token']);
                // dd($data);
-               if ( $this->cm->insert($data) ) return $this->json([
+               if ( $this->comment->insert($data) ) return $this->json([
                     'message' => $this->setJsonMessage('success', 'Le commentaire a bien été enregistré 👍, en attente de l\'approbation d\'un modérateur')
                ], 202);
                return $this->json([

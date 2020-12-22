@@ -212,7 +212,6 @@ class Posts
       */ 
      public function getCategoryId()
      {
-          ;
           return (new CategoriesModel)->find($this->category_id, Categories::class);
      }
 
@@ -242,11 +241,7 @@ class Posts
       */ 
      public function setStatus($status)
      {
-          if ( array_key_exists($status, self::STATUS) ) {
-               $this->status = $status;
-          } else {
-               $this->status = 'draft';
-          }
+          $this->status = array_key_exists($status, self::STATUS) ?  $status : 'draft';
           return $this;
      }
 
@@ -274,4 +269,5 @@ class Posts
      {
           return (new CommentsModel)->getPostComments($this->getId());
      }
+     
 }

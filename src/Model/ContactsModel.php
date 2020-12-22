@@ -11,9 +11,9 @@ class ContactsModel extends Model
 {
      protected $table = "contacts";
      protected $class = Contacts::class;
-     protected $db;
+     protected $pdo;
 
      public function __construct() {
-          $this->db = (new Connection())->getPdo();
+          $this->pdo = (new Connection())->getPdo();
      }
 }
