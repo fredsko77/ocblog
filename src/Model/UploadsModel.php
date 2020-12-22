@@ -12,10 +12,10 @@ class UploadsModel extends Model
 {
      protected $table = "uploads";
      protected $class = Uploads::class;
-     protected $db;
+     protected $pdo;
 
      public function __construct() {
-          $this->db = (new Connection())->getPdo();
+          $this->pdo = (new Connection())->getPdo();
      }
 
      public function update_image(array $args = [], bool $return = false)
@@ -24,15 +24,15 @@ class UploadsModel extends Model
           $value = $args[$field];
           unset($args[$field]);
           $sql = "UPDATE {$this->table} SET {$this->getSetTables($args)} WHERE {$field} = :{$field}"; 
-          $stmt = $this->db->prepare($sql); 
+          $stmt = $this->pdo->prepare($sql); 
           $data = array_merge($args, [$field => $value]);
-          if ( $stmt->execute(Helpers::transformKeys($data)) ) return $return ? $this->findBy("{$field}.{$value}", $this->class) : true;
+          if ( $stmt->execute(Helpers::transformKeys($data)) ) return $return ? $this->finpdoy("{$field}.{$value}", $this->class) : true;
           return false;
      }
 
-     public function findPath(int $id)
+     public function findPath(int $int)
      {
-          return $this->db->query("SELECT path FROM {$this->table} WHERE id = {$id}", \PDO::FETCH_OBJ)->fetch();
+          return $this->pdo->query("SELECT path FROM {$this->table} WHERE id = {$int}", \PDO::FETCH_OBJ)->fetch();
      }
      
 }

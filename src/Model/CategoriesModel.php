@@ -11,10 +11,10 @@ class CategoriesModel extends Model
 {
      protected $table = "categories";
      protected $class = Categories::class;
-     protected $db;
+     protected $pdo;
 
      public function __construct() {
-          $this->db = (new Connection())->getPdo();
+          $this->pdo = (new Connection())->getPdo();
      }
 
 }

@@ -126,11 +126,7 @@ class Helpers
           $explode_path = explode('/', trim($path, '/'));
           $parts = [];
           foreach ( $explode_path as $p) {
-               if ( preg_match("#:#", $p) ) {
-                    $parts[] = $patterns[preg_replace('#:#', '', $p)] ;
-               } else {
-                    $parts[] = $p;
-               }
+               $parts[] = preg_match("#:#", $p) ? $patterns[preg_replace('#:#', '', $p)] : $p;
           }
           $pattern = "#^" . self::putBefore('/', $parts) . "$#";
           return $pattern;

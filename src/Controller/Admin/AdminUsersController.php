@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\Users;
 use App\Helpers\Helpers;
 use App\Services\Mailer;
-use App\Model\PostsModel;
 use App\Model\UsersModel;
 use App\Services\Request;
 use App\Services\Session;
@@ -16,22 +15,20 @@ use App\Controller\AbstractController;
 class AdminUsersController extends AbstractController
 {
 
-     protected $pm;
      protected $session;
      protected $request;
 
      public function __construct()
      {
-          $this->pm = new PostsModel;
           $this->session = new Session;
           $this->request = new Request;
-          $this->um = new UsersModel;
+          $this->user = new UsersModel;
           $this->mailer = new Mailer;
      }
 
      public function index()
      {
-          $users = $this->um->exceptAuth();
+          $users = $this->user->exceptAuth();
           $form = new FormBuilder;
           $roles = Users::ROLES;
           $title = 'Gestion des utilisateurs';
@@ -40,10 +37,10 @@ class AdminUsersController extends AbstractController
 
      public function delete(array $params = [])
      {
-          $user = $this->um->find((int) $params['id'], Users::class);
+          $user = $this->user->find((int) $params['id'], Users::class);
           if ( $this->request->checkAuthorization() ) {
                if ($user instanceof Users) {
-                    // $this->um->delete( $user->getId()); 
+                    // $this->user->delete( $user->getId()); 
                     if( 1 === 1 ) {
                          return $this->json([
                               'message' => $this->setJsonMessage('success', 'Votre compte utilisateur a été supprimé avec succès 🚀'),
@@ -55,14 +52,14 @@ class AdminUsersController extends AbstractController
                          'message' => $this->setJsonMessage('danger', '🛑 Une erreur est survenu lors de la suppression de ce compte !'), 
                     ], 400);
                }
-          } else {
                return $this->json([
-                    'message' => $this->setJsonMessage('danger', '🛑 Vous n\'êtes pas autorisé à effectuer cette action !')
-               ], 401);
-          }
+                    'message' => $this->setJsonMessage('danger', 'Une erreur est survenu lors du traitement de votre requête 🤕')
+               ], 500);
+          } 
           return $this->json([
-               'message' => $this->setJsonMessage('danger', 'Une erreur est survenu lors du traitement de votre requête 🤕')
-          ], 500);
+               'message' => $this->setJsonMessage('danger', '🛑 Vous n\'êtes pas autorisé à effectuer cette action !')
+          ], 401);
+          
      }
 
      public function create() 
@@ -84,7 +81,7 @@ class AdminUsersController extends AbstractController
                $data['created_at'] = now();
                $data['confirm'] = 0; 
                if ((new Validator)->email($data["email"]) === true) {
-                    if ( $this->um->findUserByEmail($data["email"]) instanceof Users ) {
+                    if ( $this->user->findUserByEmail($data["email"]) instanceof Users ) {
                          $errors['email'] = "Cette adresse électronique existe déjà ! ";
                     }                     
                } else {
@@ -95,7 +92,7 @@ class AdminUsersController extends AbstractController
                          'message' => $this->setJsonMessage('warning', $errors['email']),
                     ]);                    
                } else {                  
-                    $newUser = $this->um->insert($data, true);
+                    $newUser = $this->user->insert($data, true);
                     $this->mailer->sendConfirmEmail($newUser);
                     return $this->json([ 
                          'message' => $this->setJsonMessage('success','L\'utilisateur a bien été enregistré.Un courrier électronique lui sera envoyé pour confirmer son inscription. '),
@@ -125,9 +122,9 @@ class AdminUsersController extends AbstractController
      {
           $data = (array) json_decode($this->request->getContent());
           if ( $this->request->checkAuthorization() ) { 
-               $user = $this->um->find((int) $params['id'], Users::class);
+               $user = $this->user->find((int) $params['id'], Users::class);
                if ($user instanceof Users) {                  
-                    $user = $this->um->update($data,['id' => (int) $params['id']] ,true);
+                    $user = $this->user->update($data,['id' => (int) $params['id']] ,true);
                     return $this->json([ 
                          'message' => $this->setJsonMessage('success','L\'utilisateur a bien été mis à jour. '),
                          'role' => [

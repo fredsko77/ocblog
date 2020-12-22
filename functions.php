@@ -59,7 +59,7 @@ function dump(...$values)
  * @param [type] $values
  * @return void
  */
-function dd(...$values)
+function ddie(...$values)
 {  
     dump(func_get_args());
     die();  
@@ -215,15 +215,13 @@ function generate_csrf():string
 {
     $session = new Session();
     // Check if a token is present for the current session
-    if( $session->get('csrf_token') === NULL ) {
+    $token = $session->get('csrf_token');
+    if( $token === null ) {
         // No token present, generate a new one
         $token = generate_token(50);
         $session->set('csrf_token', $token);
         ?> <script> localStorage.setItem('csrf_token', '<?php echo $token ?>'); </script> <?php
-    } else {
-        // Reuse the token
-        $token = $session->get("csrf_token");
-    }
+    } 
     return $token;
 } 
 

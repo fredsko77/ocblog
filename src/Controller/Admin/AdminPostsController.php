@@ -20,24 +20,23 @@ use App\Entity\Categories;
 class AdminPostsController extends AbstractController
 {
 
-     protected $pm;
      protected $session;
      public $request;
 
      public function __construct()
      {
-          $this->pm = new PostsModel;
+          $this->post = new PostsModel;
           $this->session = new Session;
           $this->request = new Request;
-          $this->upm = new UploadsModel;
-          $this->um = new UsersModel;
-          $this->cm = new CategoriesModel;
+          $this->upload = new UploadsModel;
+          $this->user = new UsersModel;
+          $this->category = new CategoriesModel;
           $this->config = require "../config/uploads.php";
      }
 
      public function index()
      {
-          $posts = $this->pm->findAll(Posts::class, "updated_at.desc");
+          $posts = $this->post->findAll(Posts::class, "updated_at.desc");
           $status = Posts::STATUS;
           $title = "Gestion des articles";
           return $this->adminView('posts.index', compact('posts', 'status', 'title')); 
@@ -47,18 +46,18 @@ class AdminPostsController extends AbstractController
      {
           $form     = new FormBuilder();
           $status   = Posts::STATUS;
-          $writers  = Helpers::getWriters($this->um->findBy("role.admin", Users::class));
-          $categories  = Helpers::getCategories($this->cm->findAll(Categories::class));
+          $writers  = Helpers::getWriters($this->user->findBy("role.admin", Users::class));
+          $categories  = Helpers::getCategories($this->category->findAll(Categories::class));
           $title = 'Création d\'un article';
           return $this->adminView('posts.create', compact('form', 'status', 'writers', 'categories', 'title')); 
      }   
      
      public function delete(array $params = [])
      {
-          $post = $this->pm->find((int) $params['id'], Posts::class);
+          $post = $this->post->find((int) $params['id'], Posts::class);
           if ( $this->request->checkAuthorization() ) {
                if ($post instanceof Posts) {
-                    $this->pm->delete( $post->getId() );
+                    $this->post->delete( $post->getId() );
                     return $this->json(['message' => $this->setJsonMessage('success', 'L\'article a été supprimé avec succès 🚀')]); 
                } else if (!$post instanceof Posts) {
                     return $this->json(['message' => $this->setJsonMessage('warning', 'L\'article que vous essayé de supprimer n\'exite pas')], 500); 
@@ -78,13 +77,13 @@ class AdminPostsController extends AbstractController
 
      public function edit(array $params = [])
      {
-          $id       = (int) $params['id'];
+          $int       = (int) $params['id'];
           $status   = Posts::STATUS;
-          $data     = $this->pm->find($id);
+          $data     = $this->post->find($int);
           $form     = new FormBuilder($data);
           $post     = new Posts($data);
-          $writers  = Helpers::getWriters($this->um->findBy("role.admin", Users::class));
-          $categories  = Helpers::getCategories($this->cm->findAll(Categories::class));
+          $writers  = Helpers::getWriters($this->user->findBy("role.admin", Users::class));
+          $categories  = Helpers::getCategories($this->category->findAll(Categories::class));
           $title = "Modification de l'article n°{$post->getId()}";
           return $this->adminView('posts.edit', compact('form', 'status', 'post', 'writers', 'categories', 'title'));
      }
@@ -93,10 +92,10 @@ class AdminPostsController extends AbstractController
      {
           $data = count($this->request->postAll()) > 0 ? Helpers::sanitize($this->request->postAll()) : (array) json_decode($this->request->getContent());
           if ( $this->request->checkAuthorization() || Helpers::checkCsrfToken($data['csrf_token']) ) {
-               $post = $this->pm->find((int) $params['id'], Posts::class);
+               $post = $this->post->find((int) $params['id'], Posts::class);
                unset($data['csrf_token']);
                if ($data['writer'] === "default") unset($data['writer']);
-               $upload = $this->upm->findBy( "posts_id.{$post->getId()}", Uploads::class);
+               $upload = $this->upload->findBy( "posts_id.{$post->getId()}", Uploads::class);
                if ( $post instanceof Posts) {
                     $now = (new DateTime())->format('Y-m-d H:m:s'); 
                     $file = array_key_exists('image', $this->request->files()) ? (object) $this->request->files()['image'] : null ;
@@ -115,12 +114,12 @@ class AdminPostsController extends AbstractController
                          $uploaded_file['created_at'] = $now;
                          $uploaded_file['posts_id'] = (int) $post->getId();
                               if ($upload instanceof Uploads) unlink("../public/{$upload->getPath()}");
-                              $upload = $upload instanceof Uploads ? $this->upm->update_image($uploaded_file, true) : $this->upm->insert($uploaded_file, true);
+                              $upload = $upload instanceof Uploads ? $this->upload->update_image($uploaded_file, true) : $this->upload->insert($uploaded_file, true);
                               $data['image'] = $upload->getId();
                          }
                     }
                     $data['updated_at'] = $now;
-                    $post = $this->pm->update($data, ['id' => (int) $params['id'] ], true);  
+                    $post = $this->post->update($data, ['id' => (int) $params['id'] ], true);  
                     if ($post instanceof Posts) {
                          return $this->json(['message' => $this->setJsonMessage('success', 'Cet article a bien été mis à jour 👍') ]);
                     }
@@ -144,7 +143,7 @@ class AdminPostsController extends AbstractController
                $data['slug'] = Helpers::generateSlug($data['slug'] === "" ? $data['title'] : $data['slug']);
                $data['updated_at'] = $now;    
                $data['created_at'] = $now;
-               $post = $this->pm->insert($data, true); 
+               $post = $this->post->insert($data, true); 
                if ( $file && $file->error === 0 && $file->name !== "" )  {
                     if ( $file && $file->error === 0 && $file->name !== "" ) {
                          $uploaded_file = (new Uploads)->move_file($file, 'post');
@@ -157,8 +156,8 @@ class AdminPostsController extends AbstractController
                     // Initialiser les données à persister
                     $uploaded_file['created_at'] = $now;
                     $uploaded_file['posts_id'] = $post->getId();
-                    $upload = $this->upm->insert($uploaded_file, true);  
-                    $this->pm->update([ 'image' => (int) $upload->getId() ], [ 'id' => (int) $post->getId() ]); 
+                    $upload = $this->upload->insert($uploaded_file, true);  
+                    $this->post->update([ 'image' => (int) $upload->getId() ], [ 'id' => (int) $post->getId() ]); 
                }
                if ( $post instanceof Posts ) {
                     return $this->json([

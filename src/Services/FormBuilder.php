@@ -197,11 +197,7 @@ class FormBuilder
       */
      public function submit(string $value = "Envoyer",  string $classes = "primary", bool $bootstrap = true):string
      {
-          if ($bootstrap === true) { 
-               $classes = "btn btn-{$classes}";
-          } else {
-               $classes = "{$classes}";
-          }
+          $classes = $bootstrap === true ? "btn btn-{$classes}" : $classes;
           return esc_html("<button type=\"submit\" class=\"{$classes}\">{$value}</button>");
      }
 

@@ -40,12 +40,12 @@ class Mailer
           
      }
 
-     public function sendResetEmail(string $email, int $id) 
+     public function sendResetEmail(string $email, int $int) 
      {
           try {
                $mailer = new \Swift_Mailer($this->getTransport());
                $link = 'http://' . $this->request->server("HTTP_HOST") . generate_url('auth.email.reset.confirm', [
-                    'id' => $id,
+                    'id' => $int,
                     's' => $email,
                ]);
                // Create a message
