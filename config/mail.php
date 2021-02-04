@@ -1,11 +1,11 @@
 <?php 
 
 return (object) [
-     'smtp' => 'smtp.googlemail.com', 
-     'port' => 465,
-     'encryption' => 'ssl',
+     'smtp' => 'YOUR SMTP', 
+     'port' => 'SMTP PORT,
+     'encryption' => 'ssl|tls',
      'credentials' => (object) [
-          'username' => 'testwamp08@gmail.com',
-          'password' => '1995Posse'
+          'username' => 'YOUR EMAIL ADDRESS',
+          'password' => 'YOUR PASSWORD'
      ],
 ];
